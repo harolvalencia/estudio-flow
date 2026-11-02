@@ -48,6 +48,21 @@ La ayuda oficial indica que una voz se puede citar en el texto como `@Voice: nom
 4. Genera. Un clip de 4 s tardó cerca de 1 minuto.
 5. Descarga y transcribe. Compara palabra por palabra contra el guion.
 
+## Narración larga por tramos
+
+Un clip dura máximo 10 s. Para un tutorial, cada frase del guion es un tramo y un clip:
+
+1. Corta el guion en tramos de hasta 22 palabras, cada uno una idea completa.
+2. Usa la misma voz guardada, la misma interpretación y el mismo prompt de narración. Está en [la plantilla de tutorial](../../video-formativo/references/plantilla-tutorial.md).
+3. Agrega cualquier imagen sencilla como ingrediente. No se verá: solo se usa el audio.
+4. Descarga a `03-flow/voz/01.mp4`, `02.mp4` y así en orden.
+5. Transcribe cada clip y compáralo con su tramo. Repite el que cambie una palabra.
+6. Une todo con `narracion_desde_clips.py`, que recorta los silencios e iguala el volumen.
+
+Escribe los términos en inglés como deban sonar y verifica cómo los dijo. En la prueba, los clips de Flow dejaron de 0,3 a 0,7 s de silencio al empezar: por eso se recortan.
+
+**Sin comprobar:** los tramos que solo aportan audio podrían costar menos a 360p (7 puntos frente a 15 por 10 s). Todavía no se ha medido si la voz suena igual. Antes de usarlo en una lección, genera el mismo tramo a 360p y a 720p y compáralos.
+
 ## Continuidad entre clips hablados
 
 Cada clip en `Ingredientes` es una toma nueva. Para que se sienta como una sola pieza:

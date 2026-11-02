@@ -2,6 +2,8 @@
 
 Este estándar es obligatorio. Una pieza que no lo cumpla no se entrega. Solo se omite una regla si la persona lo pide de forma expresa.
 
+En tutoriales y capacitaciones aplica además [el estándar formativo](../../video-formativo/references/diseno-instruccional.md), que cambia el ritmo, los subtítulos y dónde va lo épico.
+
 Las reglas salen de la ayuda oficial de Flow, de la producción real de videos con Omni Flash y de las guías de HyperFrames. Las plataformas cambian: no cites porcentajes ni datos de rendimiento que no puedas comprobar.
 
 ## 1. Voz de principio a fin

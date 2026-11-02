@@ -58,6 +58,8 @@ python _estudio/armar_storyboard.py 02-storyboard/plan.json
 
 Cada escena lleva `locucion`, y la última también `"cta": true`. El script rechaza el plan si falta alguna, si una frase no cabe en su tiempo o si no hay cierre. Solo usa `"sin_voz": true` en el plan si la persona lo pidió.
 
+Para un tutorial o capacitación agrega `"tipo": "formativo"`, `"objetivos"` con la lista de lo que podrá hacer la persona, `"fuente"` y `"valida"`. Cada escena lleva `"origen"` (`pantalla`, `flow` o `grafico`) y al menos una lleva `"practica": true`. El script rechaza el plan si falta algo o si la lección pasa de 6 minutos, salvo que lleve `"largo_aprobado": true`.
+
 `formato` acepta `9:16`, `16:9`, `1:1` y `4:5`. Las escenas no deben dejar huecos: cada `inicio` es el `fin` de la anterior. El logo es opcional y debe servir sobre fondo oscuro.
 
 ## Calidad

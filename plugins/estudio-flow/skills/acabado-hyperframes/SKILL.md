@@ -60,6 +60,14 @@ npx hyperframes init 04-montaje --example blank --resolution portrait --non-inte
 - **Cierre:** 4 a 6 s con frase inspiradora, acción dicha y escrita, botón llamativo, logo con energía y clímax de música. Sostén 1,5 s el último cuadro.
 - **Sonido:** voz delante, música de principio a fin entre 12 y 15 dB por debajo, sonidos en los cambios y un solo riser con golpe en el cierre.
 
+La música y los efectos salen de `banda_sonora.py`, que compone una pista original a la medida de los cortes y sin licencias de terceros:
+
+```
+python _estudio/banda_sonora.py --duracion 16.6 --cambios 3.32,8.72 --golpe 13.57 --salida 04-montaje/assets/audio/banda.wav
+```
+
+Pon el `--golpe` en el instante de mayor brillo y los `--cambios` en los cortes. Mide la pista con `ebur128` al volumen del montaje: en el reel de prueba, `data-volume="0.2"` la dejó 20 dB bajo la voz y no se oía; `0.42` la llevó a 13 dB. El control final no mide esto.
+
 Lee [el estándar de calidad](../estudio-flow/references/mejores-practicas-video.md). Antes de escribir a mano un efecto con nombre, búscalo: `npx hyperframes catalog <palabras>` y `npx hyperframes add <bloque>`. Para el cierre revisa `cta-close`, `cta-lockup` y `logo-outro`.
 
 ### Áreas seguras en 1080×1920
@@ -99,8 +107,10 @@ En la prueba, 15 s de video en 1080×1920 tardaron menos de 2 minutos en Windows
 Pasa el archivo por el control antes de exportar. Necesita `pip install faster-whisper`.
 
 ```
-python _estudio/control_final.py ../05-final/maestro.mp4 --cierre 4
+python _estudio/control_final.py ../05-final/maestro.mp4 --cierre 4 --guion ../03-flow/guion.txt
 ```
+
+Con `--guion` comprueba que la voz diga el texto aprobado. En tutoriales y capacitaciones agrega `--tipo formativo`.
 
 Si responde `"aprobado": false`, corrige lo que indica. Un tramo sin voz se arregla generando en Flow la locución de esa escena, no con más texto.
 

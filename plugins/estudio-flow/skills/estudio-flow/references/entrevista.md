@@ -6,6 +6,10 @@ El objetivo es salir con un brief que permita proponer sin adivinar. Pregunta en
 
 Pregunta siempre: **«¿Tienes el manual de diseño de marca de la compañía?»**. Si no lo tiene, pide el nombre de la compañía y su página web. Sigue la skill `manual-de-marca`. No sigas con la entrevista hasta tener la marca.
 
+## Antes de la primera tanda: promocionar o enseñar
+
+Pregunta: **«¿Este video busca promocionar algo o enseñar a hacer algo?»**. Si es un tutorial, una capacitación, una inducción o un curso, usa [la entrevista formativa](../../video-formativo/references/entrevista-formativa.md) en lugar de esta.
+
 ## Primera tanda: qué y para qué
 
 1. ¿Qué pieza quieres? Reel, TikTok, Short, Estado de WhatsApp, anuncio, video para YouTube o historia.

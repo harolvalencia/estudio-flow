@@ -13,7 +13,8 @@
 | Vender un producto | Problema, producto en acción, prueba, oferta | 15 a 30 s |
 | Dar a conocer una marca | Imagen que detiene, historia corta, firma | 6 a 20 s |
 | Generar mensajes o agendas | Pregunta directa, promesa, paso concreto | 10 a 20 s |
-| Enseñar | Resultado primero, tres pasos, resumen | 30 a 60 s |
+| Enseñar una idea en redes | Resultado primero, tres pasos, resumen | 30 a 60 s |
+| Tutorial o capacitación | Skill `video-formativo` | 1 a 6 min |
 | Lanzar algo nuevo | Tensión, revelación, fecha o acción | 15 a 30 s |
 | Testimonio | Antes, momento de cambio, después | 20 a 45 s |
 

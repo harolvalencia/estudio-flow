@@ -13,6 +13,7 @@ Revisado el 2 de noviembre de 2026. Las plataformas cambian estos límites y las
 | Facebook Reels | 9:16 | 1080×1920 | 15 a 60 s | Algunas cuentas ya no tienen tope fijo |
 | Facebook feed | 4:5 o 1:1 | 1080×1350 | 15 a 60 s | |
 | WhatsApp Estados | 9:16 | 1080×1920 | Hasta 60 s | Algunas cuentas llegan a 90 s; lo más largo se corta en tramos |
+| Plataforma de cursos | 16:9 | 1920×1080 | Hasta 6 min por lección | MP4 con subtítulos VTT |
 
 ## Área segura en vertical (1080×1920)
 

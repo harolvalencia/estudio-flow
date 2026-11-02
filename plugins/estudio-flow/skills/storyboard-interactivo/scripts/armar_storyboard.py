@@ -17,6 +17,9 @@ from pathlib import Path
 from PIL import Image
 
 PALABRAS_POR_SEGUNDO = 2.9
+PALABRAS_POR_SEGUNDO_FORMATIVO = 2.5
+LECCION_MAX_S = 360
+ORIGENES = ("pantalla", "flow", "grafico")
 ANCHO = 540
 CALIDAD = 76
 LIMITE_MB = 15
@@ -37,14 +40,28 @@ def a_data_uri(ruta):
 def revisar(plan):
     """Una propuesta sin voz en alguna escena o sin cierre no se muestra."""
     fallos = []
+    formativo = plan.get("tipo") == "formativo"
+    if formativo:
+        for campo in ("objetivos", "fuente", "valida"):
+            if not plan.get(campo):
+                fallos.append(f'Falta "{campo}": un video formativo necesita objetivos, fuente y quién valida')
+        for prop in plan["propuestas"]:
+            if not any(e.get("practica") for e in prop["escenas"]):
+                fallos.append(f'{prop["id"]}: falta una comprobación, una escena con "practica": true')
+            if prop["escenas"][-1]["fin"] > LECCION_MAX_S and not plan.get("largo_aprobado"):
+                fallos.append(f'{prop["id"]}: pasa de {LECCION_MAX_S // 60} minutos, divídela en una serie')
+            for n, e in enumerate(prop["escenas"], 1):
+                if e.get("origen") not in ORIGENES:
+                    fallos.append(f'{prop["id"]}, escena {n}: "origen" debe ser pantalla, flow o grafico')
     if plan.get("sin_voz"):
         return fallos
+    ritmo = PALABRAS_POR_SEGUNDO_FORMATIVO if formativo else PALABRAS_POR_SEGUNDO
     for prop in plan["propuestas"]:
         for n, e in enumerate(prop["escenas"], 1):
             voz = (e.get("locucion") or "").strip()
             if not voz:
                 fallos.append(f'{prop["id"]}, escena {n}: falta la locución')
-            elif len(voz.split()) / PALABRAS_POR_SEGUNDO > e["fin"] - e["inicio"]:
+            elif len(voz.split()) / ritmo > e["fin"] - e["inicio"]:
                 fallos.append(f'{prop["id"]}, escena {n}: la locución no cabe en {e["fin"] - e["inicio"]} s')
         if not prop["escenas"][-1].get("cta"):
             fallos.append(f'{prop["id"]}: la última escena debe marcarse como cierre con "cta": true')

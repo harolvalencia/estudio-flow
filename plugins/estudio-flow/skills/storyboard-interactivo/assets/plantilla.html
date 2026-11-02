@@ -28,7 +28,13 @@ h1{font:600 clamp(24px,4vw,34px)/1.15 var(--titulo);margin:6px 0 0;text-wrap:bal
 .pestana:focus-visible,button:focus-visible,textarea:focus-visible{outline:2px solid var(--acento);outline-offset:2px}
 .escenario{display:grid;grid-template-columns:minmax(240px,300px) minmax(0,1fr);gap:24px;align-items:start}
 .telefono{position:relative;width:100%;max-width:300px;aspect-ratio:9/16;border-radius:26px;overflow:hidden;background:#000;border:6px solid #1b2331;box-shadow:0 18px 50px color-mix(in srgb,var(--marca) 28%,transparent)}
-.telefono.h16{aspect-ratio:16/9;max-width:100%;border-radius:14px}
+.telefono.h16{aspect-ratio:16/9;max-width:820px;border-radius:14px}
+.escenario.ancho{grid-template-columns:minmax(0,1fr)}
+.escenario.ancho .mandos{max-width:none}
+.ficha{background:var(--panel);border:1px solid var(--linea);border-radius:12px;padding:16px;display:grid;gap:10px}
+.ficha h3{font:600 17px/1.2 var(--titulo);margin:0}
+.ficha ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.ficha p{margin:0;color:var(--suave);font-size:13px}
 .telefono.c1{aspect-ratio:1;border-radius:14px}
 .telefono.c45{aspect-ratio:4/5;border-radius:18px}
 .cuadro{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .35s}
@@ -50,7 +56,7 @@ button.fuerte{background:linear-gradient(120deg,var(--acento),var(--marca));bord
 .dato b{display:block;font:600 16px/1.25 var(--titulo);color:var(--texto);font-variant-numeric:tabular-nums}
 .tira{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(72px,92px);gap:8px;overflow-x:auto;padding-bottom:4px}
 .mini{all:unset;cursor:pointer;display:grid;gap:4px;font-size:11px;color:var(--suave)}
-.mini img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:6px;border:2px solid transparent;display:block}
+.mini img{width:100%;aspect-ratio:var(--proporcion,9/16);object-fit:cover;border-radius:6px;border:2px solid transparent;display:block}
 .mini[aria-current="true"] img{border-color:var(--acento)}
 .tabla{overflow-x:auto;border:1px solid var(--linea);border-radius:10px}
 table{border-collapse:collapse;width:100%;font-size:13px;min-width:760px}
@@ -78,9 +84,15 @@ textarea{width:100%;min-height:74px;background:var(--panel2);color:var(--texto);
     <img id="logo" alt="" hidden>
   </header>
 
+  <section class="ficha" id="ficha" hidden>
+    <h3>Al terminar, la persona podrá</h3>
+    <ul id="objetivos"></ul>
+    <p id="fuente"></p>
+  </section>
+
   <div class="pestanas" id="pestanas" role="tablist" aria-label="Propuestas"></div>
 
-  <section class="escenario" aria-live="polite">
+  <section class="escenario" id="escenario" aria-live="polite">
     <div>
       <div class="telefono" id="telefono">
         <div id="cuadros"></div>
@@ -134,6 +146,13 @@ textarea{width:100%;min-height:74px;background:var(--panel2);color:var(--texto);
   if (d.marca && d.marca.logo) { $('logo').src = d.marca.logo; $('logo').alt = d.marca.nombre || 'Logo'; $('logo').hidden = false; }
   $('telefono').className = 'telefono ' + (clases[d.formato] || '');
   if (d.formato !== '9:16') $('ver-segura').hidden = true;
+  if (d.formato === '16:9') $('escenario').classList.add('ancho');
+  document.documentElement.style.setProperty('--proporcion', (d.formato || '9:16').replace(':', '/'));
+  if (d.tipo === 'formativo') {
+    $('ficha').hidden = false;
+    $('objetivos').replaceChildren(...(d.objetivos || []).map((o) => { const li = document.createElement('li'); li.textContent = o; return li; }));
+    $('fuente').textContent = 'Fuente: ' + (d.fuente || '') + ' · Valida: ' + (d.valida || '');
+  }
 
   d.propuestas.forEach((p, i) => {
     const b = document.createElement('button');
@@ -188,7 +207,7 @@ textarea{width:100%;min-height:74px;background:var(--panel2);color:var(--texto);
     }));
     $('filas').replaceChildren(...p.escenas.map((e) => {
       const f = document.createElement('tr');
-      [e.inicio + '–' + e.fin + ' s', e.descripcion, e.locucion || '—', e.texto || '—', e.audio || '—', e.flow || '—', e.puntos || 0].forEach((v, n) => {
+      [e.inicio + '–' + e.fin + ' s', e.descripcion, e.locucion || '—', e.texto || '—', e.audio || '—', [e.origen, e.flow].filter(Boolean).join(' · ') || '—', e.puntos || 0].forEach((v, n) => {
         const td = document.createElement('td'); td.textContent = v; if (n === 0 || n === 6) td.className = 'num'; f.append(td);
       });
       return f;

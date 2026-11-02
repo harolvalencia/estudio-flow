@@ -1,12 +1,12 @@
 # Estudio Flow
 
-Una productora de video con IA dentro de Claude para escritorio. Le cuentas qué necesitas y Claude revisa tu marca, te entrevista, propone tres ideas con storyboard interactivo, produce en Google Flow con Omni Flash y sus voces, termina el video con HyperFrames y te entrega el archivo final con un PDF del proceso.
+Una productora de video con IA dentro de Claude para escritorio, para redes sociales, tutoriales y capacitaciones. Le cuentas qué necesitas y Claude revisa tu marca, te entrevista, propone tres ideas con storyboard interactivo, produce en Google Flow con Omni Flash y sus voces, termina el video con HyperFrames y te entrega el archivo final con un PDF del proceso.
 
 ## Qué incluye
 
 | Plugin | Qué hace |
 |---|---|
-| `estudio-flow` | 6 skills: dirección, control de Flow, storyboard, acabado, informe y manual de marca |
+| `estudio-flow` | 7 skills: dirección, control de Flow, storyboard, acabado, video formativo, informe y manual de marca |
 | `hyperframes-skills` | Skills oficiales de [HyperFrames](https://github.com/heygen-com/hyperframes), de HeyGen, bajo Apache-2.0 |
 
 ## Instalación en Claude
@@ -43,7 +43,7 @@ claude plugin install hyperframes-skills@estudio-flow
 
 ## Para producir el video final
 
-Necesitas Node 22 o superior, ffmpeg y Python con `numpy` y `pillow`. Para que Claude trabaje en Windows, instala también el plugin **Desktop Commander**.
+Necesitas Node 22 o superior, ffmpeg y Python con `numpy`, `pillow` y `faster-whisper`. Para que Claude trabaje en Windows, instala también el plugin **Desktop Commander**.
 
 ## Licencia
 

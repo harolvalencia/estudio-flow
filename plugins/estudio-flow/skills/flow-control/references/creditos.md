@@ -39,4 +39,13 @@ puntos = (suma del costo de cada clip) × 1,3
 
 El 30 % adicional cubre repeticiones. Para un reel de 15 s con 3 clips de Omni de 6 s a 720p: 30 × 1,3 = 39 puntos.
 
+## Costo por minuto de narración
+
+Un video largo se narra con un clip de 10 s por tramo:
+
+| Resolución del clip | Puntos por minuto | Con 30 % de margen |
+|---|---|---|
+| 720p | 90 | 117 |
+| 360p | 42 | 55 |
+
 Antes de producir, compara contra el saldo real. Ensaya el clip más difícil a 360p si tiene acción compleja: cuesta la mitad y la escala a 720p es gratis en Pro y Ultra.

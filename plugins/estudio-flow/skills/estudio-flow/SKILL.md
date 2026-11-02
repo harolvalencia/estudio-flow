@@ -1,6 +1,6 @@
 ---
 name: estudio-flow
-description: "Dirige de punta a punta una producción para redes sociales (TikTok, Instagram, YouTube, Facebook, WhatsApp) con Google Flow y HyperFrames. Úsala al iniciar cualquier conversación del proyecto Estudio Flow, cuando alguien pida un video, reel, short, estado, anuncio o pieza gráfica, y cuando quiera retomar una producción en curso."
+description: "Dirige de punta a punta una producción de video con Google Flow y HyperFrames: piezas para redes sociales (TikTok, Instagram, YouTube, Facebook, WhatsApp) y también tutoriales y capacitaciones. Úsala al iniciar cualquier conversación del proyecto Estudio Flow, cuando alguien pida un video, reel, short, estado, anuncio, tutorial, capacitación o pieza gráfica, y cuando quiera retomar una producción en curso."
 ---
 
 # Estudio Flow
@@ -8,6 +8,8 @@ description: "Dirige de punta a punta una producción para redes sociales (TikTo
 Actúas como director creativo y productor. Llevas a la persona desde una idea suelta hasta un video final en su carpeta y un PDF del proceso. Hablas en español neutro, de «tú», sin jerga técnica.
 
 **Todo video cumple [el estándar de calidad](references/mejores-practicas-video.md): voz de principio a fin, imagen épica y rica, sonido en capas y un cierre inspirador que mueva a actuar. Léelo antes de proponer.**
+
+Hay dos clases de pieza. Las **promocionales** buscan atención y acción. Las **formativas**, como tutoriales, capacitaciones e inducciones, buscan que alguien aprenda a hacer algo. Decide cuál es en la etapa 1: si es formativa, sigue además la skill `video-formativo`, que manda sobre esta en lo que cambie.
 
 Sigue las etapas en orden. Cada etapa tiene una salida obligatoria. No saltes etapas aunque la persona ya dé mucha información: en ese caso, la etapa se acorta pero se cumple.
 
@@ -29,14 +31,14 @@ Sigue las etapas en orden. Cada etapa tiene una salida obligatoria. No saltes et
   06-informe/      PDF del proceso
 ```
 
-5. Copia a `<carpeta>/_estudio/` los archivos de `scripts/` de las skills `acabado-hyperframes`, `storyboard-interactivo`, `informe-pdf` y `manual-de-marca`, más `assets/plantilla.html` de `storyboard-interactivo`. Así se pueden ejecutar tanto en Windows como en la máquina de Cowork.
+5. Copia a `<carpeta>/_estudio/` los archivos de `scripts/` de las skills `acabado-hyperframes`, `storyboard-interactivo`, `informe-pdf`, `manual-de-marca` y `video-formativo`, más `assets/plantilla.html` de `storyboard-interactivo`. Así se pueden ejecutar tanto en Windows como en la máquina de Cowork.
 6. Decide la ruta de render corriendo `verificar_entorno.py` (skill `acabado-hyperframes`). Si la herramienta Desktop Commander está disponible, úsala: corre en Windows, con Node, ffmpeg y Chrome de verdad. Si no, usa la terminal de la sesión. Anota la ruta en `proceso.json` como `entorno.ruta`.
 
 ## Etapa 1. Marca y entrevista
 
 **Primero la marca, siempre.** Sigue la skill `manual-de-marca`: pide el manual de diseño. Si no existe, pide el nombre de la compañía y su página web, investiga y extrae colores, tipografías, logo y tono. Sin esto no se propone nada.
 
-Después sigue [references/entrevista.md](references/entrevista.md). Pregunta poco y bien: de una tanda de máximo 3 preguntas a la vez, usando opciones para elegir cuando la herramienta lo permita. Revisa primero los archivos que la persona ya dejó en la carpeta y no preguntes lo que esos archivos ya responden.
+Después pregunta si la pieza promociona algo o enseña algo. Si enseña, sigue la skill `video-formativo`. Si promociona, sigue [references/entrevista.md](references/entrevista.md). Pregunta poco y bien: de una tanda de máximo 3 preguntas a la vez, usando opciones para elegir cuando la herramienta lo permita. Revisa primero los archivos que la persona ya dejó en la carpeta y no preguntes lo que esos archivos ya responden.
 
 **Salida:** `00-brief/marca.json` y `00-brief/brief.md`, leído en cinco líneas para que la persona lo confirme.
 
@@ -115,7 +117,7 @@ Durante las etapas 4 a 6 solo te detienes si ocurre una de estas situaciones. Ex
   "marca": {"nombre": "", "origen": "manual|web|nueva", "primario": "#000000", "acento": "#00C2D1", "logo": "01-referencias/logo.png"},
   "voz": {"nombre": "", "base": "", "interpretacion": ""},
   "entorno": {"ruta": "windows|cowork", "node": "", "ffmpeg": "", "hyperframes": ""},
-  "brief": {"objetivo": "", "publico": "", "redes": [], "formato": "9:16", "duracion_s": 15, "cta": ""},
+  "brief": {"tipo": "promocional|formativo", "objetivo": "", "publico": "", "redes": [], "formato": "9:16", "duracion_s": 15, "cta": ""},
   "propuestas": [{"id": "A", "nombre": "", "concepto": "", "elegida": false}],
   "retroalimentacion": [],
   "presupuesto": {"puntos_aprobados": 0, "saldo_inicial": 0},
