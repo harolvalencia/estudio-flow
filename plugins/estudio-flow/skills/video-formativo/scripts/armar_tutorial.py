@@ -10,7 +10,8 @@ Deja en la carpeta de tutorial.json:
     guion.txt               texto aprobado, para control_final.py --guion
 
 La voz manda el tiempo: cada escena dura lo que duran sus tramos de narración. Cada marca se
-sincroniza con la palabra que la nombra, así el botón se señala justo cuando se dice.
+sincroniza con la palabra que la nombra, así el botón se señala justo cuando se dice. La música
+se mide y se calibra sola para quedar 14 dB bajo la voz.
 El formato de tutorial.json está en references/plantilla-tutorial.md. Necesita Pillow.
 """
 import argparse
@@ -19,6 +20,7 @@ import json
 import re
 import subprocess
 import sys
+from difflib import SequenceMatcher
 from pathlib import Path
 
 from PIL import Image
@@ -31,6 +33,9 @@ TEXTOS = {"16:9": (112, 44, 34, 32), "9:16": (92, 42, 36, 32), "1:1": (84, 36, 3
 SOSTENER_S = 2.2
 ZOOM_MAX_NITIDO = 1.7
 MOVIMIENTO_MIN_S = 0.95
+PARECIDO_PALABRA = 0.75
+LUFS_VOZ = -18.0
+MUSICA_BAJO_VOZ_DB = 14
 CURSOR = '<path d="M4 3 L4 33 L12 25.5 L17.5 38 L24 35 L18.4 22.8 L29 22.8 Z" fill="#fff" stroke="#0b1422" stroke-width="2.4" stroke-linejoin="round"/>'
 avisos = []
 
@@ -62,6 +67,13 @@ def ajustar(ancho, alto, escenario):
     return x + (w - ancho * k) / 2, y + (h - alto * k) / 2, ancho * k, alto * k
 
 
+def sonoridad(ruta, desde, hasta, volumen):
+    err = subprocess.run(["ffmpeg", "-hide_banner", "-ss", f"{desde:.2f}", "-to", f"{hasta:.2f}", "-i", str(ruta),
+                          "-af", f"volume={volumen},ebur128", "-f", "null", "-"],
+                         capture_output=True, text=True, encoding="utf-8", errors="replace").stderr
+    return float(re.search(r"I:\s+(-?[\d.]+) LUFS", err[err.rfind("Summary:"):]).group(1))
+
+
 def camara(px, py, zoom, W, foco_y, H, ventana):
     """Traslación que deja el punto en el centro sin mostrar vacío alrededor de la captura."""
     x0, y0, w, h = ventana
@@ -78,7 +90,7 @@ def momento(marca, escena, previo):
     if marca.get("palabra"):
         objetivo = normalizar(marca["palabra"].split()[0])
         for w in escena["palabras"]:
-            if w["t"] >= previo and normalizar(w["p"]) == objetivo:
+            if w["t"] >= previo and SequenceMatcher(None, normalizar(w["p"]), objetivo).ratio() >= PARECIDO_PALABRA:
                 return w["t"]
         avisos.append(f'La voz no dijo «{marca["palabra"]}» en la escena {escena["n"]}: usé un tiempo aproximado')
     return marca.get("en", previo + 1.6)
@@ -118,7 +130,14 @@ def medio_html(e, escena, base, ventana=False):
                 f'data-track-index="3"></video>')
     desde = escena["voz_desde"] if escena.get("sincronizar") else 0
     dur = min(escena["dur"], disponible - desde)
-    return (f'<video id="{e}m" class="clip" src="{ruta}" muted playsinline data-start="{escena["inicio"]:.3f}" '
+    sosten = ""
+    if dur < escena["dur"]:
+        # La escena dura más que el clip: su último cuadro queda debajo para sostener la imagen
+        final = Path(ruta).with_name(Path(ruta).stem + "-fin.jpg").as_posix()
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-sseof", "-0.1", "-i", str(base / ruta), "-frames:v", "1", "-q:v", "2",
+                        str(base / final)], check=True)
+        sosten = f'<img src="{final}" alt="" />'
+    return (f'{sosten}<video id="{e}m" class="clip" src="{ruta}" muted playsinline data-start="{escena["inicio"]:.3f}" '
             f'data-duration="{dur:.3f}" data-media-start="{desde:.3f}" data-track-index="3"></video>')
 
 
@@ -256,7 +275,7 @@ def escena_cierre(escena, tl, base, ctx):
     tl.append(f'tl.fromTo("#{e}x", {{opacity:0, y:16}}, {{opacity:1, y:0, duration:.4, ease:"power2.out"}}, {ini + t + .45:.3f});')
     ctx["chispas"] = (ini + t, ini + dur)
     lineas = "".join(f'<span class="linea"><span>{marcar(x)}</span></span>' for x in escena["frase"].split("|"))
-    return f'''<div class="fondo" id="{e}f">{medio_html(e, escena, base)}</div><div class="velo"></div><div id="chispas"></div>
+    return f'''<div class="fondo" id="{e}f">{medio_html(e, escena, base)}</div><div class="velo-final"></div><div id="chispas"></div>
         <div class="final"><img class="logo-final" id="{e}l" src="{ctx["logo"]}" alt="{html.escape(ctx["marca"])}" />
         <h1 id="{e}t">{lineas}</h1><div class="boton" id="{e}b">{marcar(escena.get("boton", ""))}</div><div class="pie" id="{e}x">{marcar(escena.get("texto", ""))}</div></div>
         <div class="luz-final" id="{e}h"></div>'''
@@ -293,7 +312,7 @@ CSS = """
       #root { position: relative; width: __W__px; height: __H__px; overflow: hidden; background: var(--fondo); color: #fff; font-family: var(--texto); }
       em { font-style: normal; color: var(--acento); }
       #luz { position: absolute; inset: 0; background: radial-gradient(62% 72% at 80% 10%, color-mix(in srgb, var(--primario) 30%, transparent), transparent 72%), radial-gradient(52% 62% at 8% 94%, color-mix(in srgb, var(--acento) 18%, transparent), transparent 72%); }
-      .escena { position: absolute; inset: 0; overflow: hidden; }
+      .escena { position: absolute; inset: 0; overflow: hidden; opacity: 0; }
       .deriva, .camara, .fondo { position: absolute; inset: 0; }
       .deriva { transform-origin: 50% 46%; }
       .camara { transform-origin: 0 0; }
@@ -326,6 +345,8 @@ CSS = """
       .opciones { display: grid; gap: 16px; margin-top: 8px; max-width: 1300px; }
       .opcion { display: flex; align-items: center; gap: 20px; padding: 18px 28px; border-radius: 18px; background: rgba(255,255,255,.08); box-shadow: 0 0 0 1px rgba(255,255,255,.16); font-size: __TCUERPO__px; font-weight: 700; line-height: 1.2; transform-origin: left center; }
       .opcion b { font-family: var(--titulo); }
+      .velo-final { position: absolute; inset: 0; background: radial-gradient(62% 74% at 50% 50%, rgba(2,4,10,.78) 0%, rgba(2,4,10,.62) 58%, rgba(2,4,10,.2) 100%); }
+      .final h1 { text-shadow: 0 6px 38px rgba(0,0,0,.75); }
       .final { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; padding: 0 96px; text-align: center; }
       .logo-final { width: min(440px, 46vw); opacity: 0; }
       .boton { padding: 26px 46px; border-radius: 18px; background: linear-gradient(95deg, var(--acento), var(--primario)); color: #02131f; font-weight: 800; font-size: __TCUERPO__px; box-shadow: 0 0 80px color-mix(in srgb, var(--acento) 55%, transparent); opacity: 0; }
@@ -362,8 +383,10 @@ def main():
     tl, cuerpo = [], ""
     for escena in escenas:
         contenido = TIPOS[escena["tipo"]](escena, tl, base, ctx)
-        cuerpo += (f'\n      <div id="e{escena["n"]}" class="escena clip" data-start="{escena["inicio"]:.3f}" '
-                   f'data-duration="{escena["dur"]:.3f}" data-track-index="1">\n        {contenido}\n      </div>')
+        # La escena no es un clip: un video con tiempo no puede ir dentro de otro elemento con tiempo
+        cuerpo += f'\n      <div id="e{escena["n"]}" class="escena">\n        {contenido}\n      </div>'
+        tl.append(f'tl.set("#e{escena["n"]}", {{opacity:1}}, {escena["inicio"]:.3f});')
+        tl.append(f'tl.set("#e{escena["n"]}", {{opacity:0}}, {escena["inicio"] + escena["dur"]:.3f});')
     cortes = [e["inicio"] for e in escenas[1:]]
     for c in cortes:
         tl.append(f'tl.fromTo("#barrido", {{x:"-120%", skewX:-12}}, {{x:"120%", skewX:-12, duration:.62, ease:"power2.inOut", immediateRender:false}}, {c - .31:.3f});')
@@ -394,10 +417,21 @@ def main():
     cierre = escenas[-1]
     activa = [f'0-{apertura["dur"] + 0.6:.2f}'] if apertura else []
     activa.append(f'{cierre["inicio"] - 0.6:.2f}-{total:.2f}')
-    subprocess.run([sys.executable, str(Path(__file__).resolve().parent / "banda_sonora.py"), "--duracion", f"{total:.2f}",
-                    "--perfil", "sereno", "--activa", ",".join(activa), "--cambios", ",".join(f"{c:.3f}" for c in cortes),
-                    "--clics", ",".join(f"{c:.3f}" for c in ctx["clics"]), *(["--golpe", f'{ctx["golpe"]:.3f}'] if ctx["golpe"] else []),
-                    "--salida", str(base / "assets/audio/banda.wav")], check=True, stdout=subprocess.DEVNULL)
+    banda = base / "assets/audio/banda.wav"
+    volumen = guion.get("volumen_banda", 0.36)
+
+    def componer_banda(musica):
+        subprocess.run([sys.executable, str(Path(__file__).resolve().parent / "banda_sonora.py"), "--duracion", f"{total:.2f}",
+                        "--perfil", "sereno", "--activa", ",".join(activa), "--cambios", ",".join(f"{c:.3f}" for c in cortes),
+                        "--clics", ",".join(f"{c:.3f}" for c in ctx["clics"]), *(["--golpe", f'{ctx["golpe"]:.3f}'] if ctx["golpe"] else []),
+                        "--musica", f"{musica:.4f}", "--salida", str(banda)], check=True, stdout=subprocess.DEVNULL)
+
+    # Se mide donde suena junto a la voz, antes del golpe, y se compone de nuevo con la ganancia justa
+    componer_banda(1)
+    ventana = (0.5, apertura["dur"] - 0.5) if apertura else (cierre["inicio"], cierre["inicio"] + 3)
+    objetivo = LUFS_VOZ - MUSICA_BAJO_VOZ_DB
+    componer_banda(10 ** ((objetivo - sonoridad(banda, *ventana, volumen)) / 20))
+    musica_lufs = sonoridad(banda, *ventana, volumen)
 
     fuentes = "".join(f'@font-face {{ font-family: "{f["familia"]}"; src: url("{f["src"]}"); font-weight: {f.get("peso", 700)}; }}\n      '
                       for f in marca.get("fuentes", []))
@@ -426,7 +460,7 @@ def main():
       <img id="marca" src="{marca["logo"]}" alt="{html.escape(marca["nombre"])}" />
       <div id="barrido"></div>
       <audio id="voz" class="clip" src="assets/audio/voz.wav" data-start="0" data-duration="{tiempos["total"]:.3f}" data-track-index="8" data-volume="1"></audio>
-      <audio id="banda" class="clip" src="assets/audio/banda.wav" data-start="0" data-duration="{total:.3f}" data-track-index="9" data-volume="{guion.get("volumen_banda", 0.36)}"></audio>
+      <audio id="banda" class="clip" src="assets/audio/banda.wav" data-start="0" data-duration="{total:.3f}" data-track-index="9" data-volume="{volumen}"></audio>
     </div>
     <script>
       const tl = gsap.timeline({{ paused: true }});
@@ -441,7 +475,8 @@ def main():
              "escenas": [{"n": e["n"], "tipo": e["tipo"], "inicio": round(e["inicio"], 2), "duracion": round(e["dur"], 2)} for e in escenas]}
     (base / "linea-de-tiempo.json").write_text(json.dumps(linea, ensure_ascii=False, indent=1), encoding="utf-8")
     (base / "guion.txt").write_text("\n".join(guion["guion"]) + "\n", encoding="utf-8")
-    print(json.dumps({"duracion_s": round(total, 2), "escenas": len(escenas), "capitulos": len(capitulos), "avisos": avisos}, ensure_ascii=False, indent=1))
+    print(json.dumps({"duracion_s": round(total, 2), "escenas": len(escenas), "capitulos": len(capitulos),
+                      "musica_bajo_voz_db": round(LUFS_VOZ - musica_lufs, 1), "avisos": avisos}, ensure_ascii=False, indent=1))
 
 
 if __name__ == "__main__":

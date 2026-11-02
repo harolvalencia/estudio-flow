@@ -85,7 +85,9 @@ def palabras(ruta, pistas=None):
                            capture_output=True, check=True).stdout
     audio = np.frombuffer(crudo, dtype=np.int16).astype(np.float32) / 32768.0
     modelo = WhisperModel("base", device="cpu", compute_type="int8")
-    segmentos, _ = modelo.transcribe(audio, language="es", word_timestamps=True, vad_filter=False, hotwords=pistas)
+    # Sin filtro de voz, las pistas hacen que repita frases en los silencios y esconda un final mudo
+    segmentos, _ = modelo.transcribe(audio, language="es", word_timestamps=True, vad_filter=True,
+                                     vad_parameters={"min_silence_duration_ms": 300, "speech_pad_ms": 120}, hotwords=pistas)
     lista, texto = [], []
     for s in segmentos:
         texto.append(s.text.strip())

@@ -66,7 +66,7 @@ La música y los efectos salen de `banda_sonora.py`, que compone una pista origi
 python _estudio/banda_sonora.py --duracion 16.6 --cambios 3.32,8.72 --golpe 13.57 --salida 04-montaje/assets/audio/banda.wav
 ```
 
-Pon el `--golpe` en el instante de mayor brillo y los `--cambios` en los cortes. Mide la pista con `ebur128` al volumen del montaje: en el reel de prueba, `data-volume="0.2"` la dejó 20 dB bajo la voz y no se oía; `0.42` la llevó a 13 dB. El control final no mide esto.
+Pon el `--golpe` en el instante de mayor brillo y los `--cambios` en los cortes. Mide la pista con `ebur128` al volumen del montaje, en un tramo donde suene con la voz y antes del golpe. En el reel de prueba, `data-volume="0.2"` la dejó 20 dB bajo la voz y no se oía; `0.42` la llevó a 13 dB. En un tutorial, la primera versión quedó a 3,5 dB y tapaba la voz. `--musica` baja la música sin tocar los efectos. `armar_tutorial.py` ya la calibra solo; en un montaje hecho a mano, mídela tú: el control final no la revisa.
 
 Lee [el estándar de calidad](../estudio-flow/references/mejores-practicas-video.md). Antes de escribir a mano un efecto con nombre, búscalo: `npx hyperframes catalog <palabras>` y `npx hyperframes add <bloque>`. Para el cierre revisa `cta-close`, `cta-lockup` y `logo-outro`.
 

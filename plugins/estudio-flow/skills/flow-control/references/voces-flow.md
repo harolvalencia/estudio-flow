@@ -59,9 +59,13 @@ Un clip dura máximo 10 s. Para un tutorial, cada frase del guion es un tramo y 
 5. Transcribe cada clip y compáralo con su tramo. Repite el que cambie una palabra.
 6. Une todo con `narracion_desde_clips.py`, que recorta los silencios e iguala el volumen.
 
-Escribe los términos en inglés como deban sonar y verifica cómo los dijo. En la prueba, los clips de Flow dejaron de 0,3 a 0,7 s de silencio al empezar: por eso se recortan.
+**Los tramos que solo aportan audio van a 360p.** Medido el 2 de noviembre de 2026 con la misma frase en 360p y 720p: AAC a 48 kHz y 128 kbps en ambos, mismo reparto de energía por frecuencias y misma transcripción. Cuesta la mitad. Las escenas que se ven, como apertura y cierre, van a 720p y se bajan a 1080p.
 
-**Sin comprobar:** los tramos que solo aportan audio podrían costar menos a 360p (7 puntos frente a 15 por 10 s). Todavía no se ha medido si la voz suena igual. Antes de usarlo en una lección, genera el mismo tramo a 360p y a 720p y compáralos.
+Para una pregunta, pide la pausa en el guion: dos líneas en `script` y un tramo callado en `timeline`. Así la persona tiene tiempo de pensar antes de oír la respuesta.
+
+Verifica cómo dijo los términos en inglés. En las pruebas, los clips de Flow dejaron hasta 0,7 s de silencio al empezar: por eso se recortan.
+
+En el tutorial de prueba, Sulafat dijo bien GitHub, Releases, Assets, Hyperframes y Upload plugin con el texto escrito normal.
 
 ## Continuidad entre clips hablados
 

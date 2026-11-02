@@ -11,6 +11,13 @@ Antes de empezar lee la skill de Claude in Chrome si está disponible, abre una 
 
 Mapa completo de la interfaz: [references/mapa-interfaz.md](references/mapa-interfaz.md). Cómo escribir prompts: [references/prompts-omni.md](references/prompts-omni.md). Voces: [references/voces-flow.md](references/voces-flow.md). Costos: [references/creditos.md](references/creditos.md).
 
+## Gasta pocos tokens sin perder control
+
+- Lee Flow con JavaScript corto. Las capturas y `read_page` pesan mucho más.
+- Si necesitas mirar, usa `scale: 0.5` en la captura: cuesta cerca de la cuarta parte.
+- Agrupa acciones en `browser_batch`. Antes de cada generación agrega una comprobación con JavaScript que lance un error si falta algo: detiene el lote sin gastar puntos.
+- Para hacer varios clips parecidos usa «Reutilizar petición»; no armes voz e imagen cada vez.
+
 ## Cuatro reglas que evitan casi todos los fallos
 
 1. **«Iniciar generación» exige un clic real.** Un `.click()` desde JavaScript no genera nada, y no da error. Usa el clic del ratón.
@@ -56,6 +63,16 @@ Con `Vídeo` y `Fotogramas`: clic en `Inicio` o `Fin`. Se abre «Selecciona una 
 Con `Vídeo` e `Ingredientes` usa el botón `+` (`Añadir ingredientes a ventana para peticiones`) y espera unos 6 s: el panel tarda y bloquea la página mientras abre. Tiene las pestañas `Todo`, `Imágenes`, `Vídeos`, `Voces`, `Caracteres`, `Avatares` y `Subidas`, un buscador y un selector de proyecto para traer recursos de otro proyecto. Pulsa `Añadir a petición`. Hacer clic en una fila también la agrega y cierra el panel. Si después haces clic donde estaba el panel, abrirás un recurso de la cuadrícula y lo que escribas activará atajos: lee siempre las posiciones antes de cada clic.
 
 También puedes escribir `@` y buscar el recurso o personaje por nombre.
+
+### Hacer varios clips con los mismos ingredientes
+
+`Reutilizar petición` recupera el prompt, la voz y la imagen de un clip de un solo clic. Después enfoca el cuadro con JavaScript, pulsa `Ctrl+A` y escribe el prompt nuevo.
+
+- Antes de generar confirma que el cuadro tenga las **dos fichas**. Con el clip anterior aún cargando no restaura nada y el fallo no se ve.
+- Nunca hagas clic en coordenadas fijas de la galería: se reacomoda y puedes abrir otra toma, donde lo que escribas activa atajos. Lee la posición por DOM justo antes.
+- El panel de ajustes cambia de altura según el prompt: lee las posiciones cada vez.
+- La vista en lista tiene un `Descargar` por fila que baja el tamaño original de inmediato. Ahí, `Lote de papelera` queda al lado: no hagas clic a ciegas.
+- «No se ha podido cargar el vídeo» en una tarjeta puede ser solo la vista. Recarga la página antes de reintentar y gastar puntos otra vez.
 
 ### Agregar voz
 

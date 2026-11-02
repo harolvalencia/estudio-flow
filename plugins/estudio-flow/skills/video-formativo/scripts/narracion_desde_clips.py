@@ -2,7 +2,8 @@
 
 Uso:
     python narracion_desde_clips.py 03-flow/voz --salida 04-montaje/assets/audio/voz.wav
-                                    --tiempos 04-montaje/tiempos.json [--pausa 0.35]
+                                    --tiempos 04-montaje/tiempos.json --guion 04-montaje/tutorial.json
+                                    [--pausa 0.35]
 
 Toma los clips numerados de la carpeta (01.mp4, 02.mp4...), recorta el silencio de cada uno,
 los iguala a -18 LUFS y deja un solo WAV con una pausa corta entre tramos. En tiempos.json
@@ -57,13 +58,21 @@ def sonoridad(ruta, desde, hasta):
     return float(m.group(1)) if m else LUFS_TRAMO
 
 
-def transcribir(ruta):
+def texto_del_guion(ruta):
+    """Acepta tutorial.json, con su lista `guion`, o un archivo de texto."""
+    if not ruta:
+        return ""
+    contenido = ruta.read_text(encoding="utf-8")
+    return " ".join(json.loads(contenido)["guion"]) if ruta.suffix == ".json" else contenido
+
+
+def transcribir(ruta, guion):
     """Palabras con tiempos, si el control final y su transcriptor están disponibles."""
     try:
-        from control_final import palabras
+        from control_final import palabras, vocabulario
     except ImportError:
         return []
-    lista, _ = palabras(ruta)
+    lista, _ = palabras(ruta, vocabulario(guion) or None)
     return lista or []
 
 
@@ -72,6 +81,7 @@ def main():
     p.add_argument("carpeta", type=Path)
     p.add_argument("--salida", type=Path, required=True)
     p.add_argument("--tiempos", type=Path, required=True)
+    p.add_argument("--guion", type=Path, help="tutorial.json o texto, para reconocer bien los términos técnicos")
     p.add_argument("--pausa", type=float, default=0.35, help="silencio entre tramos, en segundos")
     a = p.parse_args()
     clips = sorted((c for c in a.carpeta.glob("*.mp4") if re.fullmatch(r"\d+", c.stem)), key=lambda c: int(c.stem))
@@ -101,7 +111,7 @@ def main():
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lista),
                         "-c:a", "pcm_s16le", str(a.salida)], check=True)
 
-    for palabra, inicio, fin in transcribir(a.salida):
+    for palabra, inicio, fin in transcribir(a.salida, texto_del_guion(a.guion)):
         tramo = next((t for t in reversed(tramos) if inicio >= t["inicio"] - 0.05), tramos[0])
         tramo["palabras"].append({"p": palabra, "t": round(max(0.0, inicio - tramo["inicio"]), 3), "fin": round(fin - tramo["inicio"], 3)})
     a.tiempos.write_text(json.dumps({"total": round(cursor, 3), "tramos": tramos}, ensure_ascii=False, indent=1), encoding="utf-8")

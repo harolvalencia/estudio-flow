@@ -3,13 +3,14 @@
 Uso:
     python banda_sonora.py --duracion 17.5 --cambios 3.9,9.7 --golpe 15 --salida assets/audio/banda.wav
                            [--perfil epico|sereno] [--activa 0-6,100-112] [--clics 12.3,20.8]
-                           [--tempo 100] [--semilla 7]
+                           [--musica 0.3] [--tempo 100] [--semilla 7]
 
   --cambios   segundos donde cae un barrido, normalmente los cortes entre escenas
   --clics     segundos donde suena un clic, para los tutoriales de pantalla
   --golpe     segundo del golpe final; el riser crece justo antes y solo ocurre una vez
   --perfil    epico para piezas promocionales; sereno para tutoriales y capacitaciones
   --activa    tramos donde suena la música; el resto queda en silencio para que se oiga la voz
+  --musica    ganancia de la música sin tocar los efectos; 1 la deja igual
 
 Todo sale de síntesis, sin muestras de terceros, así que no hay licencias que revisar.
 Deja un WAV estéreo a 48 kHz con pico de -1 dBFS. Solo necesita numpy.
@@ -181,11 +182,12 @@ def componer(a):
         sumar(efectos, sonido / (np.abs(sonido).max() + 1e-9), a.golpe - largo, 0.8 if epico else 0.25)
         sonido = impacto(int(min(4.0, a.duracion - a.golpe + 0.05) * SR), rng)
         sumar(efectos, sonido / (np.abs(sonido).max() + 1e-9), a.golpe, 1.4 if epico else 0.4)
-    izquierda, derecha = izquierda + efectos, derecha + efectos
-    estereo = np.stack([reverberar(izquierda, rng=rng), reverberar(derecha, rng=rng)], 1)
+    fondo = np.stack([reverberar(izquierda, rng=rng), reverberar(derecha, rng=rng)], 1)
+    golpes = reverberar(efectos, rng=rng)[:, None]
+    # La escala sale de la mezcla a ganancia 1: así --musica no sube los efectos al bajar la música
+    escala = 10 ** (PICO_DBFS / 20) / (np.abs(fondo + golpes).max() + 1e-9)
     salida_suave = np.clip((a.duracion - t) / 0.25, 0, 1)[:, None]
-    estereo *= salida_suave
-    return estereo / (np.abs(estereo).max() + 1e-9) * 10 ** (PICO_DBFS / 20)
+    return (fondo * a.musica + golpes) * escala * salida_suave
 
 
 def main():
@@ -196,6 +198,7 @@ def main():
     p.add_argument("--golpe", type=float)
     p.add_argument("--perfil", choices=ACORDES, default="epico")
     p.add_argument("--activa", help="tramos con música, por ejemplo 0-6,100-112")
+    p.add_argument("--musica", type=float, default=1.0)
     p.add_argument("--tempo", type=float, default=100)
     p.add_argument("--semilla", type=int, default=7)
     p.add_argument("--salida", type=Path, required=True)

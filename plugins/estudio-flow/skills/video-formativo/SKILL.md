@@ -49,7 +49,7 @@ El presupuesto usa [la tabla de narración](../flow-control/references/voces-flo
 **Voz.** Genera un clip por tramo en `03-flow/voz/` y compara cada transcripción contra el guion. Luego únelos:
 
 ```
-python _estudio/narracion_desde_clips.py 03-flow/voz --salida 04-montaje/assets/audio/voz.wav --tiempos 04-montaje/tiempos.json
+python _estudio/narracion_desde_clips.py 03-flow/voz --salida 04-montaje/assets/audio/voz.wav --tiempos 04-montaje/tiempos.json --guion 04-montaje/tutorial.json
 ```
 
 La voz manda el tiempo: cada escena dura lo que dura su narración.
