@@ -116,6 +116,7 @@ body{margin:0;background:var(--o);color:#f5f8fb;font:400 11pt/1.55 var(--cu),"Se
 .p:last-child{break-after:auto}
 .halo{background:radial-gradient(ellipse 80% 50% at 100% -8%,color-mix(in srgb,var(--b) 38%,transparent),transparent 70%),radial-gradient(ellipse 65% 42% at -10% 108%,color-mix(in srgb,var(--a) 26%,transparent),transparent 70%),var(--o)}
 .in{position:absolute;inset:.7in .75in .85in;display:flex;flex-direction:column;gap:.2in}
+.in>*{flex-shrink:0}
 .pie{position:absolute;left:.75in;right:.75in;bottom:.36in;display:flex;justify-content:space-between;align-items:center;font-size:8pt;color:#ffffffa0}
 .pie img{height:.26in}
 .eti{font:700 8pt/1 var(--cu);letter-spacing:.2em;text-transform:uppercase;color:var(--ac)}
@@ -139,7 +140,7 @@ p{margin:0}
 .logo-caja img{max-height:1.1in;max-width:80%}
 .ma{display:flex;flex-direction:column;gap:.05in}
 .ma span{font-size:9.4pt;color:#d4dde6}
-.barra{display:flex;height:.42in;border-radius:9px;overflow:hidden}
+.barra{display:flex;height:.42in;border-radius:9px;overflow:hidden;border:1px solid #ffffff40}
 .mues{border-radius:12px;padding:.14in .16in;min-height:2in;display:flex;flex-direction:column;justify-content:flex-end;gap:.02in}
 .mues b{font:700 14pt/1.1 var(--ti);margin-bottom:.03in}
 .mues span{font-size:8.6pt;line-height:1.35}
@@ -156,11 +157,29 @@ pre{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font:400 8.8pt/1.5 Cons
 .tel{aspect-ratio:9/16;border-radius:14px;overflow:hidden;position:relative;background:var(--o);border:1px solid #ffffff2a}
 .tel img.f{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .tel .v{position:absolute;inset:0;background:linear-gradient(180deg,transparent 35%,color-mix(in srgb,var(--o) 90%,transparent) 78%)}
-.tel .t{position:absolute;left:9%;right:14%;top:50%;font:700 15pt/1.12 var(--ti)}
+.tel .t{position:absolute;left:9%;right:14%;top:46%;font:700 var(--tam,15pt)/1.12 var(--ti)}
 .tel .b{position:absolute;left:9%;top:75%;padding:.05in .1in;border-radius:6px;font-weight:800;font-size:8pt;color:#04121f;background:linear-gradient(95deg,var(--a),var(--b))}
 .tel img.l{position:absolute;left:9%;top:6%;width:42%}
 .acento{color:var(--ac)}
 """
+
+
+# Cada página crece hasta llenar su altura, con un tope para que la letra siga pareja.
+AJUSTE = """document.fonts.ready.then(() => {
+  const M = {t: 67, r: 72, b: 82, l: 72};
+  document.querySelectorAll('.in').forEach(el => {
+    const cabe = z => {
+      el.style.zoom = z;
+      el.style.inset = `${M.t / z}px ${M.r / z}px ${M.b / z}px ${M.l / z}px`;
+      return el.scrollHeight <= el.clientHeight + 1 && el.scrollWidth <= el.clientWidth + 1;
+    };
+    let lo = 1, hi = 1.32;
+    if (cabe(hi)) lo = hi;
+    else for (let i = 0; i < 9; i++) { const m = (lo + hi) / 2; if (cabe(m)) lo = m; else hi = m; }
+    cabe(lo);
+    el.style.justifyContent = 'space-between';
+  });
+});"""
 
 
 def pie(m, n, logo):
@@ -239,10 +258,13 @@ def construir(carpeta, m):
       <p style="font-size:9.2pt;color:#ffffffb0">CMYK calculado desde pantalla: pide una prueba de color antes de imprimir.</p>''')
 
     filas = []
-    fondos = sorted(colores, key=lambda c: luminancia(c["hex"]))[:2] + [{"nombre": "Blanco", "hex": "#FFFFFF"}]
+    blanco = {"nombre": "Blanco", "hex": "#FFFFFF"}
+    paleta = list({c["hex"].upper(): c for c in colores + [blanco]}.values())
+    fondos = sorted(paleta, key=lambda c: luminancia(c["hex"]))[:2]
+    fondos += [c for c in paleta if c["hex"].upper() == "#FFFFFF"]
     for fondo in fondos:
-        for texto in colores + [{"nombre": "Blanco", "hex": "#FFFFFF"}]:
-            if texto["hex"].lower() == fondo["hex"].lower():
+        for texto in paleta:
+            if texto["hex"].upper() == fondo["hex"].upper():
                 continue
             v = contraste(fondo["hex"], texto["hex"])
             if v >= 3:
@@ -286,7 +308,7 @@ def construir(carpeta, m):
     telefonos = []
     for i, f in enumerate(bases):
         logo = f'<img class="l" src="{e(claro)}" alt="">' if claro else ""
-        telefonos.append(f'<div class="tel"><img class="f" src="{e(f)}" alt=""><div class="v"></div>{logo}<div class="t">{e(frases[i % len(frases)])}</div></div>')
+        telefonos.append(f'<div class="tel"><img class="f" src="{e(f)}" alt=""><div class="v"></div>{logo}<div class="t" style="--tam:{"15pt" if len(frases[i % len(frases)]) < 34 else "11pt"}">{e(frases[i % len(frases)])}</div></div>')
     agregar(f'''<div class="eti">En redes</div><h2>La marca en acción</h2>
       <p class="intro">Fondo con imagen, una sola frase, logo discreto. Todo el texto entre el 9 % y el 69 % de la altura para no chocar con la interfaz de la red.</p>
       <div class="g3">{"".join(telefonos)}</div>''')
@@ -306,7 +328,7 @@ def construir(carpeta, m):
     variables = (f':root{{--o:{t["oscuro"]};--ac:{t["acento"]};--a:{t["a"]};--b:{t["b"]};'
                  f'--ti:"{e(t["titulo"])}";--cu:"{e(t["cuerpo"])}"}}')
     return (f'<!doctype html><html lang="es"><head><meta charset="utf-8"><title>Manual de marca {e(m["empresa"])}</title>'
-            f'{enlace}<style>{fuentes_css}{variables}{CSS}</style></head><body>{"".join(paginas)}</body></html>')
+            f'{enlace}<style>{fuentes_css}{variables}{CSS}</style></head><body>{"".join(paginas)}<script>{AJUSTE}</script></body></html>')
 
 
 def main():

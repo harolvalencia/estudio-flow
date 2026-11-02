@@ -80,6 +80,7 @@ Corrige todos los errores y mira la hoja `contact-sheet.jpg`. El verificador no 
 - Espacio entre palabras en títulos grandes. Clash Display necesita `word-spacing: .16em`.
 - Contraste de cada texto contra la imagen que tiene detrás, no contra el velo.
 - Texto cortado o encima de una cara.
+- Fotogramas negros. Un `id` de una escena nunca debe repetir el de un anfitrión de `index.html`: en la prueba, ocultar un subtítulo llamado `s1` ocultó toda la escena `s1` y el verificador no lo detectó. Usa prefijos claros como `sub1`.
 - La ortografía de cada palabra en pantalla.
 
 ## 4. Renderizar
