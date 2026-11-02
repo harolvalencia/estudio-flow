@@ -23,6 +23,8 @@ Necesitas Claude para escritorio con un plan de pago.
 
 4. Instala **estudio-flow** y **hyperframes-skills**.
 
+Para recibir una versión nueva pulsa **Add → Manage marketplaces → ⋯ → Check for updates**. Revisa el commit que muestra: la sincronización automática puede tardar.
+
 Si el marketplace no sincroniza, descarga los archivos `.plugin` de la [última versión](https://github.com/harolvalencia/estudio-flow/releases/latest) y súbelos con **Add → Upload plugin**.
 
 En Claude Code:
