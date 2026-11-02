@@ -1,0 +1,246 @@
+<meta charset="utf-8">
+<title>Storyboard __TITULO__</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&family=Sora:wght@500;600;700&display=swap">
+<style>
+/* Mesa de dirección: el teléfono manda a la izquierda y el guion técnico acompaña. */
+:root{
+  color-scheme:dark;
+  --fondo:#06080d; --panel:#0e131c; --panel2:#151c28; --linea:#25303f;
+  --texto:#eef3f8; --suave:#9aa8b8;
+  --marca:__PRIMARIO__; --acento:__ACENTO__;
+  --titulo:"Sora","Segoe UI",sans-serif; --cuerpo:"Manrope","Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fondo);color:var(--texto);font:400 15px/1.55 var(--cuerpo)}
+.marco{max-width:1120px;margin:0 auto;padding-block:24px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:22px}
+header{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+header img{height:34px;display:block}
+.eti{font:600 11px/1 var(--cuerpo);letter-spacing:.12em;text-transform:uppercase;color:var(--acento)}
+h1{font:600 clamp(24px,4vw,34px)/1.15 var(--titulo);margin:6px 0 0;text-wrap:balance}
+.meta{color:var(--suave);font-size:13px}
+.pestanas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pestana{all:unset;cursor:pointer;padding:12px 14px;border:1px solid var(--linea);border-radius:10px;background:var(--panel);display:grid;gap:3px;min-width:0}
+.pestana b{font:600 15px/1.25 var(--titulo)}
+.pestana span{font-size:12px;color:var(--suave)}
+.pestana[aria-selected="true"]{border-color:var(--acento);background:linear-gradient(135deg,color-mix(in srgb,var(--acento) 18%,var(--panel)),var(--panel))}
+.pestana:focus-visible,button:focus-visible,textarea:focus-visible{outline:2px solid var(--acento);outline-offset:2px}
+.escenario{display:grid;grid-template-columns:minmax(240px,300px) minmax(0,1fr);gap:24px;align-items:start}
+.telefono{position:relative;width:100%;max-width:300px;aspect-ratio:9/16;border-radius:26px;overflow:hidden;background:#000;border:6px solid #1b2331;box-shadow:0 18px 50px color-mix(in srgb,var(--marca) 28%,transparent)}
+.telefono.h16{aspect-ratio:16/9;max-width:100%;border-radius:14px}
+.telefono.c1{aspect-ratio:1;border-radius:14px}
+.telefono.c45{aspect-ratio:4/5;border-radius:18px}
+.cuadro{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity .35s}
+.cuadro.activo{opacity:1;animation:acercar var(--dur,3s) linear forwards}
+@keyframes acercar{from{transform:scale(1)}to{transform:scale(1.09)}}
+.telefono::after{content:"";position:absolute;inset:30% 0 20%;background:linear-gradient(180deg,transparent,#000000a8 45%,#000000a8 60%,transparent);pointer-events:none}
+.txt{position:absolute;z-index:1;left:8%;right:16%;top:50%;font:700 clamp(17px,2.5vw,22px)/1.2 var(--titulo);text-shadow:0 2px 14px #000;text-wrap:balance}
+.segura{position:absolute;inset:8.75% 14% 30.7% 0;border:1px dashed #ffffffa0;pointer-events:none}
+.barra{position:absolute;left:0;right:0;bottom:0;height:4px;background:#ffffff30}
+.barra i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--acento),var(--marca))}
+.mandos{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;max-width:300px}
+button{font:600 13px/1 var(--cuerpo);color:var(--texto);background:var(--panel2);border:1px solid var(--linea);border-radius:8px;padding:10px 12px;cursor:pointer}
+button.fuerte{background:linear-gradient(120deg,var(--acento),var(--marca));border:0;color:#04121a}
+.detalle{display:grid;gap:16px;min-width:0}
+.detalle h2{font:600 22px/1.2 var(--titulo);margin:0;text-wrap:balance}
+.detalle p{margin:0;max-width:62ch}
+.datos{display:flex;flex-wrap:wrap;gap:8px}
+.dato{background:var(--panel);border:1px solid var(--linea);border-radius:8px;padding:8px 11px;font-size:12px;color:var(--suave)}
+.dato b{display:block;font:600 16px/1.25 var(--titulo);color:var(--texto);font-variant-numeric:tabular-nums}
+.tira{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(72px,92px);gap:8px;overflow-x:auto;padding-bottom:4px}
+.mini{all:unset;cursor:pointer;display:grid;gap:4px;font-size:11px;color:var(--suave)}
+.mini img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:6px;border:2px solid transparent;display:block}
+.mini[aria-current="true"] img{border-color:var(--acento)}
+.tabla{overflow-x:auto;border:1px solid var(--linea);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:640px}
+th{font:600 11px/1.2 var(--cuerpo);letter-spacing:.06em;text-transform:uppercase;color:var(--suave);text-align:left;background:var(--panel)}
+th,td{padding:9px 11px;border-bottom:1px solid var(--linea);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.decision{background:var(--panel);border:1px solid var(--linea);border-radius:12px;padding:16px;display:grid;gap:12px}
+.decision h3{font:600 17px/1.2 var(--titulo);margin:0}
+.opciones{display:flex;flex-wrap:wrap;gap:8px}
+.opcion[aria-pressed="true"]{border-color:var(--acento);color:var(--acento)}
+textarea{width:100%;min-height:74px;background:var(--panel2);color:var(--texto);border:1px solid var(--linea);border-radius:8px;padding:10px;font:400 14px/1.45 var(--cuerpo);resize:vertical}
+.salida{font-size:13px;color:var(--suave);min-height:1.4em}
+@media (max-width:760px){.escenario{grid-template-columns:minmax(0,1fr)}.telefono,.mandos{margin-inline:auto}.telefono.h16{max-width:100%}.pestanas{grid-template-columns:minmax(0,1fr)}}
+@media (prefers-reduced-motion:reduce){.cuadro.activo{animation:none}.cuadro{transition:none}}
+</style>
+
+<div class="marco">
+  <header>
+    <div>
+      <div class="eti">Storyboard para decidir</div>
+      <h1 id="titulo"></h1>
+      <div class="meta" id="meta"></div>
+    </div>
+    <img id="logo" alt="" hidden>
+  </header>
+
+  <div class="pestanas" id="pestanas" role="tablist" aria-label="Propuestas"></div>
+
+  <section class="escenario" aria-live="polite">
+    <div>
+      <div class="telefono" id="telefono">
+        <div id="cuadros"></div>
+        <div class="txt" id="texto"></div>
+        <div class="segura" id="segura" hidden></div>
+        <div class="barra"><i id="progreso"></i></div>
+      </div>
+      <div class="mandos">
+        <button class="fuerte" id="play" type="button">Reproducir</button>
+        <button id="ver-segura" type="button" aria-pressed="false">Área segura</button>
+      </div>
+    </div>
+    <div class="detalle">
+      <div>
+        <div class="eti" id="p-etiqueta"></div>
+        <h2 id="p-nombre"></h2>
+      </div>
+      <p id="p-concepto"></p>
+      <p id="p-porque"></p>
+      <div class="datos" id="p-datos"></div>
+      <div class="tira" id="tira"></div>
+      <div class="tabla"><table>
+        <thead><tr><th>Tiempo</th><th>Imagen</th><th>Texto en pantalla</th><th>Audio</th><th>En Flow</th><th>Puntos</th></tr></thead>
+        <tbody id="filas"></tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <section class="decision">
+    <h3>Tu decisión</h3>
+    <div class="opciones" id="opciones"></div>
+    <label for="nota">¿Qué ajustarías? Si pides otras tres, cuéntame qué te gustó y qué no.</label>
+    <textarea id="nota" placeholder="Por ejemplo: me gusta la propuesta B, pero con menos personas y un cierre más directo."></textarea>
+    <div class="opciones">
+      <button class="fuerte" id="copiar" type="button">Copiar mi decisión</button>
+    </div>
+    <div class="salida" id="salida">Copia tu decisión y pégala en el chat para continuar.</div>
+  </section>
+</div>
+
+<script id="datos" type="application/json">__DATOS__</script>
+<script>
+(function () {
+  const d = JSON.parse(document.getElementById('datos').textContent);
+  const $ = (id) => document.getElementById(id);
+  const clases = {'9:16': '', '16:9': 'h16', '1:1': 'c1', '4:5': 'c45'};
+  let actual = 0, escena = 0, sonando = false, reloj = null, inicio = 0, eleccion = null;
+
+  $('titulo').textContent = d.pieza;
+  $('meta').textContent = [d.formato, d.duracion_s ? d.duracion_s + ' s' : '', d.objetivo].filter(Boolean).join(' · ');
+  if (d.marca && d.marca.logo) { $('logo').src = d.marca.logo; $('logo').alt = d.marca.nombre || 'Logo'; $('logo').hidden = false; }
+  $('telefono').className = 'telefono ' + (clases[d.formato] || '');
+  if (d.formato !== '9:16') $('ver-segura').hidden = true;
+
+  d.propuestas.forEach((p, i) => {
+    const b = document.createElement('button');
+    b.className = 'pestana'; b.type = 'button'; b.setAttribute('role', 'tab');
+    const t = document.createElement('b'); t.textContent = p.id + '. ' + p.nombre;
+    const s = document.createElement('span'); s.textContent = p.resumen || '';
+    b.append(t, s);
+    b.onclick = () => elegirPropuesta(i);
+    $('pestanas').append(b);
+
+    const o = document.createElement('button');
+    o.className = 'opcion'; o.type = 'button'; o.textContent = 'Producir ' + p.id; o.setAttribute('aria-pressed', 'false');
+    o.onclick = () => marcar(o, 'Elijo la propuesta ' + p.id + ' (' + p.nombre + ').');
+    $('opciones').append(o);
+  });
+  const otra = document.createElement('button');
+  otra.className = 'opcion'; otra.type = 'button'; otra.textContent = 'Pedir otras tres ideas'; otra.setAttribute('aria-pressed', 'false');
+  otra.onclick = () => marcar(otra, 'Quiero otras tres propuestas.');
+  $('opciones').append(otra);
+
+  function marcar(boton, texto) {
+    document.querySelectorAll('.opcion').forEach(x => x.setAttribute('aria-pressed', 'false'));
+    boton.setAttribute('aria-pressed', 'true');
+    eleccion = texto;
+  }
+
+  function duracion(e) { return Math.max(1, e.fin - e.inicio); }
+
+  function elegirPropuesta(i) {
+    parar(); actual = i; escena = 0;
+    const p = d.propuestas[i];
+    [...$('pestanas').children].forEach((b, n) => b.setAttribute('aria-selected', n === i));
+    $('p-etiqueta').textContent = 'Propuesta ' + p.id;
+    $('p-nombre').textContent = p.nombre;
+    $('p-concepto').textContent = p.concepto;
+    $('p-porque').textContent = p.porque || '';
+    const total = p.escenas.reduce((s, e) => s + (e.puntos || 0), 0);
+    const datos = [['Duración', (p.escenas[p.escenas.length - 1].fin) + ' s'], ['Tono', p.tono], ['Técnica', p.tecnica], ['Voz de Flow', p.voz], ['Puntos con 30 % de margen', Math.ceil(total * 1.3)]];
+    $('p-datos').replaceChildren(...datos.filter(x => x[1]).map(([a, b]) => {
+      const c = document.createElement('div'); c.className = 'dato';
+      const v = document.createElement('b'); v.textContent = b; c.append(v, a); return c;
+    }));
+    $('cuadros').replaceChildren(...p.escenas.map((e) => {
+      const c = document.createElement('div'); c.className = 'cuadro'; c.style.backgroundImage = 'url(' + e.imagen + ')'; return c;
+    }));
+    $('tira').replaceChildren(...p.escenas.map((e, n) => {
+      const m = document.createElement('button'); m.className = 'mini'; m.type = 'button';
+      const im = document.createElement('img'); im.src = e.imagen; im.alt = 'Escena ' + (n + 1);
+      m.append(im, document.createTextNode(e.inicio + '–' + e.fin + ' s'));
+      m.onclick = () => { parar(); mostrar(n); };
+      return m;
+    }));
+    $('filas').replaceChildren(...p.escenas.map((e) => {
+      const f = document.createElement('tr');
+      [e.inicio + '–' + e.fin + ' s', e.descripcion, e.texto || '—', e.audio || '—', e.flow || '—', e.puntos || 0].forEach((v, n) => {
+        const td = document.createElement('td'); td.textContent = v; if (n === 0 || n === 5) td.className = 'num'; f.append(td);
+      });
+      return f;
+    }));
+    mostrar(0);
+  }
+
+  function mostrar(n) {
+    escena = n;
+    const p = d.propuestas[actual], e = p.escenas[n];
+    [...$('cuadros').children].forEach((c, i) => { c.classList.toggle('activo', i === n); c.style.setProperty('--dur', duracion(e) + 's'); });
+    [...$('tira').children].forEach((m, i) => m.setAttribute('aria-current', i === n));
+    $('texto').textContent = e.texto || '';
+  }
+
+  function paso(t) {
+    const p = d.propuestas[actual], fin = p.escenas[p.escenas.length - 1].fin;
+    const s = (t - inicio) / 1000;
+    $('progreso').style.width = Math.min(100, s / fin * 100) + '%';
+    const n = p.escenas.findIndex(e => s >= e.inicio && s < e.fin);
+    if (n >= 0 && n !== escena) mostrar(n);
+    if (s >= fin) { parar(); return; }
+    reloj = requestAnimationFrame(paso);
+  }
+
+  function parar() {
+    sonando = false; cancelAnimationFrame(reloj); $('play').textContent = 'Reproducir'; $('progreso').style.width = '0';
+  }
+
+  $('play').onclick = () => {
+    if (sonando) { parar(); return; }
+    sonando = true; $('play').textContent = 'Detener'; inicio = performance.now(); mostrar(0); reloj = requestAnimationFrame(paso);
+  };
+
+  $('ver-segura').onclick = (ev) => {
+    const b = ev.currentTarget, on = b.getAttribute('aria-pressed') !== 'true';
+    b.setAttribute('aria-pressed', on); $('segura').hidden = !on;
+  };
+
+  $('copiar').onclick = async () => {
+    if (!eleccion) { $('salida').textContent = 'Primero elige una opción.'; return; }
+    const nota = $('nota').value.trim();
+    const texto = eleccion + (nota ? ' Ajustes: ' + nota : '');
+    try {
+      await navigator.clipboard.writeText(texto);
+      $('salida').textContent = 'Copiado. Pégalo en el chat para continuar.';
+    } catch (e) {
+      $('nota').value = texto; $('nota').select();
+      $('salida').textContent = 'No pude copiar solo: el texto quedó seleccionado arriba. Cópialo y pégalo en el chat.';
+    }
+  };
+
+  elegirPropuesta(0);
+})();
+</script>

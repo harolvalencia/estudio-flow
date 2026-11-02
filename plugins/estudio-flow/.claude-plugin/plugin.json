@@ -1,0 +1,10 @@
+{
+  "name": "estudio-flow",
+  "version": "1.2.0",
+  "description": "Productora de video para redes sociales: marca de la compañía, entrevista, tres propuestas con storyboard interactivo, video con voz en Google Flow con Omni Flash, acabado con HyperFrames, informe del proceso y manual de marca.",
+  "author": {
+    "name": "Innovaitors"
+  },
+  "keywords": ["google-flow", "hyperframes", "video", "redes-sociales", "storyboard"],
+  "license": "Apache-2.0"
+}

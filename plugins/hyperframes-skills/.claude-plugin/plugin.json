@@ -1,0 +1,9 @@
+{
+  "name": "hyperframes-skills",
+  "version": "0.9.4",
+  "description": "Skills básicas de HyperFrames (HTML a video), empaquetadas para Claude Desktop. Trabajo original de HeyGen, licencia Apache-2.0.",
+  "author": {"name": "HeyGen", "url": "https://hyperframes.heygen.com"},
+  "homepage": "https://hyperframes.heygen.com",
+  "repository": "https://github.com/heygen-com/hyperframes",
+  "license": "Apache-2.0"
+}
