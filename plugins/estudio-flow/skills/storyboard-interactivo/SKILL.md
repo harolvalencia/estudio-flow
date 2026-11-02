@@ -45,7 +45,8 @@ python _estudio/armar_storyboard.py 02-storyboard/plan.json
           "imagen": "a1.jpg",
           "descripcion": "Qué se ve",
           "texto": "Texto en pantalla",
-          "audio": "Voz, música o sonido",
+          "locucion": "Lo que dice la voz en esta escena",
+          "audio": "Música y efectos",
           "flow": "Omni 6 s, Ingredientes + voz",
           "puntos": 10
         }
@@ -54,6 +55,8 @@ python _estudio/armar_storyboard.py 02-storyboard/plan.json
   ]
 }
 ```
+
+Cada escena lleva `locucion`, y la última también `"cta": true`. El script rechaza el plan si falta alguna, si una frase no cabe en su tiempo o si no hay cierre. Solo usa `"sin_voz": true` en el plan si la persona lo pidió.
 
 `formato` acepta `9:16`, `16:9`, `1:1` y `4:5`. Las escenas no deben dejar huecos: cada `inicio` es el `fin` de la anterior. El logo es opcional y debe servir sobre fondo oscuro.
 

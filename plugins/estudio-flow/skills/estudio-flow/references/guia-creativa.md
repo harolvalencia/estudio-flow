@@ -33,7 +33,7 @@ Cada propuesta debe poder resumirse en una frase que no sirva para las otras dos
 - Ritmo vertical: tomas de 1 a 2 s y una idea nueva cada 2 a 4 s.
 - Una sola idea en pantalla por vez. En vertical, unas cinco palabras por línea.
 - Termina con el beneficio antes de que la persona deslice.
-- El llamado a la acción dice exactamente qué hacer y dónde.
+- El cierre sigue la sección 4 de [mejores-practicas-video.md](mejores-practicas-video.md): inspiración, acción dicha y escrita, logo y clímax.
 - Un clip de Flow dura 4, 6, 8 o 10 s: planea varios cortes dentro de un clip o varios clips cortos, y deja los títulos y efectos para HyperFrames.
 
 ## Video con voz: el camino por defecto
@@ -42,7 +42,8 @@ Una persona que habla a cámara detiene más que un texto sobre una imagen. Con 
 
 - Empieza con una frase hablada en los primeros 2 s.
 - Una idea por clip. Unas 8 palabras en 4 s, 13 en 6 s, 18 en 8 s.
-- Alterna persona hablando con imágenes de producto, para esconder los cortes entre clips.
+- Alterna persona hablando con voz en off sobre clips de producto o lugar, para esconder los cortes entre clips.
+- La voz sigue en todas las escenas: ninguna queda solo con texto y música.
 - Subtitula todo lo hablado con HyperFrames.
 - Usa la misma voz guardada en toda la pieza y en toda la campaña.
 

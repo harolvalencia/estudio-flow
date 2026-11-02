@@ -48,7 +48,7 @@ def main():
     ffmpeg = correr(["ffmpeg", "-version"]).splitlines()
     libres = shutil.disk_usage(carpeta if carpeta.exists() else Path.cwd()).free / 1e9
     modulos = {}
-    for m in ("numpy", "PIL"):
+    for m in ("numpy", "PIL", "faster_whisper"):
         try:
             __import__(m)
             modulos[m] = True
@@ -81,6 +81,9 @@ def main():
     if not modulos["PIL"]:
         faltantes.append("Pillow")
         siguiente.append("Ejecuta: pip install pillow")
+    if not modulos["faster_whisper"]:
+        faltantes.append("faster-whisper")
+        siguiente.append("Ejecuta: pip install faster-whisper")
     if libres < 5:
         faltantes.append("espacio en disco (mínimo 5 GB)")
         siguiente.append("Libera espacio: el render guarda fotogramas temporales.")

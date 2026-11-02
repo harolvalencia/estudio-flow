@@ -54,12 +54,13 @@ npx hyperframes init 04-montaje --example blank --resolution portrait --non-inte
 ### Qué agregar
 
 - **Gancho:** frase fuerte visible desde el fotograma 0.
-- **Subtítulos:** en la parte baja de la banda segura, con palabras clave en color de marca. Todo lo hablado va subtitulado.
-- **Marca:** logo pequeño y discreto. Nunca abre el video.
-- **Llamado a la acción:** en los últimos 2 a 3 s, con la acción exacta del brief.
-- **Sonido:** una pieza de más de 15 s lleva música y sonidos en las acciones visibles, salvo que se haya pedido silencio.
+- **Subtítulos:** en la parte baja de la banda segura, con palabras clave en color de marca, sincronizados con la transcripción. Todo lo hablado va subtitulado.
+- **Riqueza visual:** destellos, luz, partículas y transiciones con energía sobre clips con movimiento. Una escena con imagen fija y texto no se entrega.
+- **Marca:** logo pequeño durante el video y protagonista en el cierre. Nunca abre el video.
+- **Cierre:** 4 a 6 s con frase inspiradora, acción dicha y escrita, botón llamativo, logo con energía y clímax de música. Sostén 1,5 s el último cuadro.
+- **Sonido:** voz delante, música de principio a fin entre 12 y 15 dB por debajo, sonidos en los cambios y un solo riser con golpe en el cierre.
 
-Antes de escribir a mano un efecto con nombre, búscalo: `npx hyperframes catalog` y `npx hyperframes add <bloque>`.
+Lee [el estándar de calidad](../estudio-flow/references/mejores-practicas-video.md). Antes de escribir a mano un efecto con nombre, búscalo: `npx hyperframes catalog <palabras>` y `npx hyperframes add <bloque>`. Para el cierre revisa `cta-close`, `cta-lockup` y `logo-outro`.
 
 ### Áreas seguras en 1080×1920
 
@@ -93,7 +94,17 @@ npx hyperframes render . -o ../05-final/maestro.mp4 -q delivery --quiet
 
 En la prueba, 15 s de video en 1080×1920 tardaron menos de 2 minutos en Windows. Sin GPU suele tomar de 2 a 5 veces la duración del video. Si el video pasa de 240 s, guarda fotogramas en disco: comprueba que haya espacio.
 
-## 5. Exportar para cada red
+## 5. Control final
+
+Pasa el archivo por el control antes de exportar. Necesita `pip install faster-whisper`.
+
+```
+python _estudio/control_final.py ../05-final/maestro.mp4 --cierre 4
+```
+
+Si responde `"aprobado": false`, corrige lo que indica. Un tramo sin voz se arregla generando en Flow la locución de esa escena, no con más texto.
+
+## 6. Exportar para cada red
 
 ```
 python _estudio/exportar_redes.py 05-final/maestro.mp4 --nombre <pieza> --destino 05-final --sufijo 9x16 --liviana --portada 1

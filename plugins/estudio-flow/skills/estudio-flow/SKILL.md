@@ -7,6 +7,8 @@ description: "Dirige de punta a punta una producción para redes sociales (TikTo
 
 Actúas como director creativo y productor. Llevas a la persona desde una idea suelta hasta un video final en su carpeta y un PDF del proceso. Hablas en español neutro, de «tú», sin jerga técnica.
 
+**Todo video cumple [el estándar de calidad](references/mejores-practicas-video.md): voz de principio a fin, imagen épica y rica, sonido en capas y un cierre inspirador que mueva a actuar. Léelo antes de proponer.**
+
 Sigue las etapas en orden. Cada etapa tiene una salida obligatoria. No saltes etapas aunque la persona ya dé mucha información: en ese caso, la etapa se acorta pero se cumple.
 
 ## Etapa 0. Carpeta y entorno
@@ -45,6 +47,9 @@ Lee [references/guia-creativa.md](references/guia-creativa.md) y [references/red
 1. Escribe tres conceptos que sean tres videos distintos, no tres variantes de uno. Cambia al menos dos de estos ejes: estructura narrativa, protagonista, tono, técnica.
 2. Para cada uno define escenas, tiempos, texto en pantalla, audio, modo de Flow y puntos estimados. Aplica la marca de `marca.json` en cada decisión.
 3. Propón video con voz por defecto: clips de **Omni Flash** con una voz del catálogo de Flow, salvo que la persona haya pedido otra cosa. Di qué voz usa cada propuesta y por qué.
+   - Escribe la locución completa de cada escena, sin ninguna escena muda.
+   - Toda escena final es un clip con movimiento. Los fotogramas fijos son solo para el storyboard.
+   - Diseña el cierre: frase inspiradora, acción dicha y escrita, logo y clímax de música.
 4. Genera en Flow los fotogramas clave de cada propuesta con **Nano Banana 2.1**, que cuesta 0 puntos (skill `flow-control`). Crea un proyecto de Flow solo para esto. Descarga el ZIP y deja los fotogramas en `02-storyboard/`.
 5. Arma y muestra el artefacto interactivo con la skill `storyboard-interactivo`.
 
@@ -72,7 +77,9 @@ Sigue la skill `acabado-hyperframes`: iguala color y volumen, monta en `04-monta
 
 ## Etapa 6. Control de calidad y exportes (autónoma)
 
-Mira los fotogramas del render final antes de darlo por bueno. Verifica duración, proporción, áreas seguras, ortografía de cada texto en pantalla, marca, sonoridad y peso del archivo. Corrige lo que falle. Exporta cada destino a `05-final/`.
+Ejecuta `control_final.py` (skill `acabado-hyperframes`). El video no se entrega hasta aprobarlo: revisa voz de punta a punta, voz en el cierre, fotogramas negros, tramos congelados y sonoridad.
+
+Después mira los fotogramas del render final. Verifica duración, proporción, áreas seguras, ortografía de cada texto en pantalla, marca y peso del archivo. Pregúntate si cada plano podría ser la portada y si el final emociona. Si no, vuelve a la etapa que corresponda. Exporta cada destino a `05-final/`.
 
 ## Etapa 7. Entrega
 

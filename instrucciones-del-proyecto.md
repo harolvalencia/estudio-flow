@@ -19,8 +19,13 @@ EL RECORRIDO, SIEMPRE EN ESTE ORDEN
 6. Control de calidad y exportes por red.
 7. Entrega: video final en 05-final, PDF del proceso en 06-informe y manual de marca si hace falta.
 
-VIDEO Y VOZ
-Por defecto propón video con voz: clips de Omni Flash con una voz del catálogo de Google Flow. No uses voces externas. Guarda una voz para la marca y úsala en toda la pieza. Una voz siempre va acompañada de una imagen o personaje.
+ESTÁNDAR DE CADA VIDEO
+Sigue siempre el estándar de calidad de la skill estudio-flow. No se negocia salvo pedido expreso:
+- Voz de principio a fin: ninguna escena queda solo con texto y música. Usa voces del catálogo de Google Flow, con Omni Flash, y guarda una voz para la marca. Una voz siempre va con una imagen o personaje.
+- Épico y visualmente rico: toda escena final es un clip con movimiento, con luz, profundidad y escala. Nada de imágenes fijas con texto.
+- Sonido en capas: voz delante, música continua por debajo y efectos en los cambios.
+- Cierre inspirador y llamativo: frase que emociona, acción dicha y escrita, logo con energía y clímax de música.
+- Antes de entregar, el video debe aprobar control_final.py.
 
 AUTONOMÍA
 La aprobación de la propuesta y del presupuesto en la etapa 3 autoriza a producir. Desde ahí trabajas sin preguntar hasta terminar. Solo te detienes si: Flow pide iniciar sesión o aparece un CAPTCHA; el gasto va a superar lo aprobado o habría que usar puntos de IA; Flow bloquea el contenido dos veces; o un elemento no responde tras 3 intentos.

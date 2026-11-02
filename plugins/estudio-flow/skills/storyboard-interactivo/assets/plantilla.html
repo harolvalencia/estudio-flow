@@ -53,7 +53,7 @@ button.fuerte{background:linear-gradient(120deg,var(--acento),var(--marca));bord
 .mini img{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:6px;border:2px solid transparent;display:block}
 .mini[aria-current="true"] img{border-color:var(--acento)}
 .tabla{overflow-x:auto;border:1px solid var(--linea);border-radius:10px}
-table{border-collapse:collapse;width:100%;font-size:13px;min-width:640px}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:760px}
 th{font:600 11px/1.2 var(--cuerpo);letter-spacing:.06em;text-transform:uppercase;color:var(--suave);text-align:left;background:var(--panel)}
 th,td{padding:9px 11px;border-bottom:1px solid var(--linea);vertical-align:top}
 tr:last-child td{border-bottom:0}
@@ -103,7 +103,7 @@ textarea{width:100%;min-height:74px;background:var(--panel2);color:var(--texto);
       <div class="datos" id="p-datos"></div>
       <div class="tira" id="tira"></div>
       <div class="tabla"><table>
-        <thead><tr><th>Tiempo</th><th>Imagen</th><th>Texto en pantalla</th><th>Audio</th><th>En Flow</th><th>Puntos</th></tr></thead>
+        <thead><tr><th>Tiempo</th><th>Imagen</th><th>Locución</th><th>Texto en pantalla</th><th>Sonido</th><th>En Flow</th><th>Puntos</th></tr></thead>
         <tbody id="filas"></tbody>
       </table></div>
     </div>
@@ -188,8 +188,8 @@ textarea{width:100%;min-height:74px;background:var(--panel2);color:var(--texto);
     }));
     $('filas').replaceChildren(...p.escenas.map((e) => {
       const f = document.createElement('tr');
-      [e.inicio + '–' + e.fin + ' s', e.descripcion, e.texto || '—', e.audio || '—', e.flow || '—', e.puntos || 0].forEach((v, n) => {
-        const td = document.createElement('td'); td.textContent = v; if (n === 0 || n === 5) td.className = 'num'; f.append(td);
+      [e.inicio + '–' + e.fin + ' s', e.descripcion, e.locucion || '—', e.texto || '—', e.audio || '—', e.flow || '—', e.puntos || 0].forEach((v, n) => {
+        const td = document.createElement('td'); td.textContent = v; if (n === 0 || n === 6) td.className = 'num'; f.append(td);
       });
       return f;
     }));

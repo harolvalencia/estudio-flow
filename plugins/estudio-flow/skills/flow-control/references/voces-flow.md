@@ -34,6 +34,12 @@ Hazlo una vez por proyecto, antes del primer clip con diálogo:
 
 El selector de la esquina superior del panel cambia de proyecto. Así se trae una imagen de otro proyecto sin descargarla ni subirla.
 
+## Voz en off
+
+Para una escena sin nadie hablando a cámara, usa la misma voz guardada con una imagen de producto o lugar como ingrediente. Explica en el prompt que la voz es una narración y que nadie aparece hablando: `audio: "off-screen narrator voice, no person speaking on screen"`.
+
+La ayuda oficial indica que una voz se puede citar en el texto como `@Voice: nombre`. La prueba se hizo agregándola como ficha desde el panel.
+
 ## Generar un clip con voz
 
 1. Agrega la voz y la imagen con el panel `+`. Deben verse dos fichas en el cuadro.

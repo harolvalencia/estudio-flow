@@ -16,6 +16,7 @@ from pathlib import Path
 
 from PIL import Image
 
+PALABRAS_POR_SEGUNDO = 2.9
 ANCHO = 540
 CALIDAD = 76
 LIMITE_MB = 15
@@ -33,12 +34,32 @@ def a_data_uri(ruta):
     return "data:image/jpeg;base64," + base64.b64encode(salida.getvalue()).decode()
 
 
+def revisar(plan):
+    """Una propuesta sin voz en alguna escena o sin cierre no se muestra."""
+    fallos = []
+    if plan.get("sin_voz"):
+        return fallos
+    for prop in plan["propuestas"]:
+        for n, e in enumerate(prop["escenas"], 1):
+            voz = (e.get("locucion") or "").strip()
+            if not voz:
+                fallos.append(f'{prop["id"]}, escena {n}: falta la locución')
+            elif len(voz.split()) / PALABRAS_POR_SEGUNDO > e["fin"] - e["inicio"]:
+                fallos.append(f'{prop["id"]}, escena {n}: la locución no cabe en {e["fin"] - e["inicio"]} s')
+        if not prop["escenas"][-1].get("cta"):
+            fallos.append(f'{prop["id"]}: la última escena debe marcarse como cierre con "cta": true')
+    return fallos
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("plan", type=Path)
     p.add_argument("--salida", type=Path)
     a = p.parse_args()
     plan = json.loads(a.plan.read_text(encoding="utf-8"))
+    fallos = revisar(plan)
+    if fallos:
+        sys.exit("El plan no cumple el estándar:\n- " + "\n- ".join(fallos))
     base = a.plan.parent
     for propuesta in plan["propuestas"]:
         for escena in propuesta["escenas"]:
