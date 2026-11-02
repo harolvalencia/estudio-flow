@@ -30,7 +30,7 @@
 
 ## Escenas
 
-Toda escena lleva `tipo` y `tramos`, el número del clip o una lista como `[3, 4]`. Si lleva `capitulo`, ahí empieza un capítulo. En el texto, `*palabra*` resalta y `|` cambia de línea en los títulos.
+Toda escena lleva `tipo` y `tramos`, el número del clip o una lista como `[3, 4]`. Con `"pausa_despues": 1.5` queda ese silencio tras la voz: úsalo donde la persona deba leer, copiar un comando o ver un resultado. Si lleva `capitulo`, ahí empieza un capítulo. En el texto, `*palabra*` resalta y `|` cambia de línea en los títulos.
 
 ### apertura
 
@@ -74,6 +74,18 @@ Elige como `palabra` una que se pronuncie igual en español. Si `armar_tutorial.
 ```
 
 `video` o `imagen` son opcionales. Úsalos con clips de Flow para dar riqueza a los cambios.
+
+### comandos
+
+Para lo que la persona debe escribir tal cual. Es una tarjeta con los comandos exactos, sin imitar la ventana de ningún programa.
+
+```json
+{"tipo": "comandos", "tramos": 8, "paso": 5, "titulo": "Instala las herramientas", "encabezado": "Abre *PowerShell* y ejecuta",
+ "etiqueta": "Windows", "comandos": ["winget install OpenJS.NodeJS", "winget install Gyan.FFmpeg"],
+ "al_decir": ["Node", "FFmpeg"], "nota": "Texto de apoyo bajo los comandos."}
+```
+
+Cada comando aparece cuando la voz dice su palabra de `al_decir`. Comprueba antes que los comandos funcionen de verdad: quien vea el video los va a copiar.
 
 ### pregunta
 

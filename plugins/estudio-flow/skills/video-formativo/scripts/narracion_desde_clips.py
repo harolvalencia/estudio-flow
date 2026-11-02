@@ -66,6 +66,18 @@ def texto_del_guion(ruta):
     return " ".join(json.loads(contenido)["guion"]) if ruta.suffix == ".json" else contenido
 
 
+def pausas_extra(ruta):
+    """Silencio adicional tras el último tramo de cada escena con `pausa_despues` en tutorial.json."""
+    if not ruta or ruta.suffix != ".json":
+        return {}
+    extras = {}
+    for escena in json.loads(ruta.read_text(encoding="utf-8")).get("escenas", []):
+        if escena.get("pausa_despues"):
+            tramos = escena["tramos"] if isinstance(escena["tramos"], list) else [escena["tramos"]]
+            extras[tramos[-1]] = escena["pausa_despues"]
+    return extras
+
+
 def transcribir(ruta, guion):
     """Palabras con tiempos, si el control final y su transcriptor están disponibles."""
     try:
@@ -90,13 +102,14 @@ def main():
     a.salida.parent.mkdir(parents=True, exist_ok=True)
     a.tiempos.parent.mkdir(parents=True, exist_ok=True)
 
+    extras = pausas_extra(a.guion)
     tramos, partes, cursor = [], [], 0.0
     with tempfile.TemporaryDirectory() as tmp:
         for n, clip in enumerate(clips, 1):
             desde, hasta = limites_de_voz(clip)
             ganancia = LUFS_TRAMO - sonoridad(clip, desde, hasta)
             parte = Path(tmp) / f"{n:03d}.wav"
-            fin_pausa = hasta - desde + a.pausa
+            fin_pausa = hasta - desde + a.pausa + extras.get(n, 0)
             filtro = (f"atrim={desde:.3f}:{hasta:.3f},asetpts=PTS-STARTPTS,aformat=sample_rates={SR}:channel_layouts=mono,"
                       f"volume={ganancia:.2f}dB,afade=t=in:d=0.015,afade=t=out:st={hasta - desde - 0.03:.3f}:d=0.03,"
                       f"apad=whole_dur={fin_pausa:.3f}")
@@ -112,7 +125,8 @@ def main():
                         "-c:a", "pcm_s16le", str(a.salida)], check=True)
 
     for palabra, inicio, fin in transcribir(a.salida, texto_del_guion(a.guion)):
-        tramo = next((t for t in reversed(tramos) if inicio >= t["inicio"] - 0.05), tramos[0])
+        # Por el centro de la palabra: el transcriptor adelanta su inicio y la pasaba al tramo anterior
+        tramo = next((t for t in reversed(tramos) if (inicio + fin) / 2 >= t["inicio"]), tramos[0])
         tramo["palabras"].append({"p": palabra, "t": round(max(0.0, inicio - tramo["inicio"]), 3), "fin": round(fin - tramo["inicio"], 3)})
     a.tiempos.write_text(json.dumps({"total": round(cursor, 3), "tramos": tramos}, ensure_ascii=False, indent=1), encoding="utf-8")
     print(json.dumps({"tramos": len(tramos), "total_s": round(cursor, 2),

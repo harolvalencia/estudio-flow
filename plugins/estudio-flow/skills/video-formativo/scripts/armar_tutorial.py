@@ -243,6 +243,34 @@ def escena_idea(escena, tl, base, ctx):
         <h2 id="{e}t">{lineas}</h2><p id="{e}x">{marcar(escena.get("texto", ""))}</p></div>'''
 
 
+def escena_comandos(escena, tl, base, ctx):
+    """Comandos exactos para escribir. Es una tarjeta, no imita la ventana de ningún programa."""
+    e, ini, dur = f'e{escena["n"]}', escena["inicio"], escena["dur"]
+    comandos, filas = escena["comandos"], ""
+    previo, palabras = 0.3, escena.get("al_decir", [])
+    tl.append(f'tl.fromTo("#{e}g", {{xPercent:-4, scale:1.08}}, {{xPercent:4, scale:1.16, duration:{dur:.2f}, ease:"none"}}, {ini:.3f});')
+    tl.append(f'tl.fromTo("#{e}t", {{opacity:0, y:24}}, {{opacity:1, y:0, duration:.45, ease:"power3.out"}}, {ini + .1:.3f});')
+    for i, comando in enumerate(comandos):
+        reparto = 0.3 + (dur - 1.8) * i / max(1, len(comandos))
+        marca = {"palabra": palabras[i], "en": reparto} if i < len(palabras) else {"en": reparto}
+        t = momento(marca, escena, previo)
+        filas += f'<div class="comando" id="{e}c{i}"><b>&gt;</b><span id="{e}x{i}">{html.escape(comando)}</span></div>'
+        escritura = min(1.1, 0.03 * len(comando))
+        tl.append(f'tl.fromTo("#{e}c{i}", {{opacity:0}}, {{opacity:1, duration:.16}}, {ini + t:.3f});')
+        tl.append(f'tl.fromTo("#{e}x{i}", {{clipPath:"inset(0 100% 0 0)"}}, {{clipPath:"inset(0 0% 0 0)", duration:{escritura:.2f}, ease:"steps({len(comando)})"}}, {ini + t:.3f});')
+        previo = t + 0.2
+    nota = ""
+    if escena.get("nota"):
+        nota = f'<p class="nota-comando" id="{e}n">{marcar(escena["nota"])}</p>'
+        tl.append(f'tl.fromTo("#{e}n", {{opacity:0, y:14}}, {{opacity:1, y:0, duration:.4, ease:"power3.out"}}, {ini + min(dur - 1.2, previo + .9):.3f});')
+    chip = ""
+    if escena.get("paso"):
+        chip = f'<div class="paso" id="{e}s"><b>{escena["paso"]}</b><span><small>Paso {escena["paso"]} de {ctx["pasos"]}</small>{marcar(escena.get("titulo", ""))}</span></div>'
+        tl.append(f'tl.fromTo("#{e}s", {{opacity:0, x:-34}}, {{opacity:1, x:0, duration:.42, ease:"power3.out"}}, {ini + .1:.3f});')
+    return f'''<div class="degradado" id="{e}g"></div><div class="tarjeta" style="top:46%"><div class="etiqueta">{marcar(escena.get("etiqueta", ""))}</div>
+        <h2 class="pregunta" id="{e}t">{marcar(escena.get("encabezado") or escena.get("titulo", ""))}</h2><div class="comandos">{filas}</div>{nota}</div>{chip}'''
+
+
 def escena_pregunta(escena, tl, base, ctx):
     e, ini, dur = f'e{escena["n"]}', escena["inicio"], escena["dur"]
     revela = momento({k: v for k, v in escena.get("revelar", {}).items()} or {"en": dur * 0.7}, escena, 0.5)
@@ -281,7 +309,7 @@ def escena_cierre(escena, tl, base, ctx):
         <div class="luz-final" id="{e}h"></div>'''
 
 
-TIPOS = {"apertura": escena_apertura, "pantalla": escena_pantalla, "idea": escena_idea,
+TIPOS = {"apertura": escena_apertura, "pantalla": escena_pantalla, "idea": escena_idea, "comandos": escena_comandos,
          "pregunta": escena_pregunta, "cierre": escena_cierre}
 
 
@@ -345,6 +373,10 @@ CSS = """
       .opciones { display: grid; gap: 16px; margin-top: 8px; max-width: 1300px; }
       .opcion { display: flex; align-items: center; gap: 20px; padding: 18px 28px; border-radius: 18px; background: rgba(255,255,255,.08); box-shadow: 0 0 0 1px rgba(255,255,255,.16); font-size: __TCUERPO__px; font-weight: 700; line-height: 1.2; transform-origin: left center; }
       .opcion b { font-family: var(--titulo); }
+      .comandos { display: grid; gap: 14px; padding: 28px 34px; border-radius: 18px; background: rgba(3,8,18,.9); box-shadow: 0 0 0 1px rgba(255,255,255,.16), 0 24px 70px rgba(0,0,0,.5); }
+      .comando { display: flex; gap: 20px; font-family: "JetBrains Mono", monospace; font-size: 36px; line-height: 1.25; opacity: 0; white-space: nowrap; }
+      .comando b { color: var(--acento); font-weight: 700; }
+      .nota-comando { font-size: __TPASO__px !important; opacity: 0; color: #dbe9f4; max-width: none !important; }
       .velo-final { position: absolute; inset: 0; background: radial-gradient(62% 74% at 50% 50%, rgba(2,4,10,.78) 0%, rgba(2,4,10,.62) 58%, rgba(2,4,10,.2) 100%); }
       .final h1 { text-shadow: 0 6px 38px rgba(0,0,0,.75); }
       .final { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; padding: 0 96px; text-align: center; }

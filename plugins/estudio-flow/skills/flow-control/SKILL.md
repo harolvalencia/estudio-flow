@@ -15,7 +15,7 @@ Mapa completo de la interfaz: [references/mapa-interfaz.md](references/mapa-inte
 
 - Lee Flow con JavaScript corto. Las capturas y `read_page` pesan mucho más.
 - Si necesitas mirar, usa `scale: 0.5` en la captura: cuesta cerca de la cuarta parte.
-- Agrupa acciones en `browser_batch`. Antes de cada generación agrega una comprobación con JavaScript que lance un error si falta algo: detiene el lote sin gastar puntos.
+- Agrupa acciones en `browser_batch`, un clip por lote: los lotes muy largos expiran. Antes de cada generación agrega una comprobación con JavaScript que lance un error si falta algo: detiene el lote sin gastar puntos.
 - Para hacer varios clips parecidos usa «Reutilizar petición»; no armes voz e imagen cada vez.
 
 ## Cuatro reglas que evitan casi todos los fallos
@@ -66,8 +66,9 @@ También puedes escribir `@` y buscar el recurso o personaje por nombre.
 
 ### Hacer varios clips con los mismos ingredientes
 
-`Reutilizar petición` recupera el prompt, la voz y la imagen de un clip de un solo clic. Después enfoca el cuadro con JavaScript, pulsa `Ctrl+A` y escribe el prompt nuevo.
+`Reutilizar petición` recupera el prompt, la voz, la imagen y también **la calidad y duración** del clip de origen. Funciona con `.click()` desde JavaScript en la vista `Lote`, sin depender de coordenadas. Después enfoca el cuadro con JavaScript, pulsa `Ctrl+A` y escribe el prompt nuevo.
 
+- Reutiliza siempre un clip con la calidad que quieres: reutilizar uno de 720p vuelve a poner 720p, y cuesta el doble.
 - Antes de generar confirma que el cuadro tenga las **dos fichas**. Con el clip anterior aún cargando no restaura nada y el fallo no se ve.
 - Nunca hagas clic en coordenadas fijas de la galería: se reacomoda y puedes abrir otra toma, donde lo que escribas activa atajos. Lee la posición por DOM justo antes.
 - El panel de ajustes cambia de altura según el prompt: lee las posiciones cada vez.

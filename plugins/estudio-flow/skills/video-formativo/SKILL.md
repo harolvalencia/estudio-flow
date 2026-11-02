@@ -66,6 +66,10 @@ Crea la composición, la música suave, los barridos, los clics y el golpe del c
 
 Revisa que cada marca caiga exactamente sobre su botón. Mira los fotogramas de cada escena: una marca corrida enseña mal.
 
+Si `check` avisa que un texto dura poco, agrega `pausa_despues` a esa escena y vuelve a unir la narración. Cuando la persona deba copiar un comando o leer un resultado, deja al menos 1,5 s.
+
+Compara el índice del tutorial con el material que acompaña la clase: si la presentación o la guía tienen un paso que el video no cubre, el alumno se pierde.
+
 ## Etapa 6. Control y material de apoyo
 
 ```

@@ -48,6 +48,6 @@ Un video largo se narra con un clip de 10 s por tramo:
 | 720p | 90 | 117 |
 | 360p, misma calidad de voz | 42 | 55 |
 
-El tutorial de ejemplo, de 56 s, costó 69 puntos con 8 tramos: apertura y cierre a 720p y el resto a 360p, más una comparación de calidad.
+El tutorial de ejemplo, de 1:43 con 14 tramos, costó 117 puntos: apertura y cierre a 720p, el resto a 360p, una comparación de calidad y dos frases que hubo que rehacer. Escribe el guion completo antes de generar: cambiar una frase después cuesta otro clip.
 
 Antes de producir, compara contra el saldo real. Ensaya el clip más difícil a 360p si tiene acción compleja: cuesta la mitad y la escala a 720p es gratis en Pro y Ultra.
