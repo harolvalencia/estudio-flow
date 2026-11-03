@@ -87,6 +87,8 @@ def main():
     if libres < 5:
         faltantes.append("espacio en disco (mínimo 5 GB)")
         siguiente.append("Libera espacio: el render guarda fotogramas temporales.")
+    if info["ruta"] == "cowork":
+        siguiente.append("Usa Desktop Commander si está disponible: esta terminal no llega al modelo de voz y sus comandos pueden pedir aprobación.")
     info["listo"] = not faltantes
     info["faltantes"] = faltantes
     info["siguiente"] = siguiente

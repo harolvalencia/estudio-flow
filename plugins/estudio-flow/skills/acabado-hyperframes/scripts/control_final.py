@@ -75,7 +75,7 @@ def vocabulario(guion):
 
 
 def palabras(ruta, pistas=None):
-    """Lista de (palabra, inicio, fin), o None si no hay transcriptor instalado."""
+    """Lista de (palabra, inicio, fin), o None si falta el transcriptor o su modelo."""
     try:
         import numpy as np
         from faster_whisper import WhisperModel
@@ -84,7 +84,10 @@ def palabras(ruta, pistas=None):
     crudo = subprocess.run(["ffmpeg", "-v", "error", "-i", str(ruta), "-f", "s16le", "-ac", "1", "-ar", "16000", "-"],
                            capture_output=True, check=True).stdout
     audio = np.frombuffer(crudo, dtype=np.int16).astype(np.float32) / 32768.0
-    modelo = WhisperModel("base", device="cpu", compute_type="int8")
+    try:
+        modelo = WhisperModel("base", device="cpu", compute_type="int8")
+    except Exception:  # El modelo viene de Hugging Face, y la terminal de la sesión no llega allí
+        return None, ""
     # Sin filtro de voz, las pistas hacen que repita frases en los silencios y esconda un final mudo
     segmentos, _ = modelo.transcribe(audio, language="es", word_timestamps=True, vad_filter=True,
                                      vad_parameters={"min_silence_duration_ms": 300, "speech_pad_ms": 120}, hotwords=pistas)
@@ -146,7 +149,7 @@ def main():
         guion = a.guion.read_text(encoding="utf-8") if a.guion else ""
         lista, texto = palabras(a.video, vocabulario(guion) or None)
         if lista is None:
-            fallos.append("Falta faster-whisper: instálalo para comprobar la voz de punta a punta")
+            fallos.append("Voz sin comprobar: falta faster-whisper o su modelo. No lo busques en otras fuentes: sigue «Si falta el transcriptor» en la skill acabado-hyperframes")
         elif not lista:
             fallos.append("No se detectó voz en el video")
         else:

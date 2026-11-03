@@ -14,9 +14,11 @@ En modo rápido no uses HyperFrames: `pieza_rapida.py` agrega logo, frase y bot�
 Usa la ruta guardada en `proceso.json` en `entorno.ruta`:
 
 - **windows:** Desktop Commander, con PowerShell, sobre la ruta real de la carpeta.
-- **cowork:** la terminal de la sesión.
+- **cowork:** la terminal de la sesión. Su red es limitada y cada comando puede pedirle aprobación a la persona.
 
 Ejecuta primero `python _estudio/verificar_entorno.py <carpeta>`. Si responde `"listo": false`, sigue lo indicado en `siguiente`.
+
+Agrupa los comandos de cada paso en una sola llamada, para que la persona apruebe lo menos posible.
 
 ## 1. Igualar los clips
 
@@ -115,6 +117,8 @@ python _estudio/control_final.py ../05-final/maestro.mp4 --cierre 4 --guion ../0
 Con `--guion` comprueba que la voz diga el texto aprobado. En tutoriales y capacitaciones agrega `--tipo formativo`.
 
 Si responde `"aprobado": false`, corrige lo que indica. Un tramo sin voz se arregla generando en Flow la locución de esa escena, no con más texto.
+
+**Si falta el transcriptor.** El modelo de Whisper se baja de Hugging Face, y la terminal de la sesión no llega a ese sitio. No lo busques en npm, en GitHub ni en otra fuente: corre el control en Windows con Desktop Commander. Si no está disponible, corrige los demás fallos, entrega y dile a la persona que la voz quedó sin comprobar.
 
 ## 6. Exportar para cada red
 
