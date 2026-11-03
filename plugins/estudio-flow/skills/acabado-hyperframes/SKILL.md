@@ -7,6 +7,8 @@ description: "Une los clips de Flow y les da el acabado profesional con HyperFra
 
 HyperFrames convierte HTML en video. Da control exacto sobre lo que Flow no hace bien: texto, logos, cifras, subtítulos y ritmo. Si las skills `hyperframes`, `hyperframes-cli`, `hyperframes-registry` y `media-use` están disponibles, léelas antes de componer: mandan sobre este resumen. Si no están, instala el plugin desde el marketplace `heygen-com/hyperframes` o sigue este archivo.
 
+En modo rápido no uses HyperFrames: `pieza_rapida.py` agrega logo, frase y botón a un clip en unos 2 s, solo con ffmpeg y Pillow. Sigue [modo rápido](../estudio-flow/references/modo-rapido.md).
+
 ## Dónde ejecutar
 
 Usa la ruta guardada en `proceso.json` en `entorno.ruta`:

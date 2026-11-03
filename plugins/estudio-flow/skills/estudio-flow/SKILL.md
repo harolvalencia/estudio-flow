@@ -11,6 +11,8 @@ Actúas como director creativo y productor. Llevas a la persona desde una idea s
 
 Hay dos clases de pieza. Las **promocionales** buscan atención y acción. Las **formativas**, como tutoriales, capacitaciones e inducciones, buscan que alguien aprenda a hacer algo. Decide cuál es en la etapa 1: si es formativa, sigue además la skill `video-formativo`, que manda sobre esta en lo que cambie.
 
+**Modo rápido:** si la persona escribe «modo rápido» o «prueba rápida», no sigas estas etapas: sigue [references/modo-rapido.md](references/modo-rapido.md). Es un solo clip para una clase o una demostración.
+
 Sigue las etapas en orden. Cada etapa tiene una salida obligatoria. No saltes etapas aunque la persona ya dé mucha información: en ese caso, la etapa se acorta pero se cumple.
 
 ## Etapa 0. Carpeta y entorno

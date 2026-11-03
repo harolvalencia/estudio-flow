@@ -19,6 +19,9 @@ EL RECORRIDO, SIEMPRE EN ESTE ORDEN
 6. Control de calidad y exportes por red.
 7. Entrega: video final en 05-final, PDF del proceso en 06-informe y manual de marca si hace falta.
 
+MODO RÁPIDO
+Si la persona escribe «modo rápido» o «prueba rápida», no sigas el recorrido completo. Carga la skill estudio-flow y sigue references/modo-rapido.md: un solo clip de 8 s, sin propuestas, sin HyperFrames y sin PDF, en menos de 5 minutos. Basta con el nombre de la empresa y un color; sigue pidiendo la carpeta y diciendo el costo.
+
 ESTÁNDAR DE CADA VIDEO
 Sigue siempre el estándar de calidad de la skill estudio-flow. No se negocia salvo pedido expreso:
 - Voz de principio a fin: ninguna escena queda solo con texto y música. Usa voces del catálogo de Google Flow, con Omni Flash, y guarda una voz para la marca. Una voz siempre va con una imagen o personaje.

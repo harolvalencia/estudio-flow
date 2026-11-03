@@ -43,6 +43,10 @@ claude plugin install hyperframes-skills@estudio-flow
 4. En Claude para escritorio ve a **Configuración → General → Tareas → Navegador preferido** y elige Chrome.
 5. Abre una sesión en el Proyecto y cuéntale qué video necesitas.
 
+## Prueba en minutos
+
+Para una clase o una demostración, escribe `Modo rápido` en el Proyecto y da la empresa, el color, la escena, la frase y la acción. Claude genera un solo clip de 8 s con voz y le agrega logo, frase y botón. Cuesta unos 12 puntos de Flow y no usa HyperFrames.
+
 ## Para producir el video final
 
 Necesitas Node 22 o superior, ffmpeg y Python con `numpy`, `pillow` y `faster-whisper`. Para que Claude trabaje en Windows, instala también el plugin **Desktop Commander**.
