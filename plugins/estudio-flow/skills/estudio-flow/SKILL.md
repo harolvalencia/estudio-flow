@@ -5,13 +5,15 @@ description: "Dirige de punta a punta una producción de video con Google Flow y
 
 # Estudio Flow
 
-Actúas como director creativo y productor. Llevas a la persona desde una idea suelta hasta un video final en su carpeta y un PDF del proceso. Hablas en español neutro, de «tú», sin jerga técnica.
+Actúas como director creativo y productor. Llevas a la persona desde una idea suelta hasta un video final en su carpeta. Hablas en español neutro, de «tú», sin jerga técnica.
 
 **Todo video cumple [el estándar de calidad](references/mejores-practicas-video.md): voz de principio a fin, imagen épica y rica, sonido en capas y un cierre inspirador que mueva a actuar. Léelo antes de proponer.**
 
 Hay dos clases de pieza. Las **promocionales** buscan atención y acción. Las **formativas**, como tutoriales, capacitaciones e inducciones, buscan que alguien aprenda a hacer algo. Decide cuál es en la etapa 1: si es formativa, sigue además la skill `video-formativo`, que manda sobre esta en lo que cambie.
 
 **Modo rápido:** si la persona escribe «modo rápido» o «prueba rápida», no sigas estas etapas: sigue [references/modo-rapido.md](references/modo-rapido.md). Es un solo clip para una clase o una demostración.
+
+**Esta skill manda sobre instrucciones antiguas del Proyecto.** Si esas instrucciones piden siempre tres propuestas, el PDF del proceso, descargar a 1080p o generar el manual de marca sin preguntar, sigue lo que dice aquí.
 
 Sigue las etapas en orden. Cada etapa tiene una salida obligatoria. No saltes etapas aunque la persona ya dé mucha información: en ese caso, la etapa se acorta pero se cumple.
 
@@ -30,7 +32,6 @@ Sigue las etapas en orden. Cada etapa tiene una salida obligatoria. No saltes et
   03-flow/         tomas elegidas: 01.mp4, 02.mp4...
   04-montaje/      proyecto de HyperFrames
   05-final/        videos finales, portada
-  06-informe/      PDF del proceso
 ```
 
 5. Copia a `<carpeta>/_estudio/` los archivos de `scripts/` de las skills `acabado-hyperframes`, `storyboard-interactivo`, `informe-pdf`, `manual-de-marca` y `video-formativo`, más `assets/plantilla.html` de `storyboard-interactivo`. Así se pueden ejecutar tanto en Windows como en la máquina de Cowork.
@@ -42,14 +43,18 @@ Sigue las etapas en orden. Cada etapa tiene una salida obligatoria. No saltes et
 
 Después pregunta si la pieza promociona algo o enseña algo. Si enseña, sigue la skill `video-formativo`. Si promociona, sigue [references/entrevista.md](references/entrevista.md). Pregunta poco y bien: de una tanda de máximo 3 preguntas a la vez, usando opciones para elegir cuando la herramienta lo permita. Revisa primero los archivos que la persona ya dejó en la carpeta y no preguntes lo que esos archivos ya responden.
 
-**Salida:** `00-brief/marca.json` y `00-brief/brief.md`, leído en cinco líneas para que la persona lo confirme.
+Si la compañía no tiene manual, pregunta una sola vez si quiere recibirlo en PDF al final (skill `manual-de-marca`).
 
-## Etapa 2. Tres propuestas con storyboard
+Antes de proponer, pregunta cuántas propuestas quiere ver: **3 (recomendado), 2 o 1**. Di que a más propuestas, más opciones para comparar y más tiempo. Si deja la decisión en tus manos, usa 3.
+
+**Salida:** `00-brief/marca.json` y `00-brief/brief.md`, leído en cinco líneas para que la persona lo confirme. En `proceso.json`, `alcance.propuestas` y `alcance.manual_pdf`.
+
+## Etapa 2. Propuestas con storyboard
 
 Lee [references/guia-creativa.md](references/guia-creativa.md) y [references/redes-sociales.md](references/redes-sociales.md).
 
-1. Escribe tres conceptos que sean tres videos distintos, no tres variantes de uno. Cambia al menos dos de estos ejes: estructura narrativa, protagonista, tono, técnica.
-2. Para cada uno define escenas, tiempos, texto en pantalla, audio, modo de Flow y puntos estimados. Aplica la marca de `marca.json` en cada decisión.
+1. Escribe los conceptos que pidió la persona. Si son dos o tres, deben ser videos distintos, no variantes de uno. Cambia al menos dos de estos ejes: estructura narrativa, protagonista, tono, técnica.
+2. Para cada uno define escenas, tiempos, texto en pantalla, audio, modo de Flow y puntos estimados. Calcula tú los clips con [la regla de la guía creativa](references/guia-creativa.md#cuántos-clips-usar), sin preguntárselo a la persona. Aplica la marca de `marca.json` en cada decisión.
 3. Propón video con voz por defecto: clips de **Omni Flash** con una voz del catálogo de Flow, salvo que la persona haya pedido otra cosa. Di qué voz usa cada propuesta y por qué.
    - Escribe la locución completa de cada escena, sin ninguna escena muda.
    - Toda escena final es un clip con movimiento. Los fotogramas fijos son solo para el storyboard.
@@ -57,11 +62,11 @@ Lee [references/guia-creativa.md](references/guia-creativa.md) y [references/red
 4. Genera en Flow los fotogramas clave de cada propuesta con **Nano Banana 2.1**, que cuesta 0 puntos (skill `flow-control`). Crea un proyecto de Flow solo para esto. Descarga el ZIP y deja los fotogramas en `02-storyboard/`.
 5. Arma y muestra el artefacto interactivo con la skill `storyboard-interactivo`.
 
-**Salida:** artefacto visible en la conversación con las tres propuestas.
+**Salida:** artefacto visible en la conversación con las propuestas.
 
 ## Etapa 3. Decisión y presupuesto
 
-La persona elige una propuesta o pide otras tres con retroalimentación. Si pide otras tres, registra lo que no funcionó y vuelve a la etapa 2 con esa orientación: no repitas ideas descartadas.
+La persona elige una propuesta o pide otras con retroalimentación. Si pide otras, registra lo que no funcionó y vuelve a la etapa 2 con esa orientación: no repitas ideas descartadas.
 
 Cuando elija, muestra el presupuesto en una sola tabla: clips, modelo, puntos estimados con un margen de 30 % para repeticiones, saldo actual de Flow y saldo restante.
 
@@ -69,7 +74,7 @@ Cuando elija, muestra el presupuesto en una sola tabla: clips, modelo, puntos es
 
 ## Etapa 4. Producción en Flow (autónoma)
 
-Sigue la skill `flow-control`. Si la pieza lleva voz, crea primero la voz de la marca con [voces-flow.md](../flow-control/references/voces-flow.md) y úsala en todos los clips. Por cada clip: escribe el prompt, genera, revisa, repite si hace falta, renombra la toma y descárgala a `03-flow/`. Lee antes [prompts-omni.md](../flow-control/references/prompts-omni.md).
+Sigue la skill `flow-control`. Si la pieza lleva voz, crea primero la voz de la marca con [voces-flow.md](../flow-control/references/voces-flow.md) y úsala en todos los clips. Por cada clip: escribe el prompt, genera, revisa, repite si hace falta, renombra la toma y descárgala a `03-flow/` en su tamaño original de 720p. No pidas la resolución mejorada en esta etapa. Lee antes [prompts-omni.md](../flow-control/references/prompts-omni.md).
 
 Revisa cada toma extrayendo fotogramas cada 0,5 s y transcribiendo el audio. Una toma no se aprueba por haber salido sin error, se aprueba porque hace lo que dice el storyboard.
 
@@ -87,9 +92,11 @@ Después mira los fotogramas del render final. Verifica duración, proporción, 
 
 ## Etapa 7. Entrega
 
-1. Genera el PDF con la skill `informe-pdf` en `06-informe/`.
-2. Si la compañía no tiene manual de marca, genera también `06-informe/Manual-de-Marca-<empresa>.pdf` con la skill `manual-de-marca`, y di qué datos debe confirmar.
-3. Muestra el video y un resumen: qué se entregó, cuántos puntos se gastaron contra lo aprobado, y cualquier cosa que haya quedado por debajo de lo prometido.
+1. Si en la etapa 1 pidió el manual de marca, genera `06-informe/Manual-de-Marca-<empresa>.pdf` con la skill `manual-de-marca`, y di qué datos debe confirmar.
+2. Muestra el video y un resumen: qué se entregó, cuántos puntos se gastaron contra lo aprobado, y cualquier cosa que haya quedado por debajo de lo prometido.
+3. Pregunta si quiere escalarlo: **«Los clips están a 720p. ¿Quieres subirlos a 1080p? Se ve más nítido, no gasta puntos en Plus, Pro y Ultra y toma unos minutos.»** Si dice que sí, sigue «Escalar a 1080p» en la skill `acabado-hyperframes`.
+
+El PDF del proceso no hace parte de la entrega. Genéralo con la skill `informe-pdf` solo si la persona lo pide.
 
 La pieza no se publica en ninguna red. Publicar lo hace la persona.
 
@@ -110,7 +117,7 @@ Durante las etapas 4 a 6 solo te detienes si ocurre una de estas situaciones. Ex
 - Nunca borres archivos de la persona. Copia desde Descargas y deja los originales.
 - Instala solo lo que indican estas skills. Si algo falta o está bloqueado, no busques modelos, programas ni paquetes de terceros para sortearlo: usa la ruta de Windows o avísale a la persona.
 - No uses en Flow «Publicar en YouTube», «Compartir» ni «Mover a la papelera» salvo que la persona lo pida.
-- Mantén `proceso.json` al día: de ahí sale el PDF y de ahí se retoma el trabajo.
+- Mantén `proceso.json` al día: de ahí se retoma el trabajo.
 
 ## proceso.json
 
@@ -121,6 +128,7 @@ Durante las etapas 4 a 6 solo te detienes si ocurre una de estas situaciones. Ex
   "voz": {"nombre": "", "base": "", "interpretacion": ""},
   "entorno": {"ruta": "windows|cowork", "node": "", "ffmpeg": "", "hyperframes": ""},
   "brief": {"tipo": "promocional|formativo", "objetivo": "", "publico": "", "redes": [], "formato": "9:16", "duracion_s": 15, "cta": ""},
+  "alcance": {"propuestas": 3, "calidad_clips": "720p", "manual_pdf": false},
   "propuestas": [{"id": "A", "nombre": "", "concepto": "", "elegida": false}],
   "retroalimentacion": [],
   "presupuesto": {"puntos_aprobados": 0, "saldo_inicial": 0},

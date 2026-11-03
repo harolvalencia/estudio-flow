@@ -1,6 +1,6 @@
 ---
 name: storyboard-interactivo
-description: "Convierte tres propuestas de video en un artefacto interactivo donde la persona ve cada idea como un animatic dentro de un teléfono, compara escenas, tiempos y puntos, y decide. Úsala en la etapa de propuestas de una producción de Estudio Flow o cuando alguien pida ver un storyboard."
+description: "Convierte una o varias propuestas de video en un artefacto interactivo donde la persona ve cada idea como un animatic dentro de un teléfono, compara escenas, tiempos y puntos, y decide. Úsala en la etapa de propuestas de una producción de Estudio Flow o cuando alguien pida ver un storyboard."
 ---
 
 # Storyboard interactivo
@@ -64,7 +64,7 @@ Para un tutorial o capacitación agrega `"tipo": "formativo"`, `"objetivos"` con
 
 ## Calidad
 
-- Tres videos distintos, no tres versiones del mismo.
+- Si hay varias propuestas, deben ser videos distintos, no versiones del mismo.
 - El primer cuadro de cada propuesta debe funcionar como gancho.
 - Revisa la ortografía del texto en pantalla antes de publicar.
-- Si la persona pide otras tres, conserva el archivo anterior como `storyboard-ronda1.html` y arma una ronda nueva.
+- Si la persona pide otras, conserva el archivo anterior como `storyboard-ronda1.html` y arma una ronda nueva.

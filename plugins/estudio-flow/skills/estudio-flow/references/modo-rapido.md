@@ -9,8 +9,8 @@ Se activa cuando la persona escribe **«modo rápido»** o **«prueba rápida»*
 | Se omite | Se mantiene |
 |---|---|
 | Entrevista larga, investigación web y manual de marca | Pedir la carpeta |
-| Tres propuestas, storyboard y presupuesto en tabla | Decir el costo antes de gastar |
-| HyperFrames, varios clips, `control_final.py` y PDF | Voz de Flow y cierre dicho y escrito |
+| Propuestas, storyboard y presupuesto en tabla | Decir el costo antes de gastar |
+| HyperFrames, varios clips y `control_final.py` | Voz de Flow y cierre dicho y escrito |
 
 Las reglas de siempre siguen: no escribir contraseñas, no resolver CAPTCHAs, no publicar y no inventar datos.
 
@@ -30,7 +30,7 @@ python _estudio/pieza_rapida.py 03-flow/01.mp4 --frase "<frase>" --accion "<acci
 
 `--logo` es opcional: úsalo solo si hay un logo en la carpeta. El proceso tarda unos 2 s y solo necesita ffmpeg y Pillow.
 
-8. **Entrega.** Mira un fotograma del medio y otro del final. Muestra el video y di los puntos gastados. No generes PDF.
+8. **Entrega.** Mira un fotograma del medio y otro del final. Muestra el video y di los puntos gastados.
 
 ## Guion
 

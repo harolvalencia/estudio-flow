@@ -129,3 +129,19 @@ python _estudio/exportar_redes.py 05-final/maestro.mp4 --nombre <pieza> --destin
 Entrega el archivo principal, una versión liviana para WhatsApp y una portada, y mide lo entregado. Copia esa salida a `proceso.json` en `entregables`.
 
 Si el brief pide otro formato, no recortes: duplica la composición raíz con la nueva proporción y recompón las escenas.
+
+## 7. Escalar a 1080p, si la persona lo pide
+
+La primera versión lleva clips de 720p en un lienzo de 1080×1920: el render tarda casi igual y los textos y logos quedan nítidos. Si la persona quiere más calidad:
+
+1. Mueve los clips de `03-flow/` a `03-flow/720p/` y la primera versión de `05-final/` a `05-final/720p/`.
+2. Baja en 1080p cada clip que se ve en el video, de uno en uno, y cópialo a `03-flow/NN.mp4` (skill `flow-control`).
+3. Repite desde «1. Igualar los clips» y copia los clips corregidos a `04-montaje/assets/`. El montaje no cambia.
+4. Renderiza, pasa el control final y exporta con el mismo `--nombre`.
+5. Actualiza `alcance.calidad_clips` y `entregables`, y muestra el video nuevo.
+
+No gasta puntos en Plus, Pro y Ultra. Sin plan, mira el costo que muestra Flow y confírmalo antes con la persona.
+
+## Medir cuánto tardó
+
+Si la persona pregunta cuánto tomó la producción, ejecuta `python _estudio/medir_tiempos.py <carpeta>`. Sale de las fechas de los archivos, así que las pausas incluyen lo que tardó la persona en responder.

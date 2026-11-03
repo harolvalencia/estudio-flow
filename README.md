@@ -1,6 +1,6 @@
 # Estudio Flow
 
-Una productora de video con IA dentro de Claude para escritorio, para redes sociales, tutoriales y capacitaciones. Le cuentas qué necesitas y Claude revisa tu marca, te entrevista, propone tres ideas con storyboard interactivo, produce en Google Flow con Omni Flash y sus voces, termina el video con HyperFrames y te entrega el archivo final con un PDF del proceso.
+Una productora de video con IA dentro de Claude para escritorio, para redes sociales, tutoriales y capacitaciones. Le cuentas qué necesitas y Claude revisa tu marca, te entrevista, propone ideas con storyboard interactivo, produce en Google Flow con Omni Flash y sus voces, termina el video con HyperFrames y te entrega el archivo final.
 
 ## Qué incluye
 
@@ -23,7 +23,7 @@ Necesitas Claude para escritorio con un plan de pago.
 
 4. Instala **estudio-flow** y **hyperframes-skills**.
 
-Para recibir una versión nueva pulsa **Add → Manage marketplaces → ⋯ → Check for updates**. Revisa el commit que muestra: la sincronización automática puede tardar.
+Para recibir una versión nueva pulsa **Add → Manage marketplaces → ⋯ → Check for updates**. Revisa el commit que muestra: la sincronización automática puede tardar. Si vienes de una versión anterior a la 1.5.0, vuelve a pegar `instrucciones-del-proyecto.md` en tu Proyecto.
 
 Si el marketplace no sincroniza, descarga los archivos `.plugin` de la [última versión](https://github.com/harolvalencia/estudio-flow/releases/latest) y súbelos con **Add → Upload plugin**.
 

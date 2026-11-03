@@ -1,6 +1,6 @@
 ---
 name: informe-pdf
-description: "Genera el documento PDF del proceso de una producción de Estudio Flow: encargo, propuestas, decisión, puntos usados, prompts, montaje y archivos finales. Úsala al cerrar una producción o cuando la persona pida el informe del proceso."
+description: "Genera el documento PDF del proceso de una producción de Estudio Flow: encargo, propuestas, decisión, puntos usados, prompts, montaje y archivos finales. Úsala solo cuando la persona pida el informe del proceso: no hace parte de la entrega normal."
 ---
 
 # Informe del proceso

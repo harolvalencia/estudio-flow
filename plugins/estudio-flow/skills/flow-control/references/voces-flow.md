@@ -59,7 +59,7 @@ Un clip dura máximo 10 s. Para un tutorial, cada frase del guion es un tramo y 
 5. Transcribe cada clip y compáralo con su tramo. Repite el que cambie una palabra.
 6. Une todo con `narracion_desde_clips.py`, que recorta los silencios e iguala el volumen.
 
-**Los tramos que solo aportan audio van a 360p.** Medido el 2 de noviembre de 2026 con la misma frase en 360p y 720p: AAC a 48 kHz y 128 kbps en ambos, mismo reparto de energía por frecuencias y misma transcripción. Cuesta la mitad. Las escenas que se ven, como apertura y cierre, van a 720p y se bajan a 1080p.
+**Los tramos que solo aportan audio van a 360p.** Medido el 2 de noviembre de 2026 con la misma frase en 360p y 720p: AAC a 48 kHz y 128 kbps en ambos, mismo reparto de energía por frecuencias y misma transcripción. Cuesta la mitad. Las escenas que se ven, como apertura y cierre, van a 720p.
 
 Para una pregunta, pide la pausa en el guion: dos líneas en `script` y un tramo callado en `timeline`. Así la persona tiene tiempo de pensar antes de oír la respuesta.
 

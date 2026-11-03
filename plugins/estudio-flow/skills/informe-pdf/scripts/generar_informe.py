@@ -145,7 +145,7 @@ def construir(carpeta, p):
 <style>:root{{--marca:{e(marca.get("primario", "#1893F8"))};--acento:{e(marca.get("acento", "#00C2D1"))}}}{ESTILO}</style></head><body>
 {portada}
 <section class="hoja"><h2><small>1. El encargo</small>Qué se pidió</h2><div class="ficha">{ficha}</div>
-<h2 style="margin-top:.3in"><small>2. Las propuestas</small>Tres caminos, una decisión</h2>
+<h2 style="margin-top:.3in"><small>2. Las propuestas</small>Los caminos y la decisión</h2>
 <div class="prop">{"".join(tarjetas)}</div>
 {f"<h3>Retroalimentación</h3><ul>{retro}</ul>" if retro else ""}</section>
 <section class="hoja"><h2><small>3. Producción en Flow</small>Lo que se generó</h2>

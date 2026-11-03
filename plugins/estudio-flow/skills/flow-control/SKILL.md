@@ -146,7 +146,7 @@ Antes de descargar, usa `Cambiar nombre` y ponle `clip-01`, `clip-02`. Flow nomb
 
 Con la resolución mejorada Flow trabaja unos segundos y avisa «Se ha completado la mejora de resolución». El archivo llega a la carpeta de descargas de Chrome sin ningún cuadro de diálogo.
 
-Un clip a 720p en 9:16 llega como 720×1280, 24 fps, con audio AAC a 48 kHz. Para las tomas finales baja **1080p**: es gratis en Plus, Pro y Ultra, tardó unos 40 s en prepararse y llega como 1080×1920 con el sufijo `_1080p.mp4`. Espera a que el archivo aparezca en Descargas antes de seguir.
+Un clip a 720p en 9:16 llega como 720×1280, 24 fps, con audio AAC a 48 kHz. Durante la producción baja **720p**, el tamaño original. Baja **1080p** solo cuando la persona pida escalar, de uno en uno: es gratis en Plus, Pro y Ultra, tardó unos 40 s en prepararse y llega como 1080×1920 con el sufijo `_1080p.mp4`. Espera a que el archivo aparezca en Descargas antes de seguir.
 
 Tras cada descarga, copia el archivo más reciente de Descargas a `03-flow/NN.mp4` y comprueba con `ffprobe` que tenga la duración y la resolución esperadas.
 

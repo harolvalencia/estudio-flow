@@ -20,7 +20,7 @@ header img{height:34px;display:block}
 .eti{font:600 11px/1 var(--cuerpo);letter-spacing:.12em;text-transform:uppercase;color:var(--acento)}
 h1{font:600 clamp(24px,4vw,34px)/1.15 var(--titulo);margin:6px 0 0;text-wrap:balance}
 .meta{color:var(--suave);font-size:13px}
-.pestanas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pestanas{display:grid;grid-template-columns:repeat(var(--propuestas,3),minmax(0,1fr));gap:8px}
 .pestana{all:unset;cursor:pointer;padding:12px 14px;border:1px solid var(--linea);border-radius:10px;background:var(--panel);display:grid;gap:3px;min-width:0}
 .pestana b{font:600 15px/1.25 var(--titulo)}
 .pestana span{font-size:12px;color:var(--suave)}
@@ -124,8 +124,8 @@ textarea{width:100%;min-height:74px;background:var(--panel2);color:var(--texto);
   <section class="decision">
     <h3>Tu decisión</h3>
     <div class="opciones" id="opciones"></div>
-    <label for="nota">¿Qué ajustarías? Si pides otras tres, cuéntame qué te gustó y qué no.</label>
-    <textarea id="nota" placeholder="Por ejemplo: me gusta la propuesta B, pero con menos personas y un cierre más directo."></textarea>
+    <label for="nota">¿Qué ajustarías? Si pides otras, cuéntame qué te gustó y qué no.</label>
+    <textarea id="nota" placeholder="Por ejemplo: me gusta la idea, pero con menos personas y un cierre más directo."></textarea>
     <div class="opciones">
       <button class="fuerte" id="copiar" type="button">Copiar mi decisión</button>
     </div>
@@ -154,6 +154,7 @@ textarea{width:100%;min-height:74px;background:var(--panel2);color:var(--texto);
     $('fuente').textContent = 'Fuente: ' + (d.fuente || '') + ' · Valida: ' + (d.valida || '');
   }
 
+  $('pestanas').style.setProperty('--propuestas', d.propuestas.length);
   d.propuestas.forEach((p, i) => {
     const b = document.createElement('button');
     b.className = 'pestana'; b.type = 'button'; b.setAttribute('role', 'tab');
@@ -169,8 +170,8 @@ textarea{width:100%;min-height:74px;background:var(--panel2);color:var(--texto);
     $('opciones').append(o);
   });
   const otra = document.createElement('button');
-  otra.className = 'opcion'; otra.type = 'button'; otra.textContent = 'Pedir otras tres ideas'; otra.setAttribute('aria-pressed', 'false');
-  otra.onclick = () => marcar(otra, 'Quiero otras tres propuestas.');
+  otra.className = 'opcion'; otra.type = 'button'; otra.textContent = 'Pedir otras ideas'; otra.setAttribute('aria-pressed', 'false');
+  otra.onclick = () => marcar(otra, 'Quiero otras propuestas.');
   $('opciones').append(otra);
 
   function marcar(boton, texto) {

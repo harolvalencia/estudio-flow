@@ -18,16 +18,16 @@
 | Lanzar algo nuevo | Tensión, revelación, fecha o acción | 15 a 30 s |
 | Testimonio | Antes, momento de cambio, después | 20 a 45 s |
 
-## Cómo hacer que tres propuestas sean de verdad distintas
+## Cómo hacer que las propuestas sean de verdad distintas
 
-Cambia al menos dos ejes entre una propuesta y otra:
+Cuando haya más de una, cambia al menos dos ejes entre una propuesta y otra:
 
 - **Estructura:** problema y solución, viaje, lista, antes y después, revelación, conversación.
 - **Protagonista:** persona, producto, personaje animado, tipografía, datos.
 - **Tono:** épico, cercano, divertido, íntimo, documental.
 - **Técnica:** clips de Flow, fotografías animadas, texto cinético, mezcla con material real.
 
-Cada propuesta debe poder resumirse en una frase que no sirva para las otras dos.
+Cada propuesta debe poder resumirse en una frase que no sirva para las otras.
 
 ## Escena por escena
 
@@ -35,7 +35,16 @@ Cada propuesta debe poder resumirse en una frase que no sirva para las otras dos
 - Una sola idea en pantalla por vez. En vertical, unas cinco palabras por línea.
 - Termina con el beneficio antes de que la persona deslice.
 - El cierre sigue la sección 4 de [mejores-practicas-video.md](mejores-practicas-video.md): inspiración, acción dicha y escrita, logo y clímax.
-- Un clip de Flow dura 4, 6, 8 o 10 s: planea varios cortes dentro de un clip o varios clips cortos, y deja los títulos y efectos para HyperFrames.
+- Deja los títulos y efectos para HyperFrames.
+
+## Cuántos clips usar
+
+Decídelo tú, sin preguntárselo a la persona. Esto aplica a piezas promocionales: en tutoriales manda la narración por tramos.
+
+1. Calcula `clips = duración ÷ 7` y redondea hacia arriba. Son 3 clips para 15 o 20 s, 4 para 25 s y 5 para 30 s.
+2. Usa clips de 6 y 8 s. Deja los de 4 s para insertos con poca voz y los de 10 s para una frase que no se pueda partir.
+3. Agrega un clip si el guion lo necesita. Nunca aprietes la voz para que quepa.
+4. Mantén el ritmo en el montaje, sin gastar más clips: reencuadres cada 2 a 3 s, títulos cinéticos y transiciones con intención.
 
 ## Video con voz: el camino por defecto
 

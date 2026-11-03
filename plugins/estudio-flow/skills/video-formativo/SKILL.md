@@ -24,9 +24,9 @@ Si el contenido no cabe en una lección de hasta 6 minutos, propón una serie: c
 
 **Salida:** `00-brief/brief.md` con objetivos, fuente y validador; en `proceso.json`, `brief.tipo = "formativo"`.
 
-## Etapa 2. Tres propuestas didácticas
+## Etapa 2. Propuestas didácticas
 
-Las tres propuestas cambian el **formato didáctico**, no solo la estética. Elige de [formatos didácticos](references/formatos-didacticos.md) los que sirvan para el objetivo.
+Presenta las propuestas que pidió la persona. Si son varias, deben cambiar el **formato didáctico**, no solo la estética. Elige de [formatos didácticos](references/formatos-didacticos.md) los que sirvan para el objetivo.
 
 1. Escribe el guion por tramos: cada tramo es una idea, hasta 10 s, 22 palabras como máximo.
 2. Estructura: resultado primero, objetivos, pasos, error común, comprobación, cierre con práctica.
@@ -83,7 +83,7 @@ Exporta con `exportar_redes.py --sufijo 16x9`. No uses la versión liviana de Wh
 
 ## Etapa 7. Entrega
 
-Además del video y el PDF del proceso, entrega en `05-final/`:
+Además del video, entrega en `05-final/`:
 
 - Subtítulos `.srt` y `.vtt`.
 - Capítulos para la descripción de YouTube.

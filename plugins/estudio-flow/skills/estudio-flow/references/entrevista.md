@@ -4,7 +4,7 @@ El objetivo es salir con un brief que permita proponer sin adivinar. Pregunta en
 
 ## Antes de todo: la marca
 
-Pregunta siempre: **«¿Tienes el manual de diseño de marca de la compañía?»**. Si no lo tiene, pide el nombre de la compañía y su página web. Sigue la skill `manual-de-marca`. No sigas con la entrevista hasta tener la marca.
+Pregunta siempre: **«¿Tienes el manual de diseño de marca de la compañía?»**. Si no lo tiene, pide el nombre de la compañía y su página web. Sigue la skill `manual-de-marca`, que también pregunta si quiere recibir un manual en PDF. No sigas con la entrevista hasta tener la marca.
 
 ## Antes de la primera tanda: promocionar o enseñar
 
@@ -28,13 +28,17 @@ Pregunta: **«¿Este video busca promocionar algo o enseñar a hacer algo?»**. 
 8. ¿Tienes más material propio? Fotos del producto, videos, personas, música. Deben quedar en `01-referencias/`.
 9. ¿Hay personajes o voz de marca ya creados en Flow? Se citan con `@nombre`.
 
-## Cuarta tanda: forma y límites
+## Cuarta tanda: forma
 
 10. ¿Qué tono buscas? Ofrece tres referencias opuestas. Pide también un ejemplo de algo que le guste.
 11. ¿Quién habla? Por defecto propón una persona o personaje hablando a cámara con Omni Flash y una voz de Flow. Pregunta género, edad, acento y tono, y sugiere dos voces del catálogo. También puede ser solo música o solo texto.
-12. ¿Duración? Propón una según la red y el objetivo.
+12. ¿Cuánto debería durar, más o menos? Sugiere un rango según el objetivo y la red, con [la tabla de la guía creativa](guia-creativa.md#estructuras-según-el-objetivo), y recomienda un número. Por ejemplo: «Para vender en Reels sugiero de 15 a 30 s; yo iría por 20 s». Si no tiene preferencia, usa tu recomendación.
+
+## Quinta tanda: límites y alcance
+
 13. ¿Hay algo que no deba aparecer? Competidores, promesas prohibidas, sectores regulados.
 14. ¿Cuántos puntos de Flow estás dispuesto a gastar? Muestra el saldo real antes de preguntar.
+15. ¿Cuántas propuestas quieres ver: 3 (recomendado), 2 o 1? A más propuestas, más opciones para comparar y más tiempo.
 
 ## Salida: brief.md
 
@@ -52,6 +56,7 @@ Voz de Flow y audio:
 Material disponible:
 Marca (colores, tipografías, logo):
 Restricciones:
+Propuestas a presentar:
 Presupuesto en puntos:
 ```
 

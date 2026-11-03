@@ -1,6 +1,6 @@
 ---
 name: manual-de-marca
-description: "Consigue la marca de una compañía antes de crear cualquier pieza: pide su manual, o investiga su sitio web para extraer colores, tipografías, logo y tono. Si la compañía no tiene manual, genera al final un manual de marca en PDF visualmente épico con lo investigado, usando imágenes de Google Flow. Úsala en toda producción de Estudio Flow y cuando pidan un manual de marca."
+description: "Consigue la marca de una compañía antes de crear cualquier pieza: pide su manual, o investiga su sitio web para extraer colores, tipografías, logo y tono. Si la compañía no tiene manual, pregunta si quiere recibir al final un manual de marca en PDF visualmente épico con lo investigado, usando imágenes de Google Flow. Úsala en toda producción de Estudio Flow y cuando pidan un manual de marca."
 ---
 
 # Manual de marca
@@ -76,11 +76,13 @@ Guarda `00-brief/marca.json`:
 }
 ```
 
-Usa `marca.json` para todo: storyboard, títulos, montaje, informe y prompts de Flow.
+Usa `marca.json` para todo: storyboard, títulos, montaje y prompts de Flow.
 
-## Paso 4. Genera el manual al final
+## Paso 4. Genera el manual solo si la persona lo pide
 
-Si `origen` es `web` o `nueva`, en la etapa 7 entrega también el manual. Si es `manual`, no lo generes.
+Si `origen` es `web` o `nueva`, pregunta una sola vez, después de confirmar la marca: **«No tienes manual de marca. ¿Quieres que al final te entregue uno en PDF? Toma unos 4 minutos más y no gasta puntos.»** Guarda la respuesta en `proceso.json`, en `alcance.manual_pdf`. Si no responde, no lo generes. Si `origen` es `manual`, tampoco.
+
+Si dice que sí, en la etapa 7:
 
 1. Crea en Flow un proyecto `Marca - <empresa>`. Genera con Nano Banana 2.1, que cuesta 0 puntos, unas 6 imágenes con el `prompt_base` de la marca: portada 3:4 en 2K y las demás en 16:9. Termina cada prompt con `no text, no logos`.
 2. Déjalas en `00-brief/marca/` y regístralas en `imagenes`.
