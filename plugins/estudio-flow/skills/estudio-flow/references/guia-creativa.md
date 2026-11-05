@@ -24,8 +24,9 @@ Cuando haya más de una, cambia al menos dos ejes entre una propuesta y otra:
 
 - **Estructura:** problema y solución, viaje, lista, antes y después, revelación, conversación.
 - **Protagonista:** persona, producto, personaje animado, tipografía, datos.
+- **Estilo visual:** real, animación 3D, caricatura, plastilina, pizarra, infografía. Sigue [estilos-visuales.md](estilos-visuales.md).
 - **Tono:** épico, cercano, divertido, íntimo, documental.
-- **Técnica:** clips de Flow, fotografías animadas, texto cinético, mezcla con material real.
+- **Técnica:** clips de Flow, fotografías animadas, texto cinético, construcción en HyperFrames, mezcla con material real.
 
 Cada propuesta debe poder resumirse en una frase que no sirva para las otras.
 
@@ -48,18 +49,18 @@ Decídelo tú, sin preguntárselo a la persona. Esto aplica a piezas promocional
 
 ## Video con voz: el camino por defecto
 
-Una persona que habla a cámara detiene más que un texto sobre una imagen. Con Omni Flash y las voces de Flow se puede hacer sin grabar a nadie.
+La voz va por defecto. Quién aparece lo decide el estilo. Un personaje que habla a cámara, real o animado, detiene más que un texto sobre una imagen, y una pizarra que se dibuja mientras alguien explica sostiene la atención en un tema difícil. Con Omni Flash y las voces de Flow se puede hacer sin grabar a nadie.
 
 - Empieza con una frase hablada en los primeros 2 s.
-- Una idea por clip. Unas 8 palabras en 4 s, 13 en 6 s, 18 en 8 s.
-- Alterna persona hablando con voz en off sobre clips de producto o lugar, para esconder los cortes entre clips.
+- Una idea por clip. Antes de medir la voz, cuenta con 5 palabras en 4 s, 9 en 6 s, 13 en 8 s y 17 en 10 s. `clips_flow.py` lo recalcula con el ritmo real.
+- Alterna a quien habla con voz en off sobre clips de producto o lugar, para esconder los cortes entre clips.
 - La voz sigue en todas las escenas: ninguna queda solo con texto y música.
 - Subtitula todo lo hablado con HyperFrames.
 - Usa la misma voz guardada en toda la pieza y en toda la campaña.
 
 ## Qué hace cada herramienta
 
-- **Flow:** todo lo que deba verse filmado o sonar hablado. Personas, productos en acción, lugares, movimiento de cámara y voces.
-- **HyperFrames:** todo lo que deba ser exacto. Texto, logos, cifras, subtítulos, transiciones, gráficos, llamados a la acción.
+- **Flow:** todo lo que deba verse filmado o animado, o sonar hablado. Personas, personajes, productos en acción, lugares, movimiento de cámara y voces.
+- **HyperFrames:** todo lo que deba ser exacto. Texto, logos, cifras, subtítulos, transiciones, gráficos, pizarras, infografías, llamados a la acción.
 
 Nunca pidas a Flow texto legible ni logos: salen deformados. Déjale el espacio libre y agrégalos en HyperFrames.

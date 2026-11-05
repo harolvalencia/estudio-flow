@@ -14,16 +14,16 @@ Un video con voz solo al comienzo se siente incompleto.
 - Cada escena tiene su línea de locución en `plan.json`, antes de generar nada.
 - **Prohibido dejar una escena solo con texto y música.**
 - Toda voz sale de Google Flow. Hay dos formas de hacerlo, y ambas usan la misma voz guardada:
-  - **A cámara:** una persona habla mirando al público.
+  - **A cámara:** una persona o un personaje habla mirando al público.
   - **Voz en off:** la imagen es un producto, un lugar o una idea, y la voz narra sin que nadie aparezca hablando.
-- El guion total se calcula antes: `palabras = duración en segundos × 2,3`. Para 15 s, unas 34 palabras.
+- El guion total se calcula antes: `palabras = duración en segundos × 2`. Para 15 s, unas 30 palabras. El clip piloto dice el ritmo real de la voz.
 - Todo lo hablado va subtitulado y sincronizado con la transcripción.
 
 ## 2. Épico y visualmente rico
 
-Cada plano debe poder ser la portada de la pieza.
+Cada plano debe poder ser la portada de la pieza. Esto vale en todos los estilos, y cada uno llega ahí a su manera: [estilos-visuales.md](estilos-visuales.md). Ahorrar puntos nunca quita riqueza a la imagen.
 
-- **Movimiento real.** Toda escena final es un clip de Omni o Veo. Una imagen fija con zoom solo sirve para ensayar en el storyboard.
+- **Movimiento real.** Toda escena final es un clip de Omni o Veo. Una imagen fija con zoom solo sirve para ensayar en el storyboard. En pizarra e infografía el movimiento lo da la cámara que recorre lo que se va construyendo.
 - **Tres capas por plano.** Sujeto con profundidad, fondo con vida y una capa de luz como partículas, destellos, humo o reflejos.
 - **Dirige la luz.** Pide contraluz, haces volumétricos, destellos anamórficos y alto contraste con los colores de la marca.
 - **Escala.** Alterna un detalle macro con un plano amplio. Lo pequeño que se vuelve enorme es lo más épico.
@@ -79,9 +79,9 @@ Recomendaciones de la ayuda oficial:
 
 Reglas propias:
 
-- Pon el diálogo exacto en `dialogue.script` y agrega `say the script word by word, add nothing`.
+- Pon el diálogo exacto en `dialogue.script`, con su tiempo calculado. `clips_flow.py` lo hace y evita que Omni repita palabras.
 - Describe el sonido ambiente y los efectos en `audio`.
-- Con personas hablando, usa cámara fija. En planos sin personas puedes pedir un avance lento de cámara.
+- Con alguien hablando a cámara, usa cámara fija. En planos sin nadie hablando puedes pedir un avance lento de cámara.
 - Termina cada clip en una pose quieta o en un momento de luz, para cortar limpio.
 
 ## 7. Control final
@@ -94,4 +94,6 @@ python _estudio/control_final.py 05-final/<video>.mp4 --cierre 4
 
 En Mac y Linux, cambia `python` por el valor de `comando_python` que da `verificar_entorno.py`.
 
-El video no se entrega hasta que apruebe. Además, míralo completo con sonido o revisa la hoja de fotogramas y la transcripción.
+Las piezas en pizarra o infografía tienen pausas entre dibujos: agrega `--congelado 8 --pausa 3.5`.
+
+El video no se entrega hasta que apruebe. Además, míralo completo con sonido o revisa la hoja de fotogramas y la transcripción. El control no mide lo épico: míralo tú.

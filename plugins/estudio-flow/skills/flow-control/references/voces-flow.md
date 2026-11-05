@@ -9,7 +9,7 @@ Prompt con diálogo en español, imagen como ingrediente y voz personalizada, 4 
 - Dijo la frase exacta, sin agregar ni repetir palabras.
 - Mantuvo la cara de la imagen y terminó en pose quieta con la boca cerrada.
 - Archivo entregado: 720×1280, 24 fps, 4,03 s, H.264 con audio AAC a 48 kHz.
-- Velocidad medida: 10 palabras en 3,4 s, unas 2,9 palabras por segundo. Sin voz fijada se había medido 2,2. Calcula con 2,2 para dejar margen y comprueba siempre en la transcripción.
+- Velocidad medida: 10 palabras en 3,4 s, unas 2,9 palabras por segundo. Sin voz fijada se había medido 2,2, y con otra voz fijada, 1,9. Varía de un clip a otro y se acomoda al tiempo de habla que le das: con una ventana calculada a 2,2, Sulafat habló a unas 2 palabras por segundo. Mídela en el clip piloto con `clips_flow.py revisar`.
 - Las vistas previas de voz no gastaron puntos.
 
 ## Reglas de Flow
@@ -52,11 +52,11 @@ La ayuda oficial indica que una voz se puede citar en el texto como `@Voice: nom
 
 Un clip dura máximo 10 s. Para un tutorial, cada frase del guion es un tramo y un clip:
 
-1. Corta el guion en tramos de hasta 22 palabras, cada uno una idea completa.
-2. Usa la misma voz guardada, la misma interpretación y el mismo prompt de narración. Está en [la plantilla de tutorial](../../video-formativo/references/plantilla-tutorial.md).
+1. Corta el guion en tramos, cada uno una idea completa. Antes de medir la voz, máximo 17 palabras; `clips_flow.py` dice cuántas caben con el ritmo real.
+2. Usa la misma voz guardada, la misma interpretación y el prompt de `clips_flow.py`, con `"clase": "narracion"`.
 3. Agrega cualquier imagen sencilla como ingrediente. No se verá: solo se usa el audio.
 4. Descarga a `03-flow/voz/01.mp4`, `02.mp4` y así en orden.
-5. Transcribe cada clip y compáralo con su tramo. Repite el que cambie una palabra.
+5. Revisa cada clip con `clips_flow.py revisar`. Si sobra una palabra, córtala. Si cambió una palabra, confírmalo antes de regenerar: puede ser el transcriptor.
 6. Une todo con `narracion_desde_clips.py`, que recorta los silencios e iguala el volumen.
 
 **Los tramos que solo aportan audio van a 360p.** Medido el 2 de noviembre de 2026 con la misma frase en 360p y 720p: AAC a 48 kHz y 128 kbps en ambos, mismo reparto de energía por frecuencias y misma transcripción. Cuesta la mitad. Las escenas que se ven, como apertura y cierre, van a 720p.
@@ -109,4 +109,4 @@ Cada clip en `Ingredientes` es una toma nueva. Para que se sienta como una sola 
 | Enceladus | Male, breathy, lower pitch | Íntimo, cine |
 | Algenib | Male, gravelly, low pitch | Épico, personajes rudos |
 
-Las descripciones son de Flow. La columna «Sirve para» es una orientación: escucha siempre la vista previa. Solo Sulafat está probada en español. El catálogo puede cambiar: confírmalo en el panel `Voces`.
+Las descripciones son de Flow. La columna «Sirve para» es una orientación: escucha siempre la vista previa. Solo Sulafat está probada en español, también en personajes animados. El catálogo puede cambiar: confírmalo en el panel `Voces`.

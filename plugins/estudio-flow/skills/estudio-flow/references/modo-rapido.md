@@ -36,14 +36,14 @@ En Mac, cambia `python` por `~/.estudio-flow/bin/python3`; si esa carpeta no exi
 
 ## Guion
 
-Voz total: máximo 17 palabras, frase y acción juntas. El clip debe terminar con la acción dicha.
+Voz total: máximo 17 palabras, frase y acción juntas. El clip debe terminar con la acción dicha. Calcula `<fin> = 0,3 + palabras ÷ 2,9`, con un decimal: si Omni tiene tiempo de sobra para hablar, repite palabras.
 
 ## Prompt del clip
 
 Escribe todo en una línea:
 
 ```json
-{"shot":"slow push-in, medium shot","location":"<lugar de la escena>","subject":"<qué pasa, con luz en el color de la marca>","style":"epic premium commercial, volumetric light, high contrast","audio":"warm confident voice, soft ambience, no music","duration":"8s","timeline":[{"t":"0-7s","action":"<acción mientras habla>"},{"t":"7-8s","action":"silent, still pose, mouth closed"}],"dialogue":{"language":"Spanish (Colombia)","script":[{"t":"0.2-7s","line":"<frase> <acción>"}],"rule":"say the script word by word, add nothing"},"avoid":"cuts, text, logos, subtitles, music"}
+{"shot":"slow push-in, medium shot","location":"<lugar de la escena>","subject":"<qué pasa, con luz en el color de la marca>","style":"epic premium commercial, volumetric light, high contrast","audio":"warm confident voice, soft ambience, no music","duration":"8s","timeline":[{"t":"0-<fin>s","action":"<acción mientras habla>"},{"t":"<fin>-8s","action":"silent, still pose, mouth closed"}],"dialogue":{"language":"Spanish (Colombia)","script":[{"t":"0.3-<fin>s","line":"<frase> <acción>"}],"rule":"say only the sentence in script, exactly once and word for word; never repeat or add a word; stay silent after it"},"avoid":"cuts, text, logos, subtitles, music"}
 ```
 
 ## Si algo se demora

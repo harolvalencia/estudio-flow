@@ -9,6 +9,7 @@ Se apoya en los principios de aprendizaje multimedia de Richard Mayer y en el es
 - Cada video enseña una sola cosa que se pueda comprobar.
 - Hasta 6 minutos. Si es más largo, divide en una serie.
 - Antes de los pasos, enseña las palabras nuevas que vaya a necesitar.
+- Cada paso parte de lo que dejó el anterior. El orden se fija y se aprueba antes del guion: [secuencia lógica](secuencia-logica.md).
 
 ## 2. Estructura
 
@@ -18,8 +19,8 @@ Se apoya en los principios de aprendizaje multimedia de Richard Mayer y en el es
 | Objetivos | Dentro de la apertura | Dos o tres, escritos y dichos |
 | Pasos | 80 % del video | Decir, mostrar, señalar. Uno por vez |
 | Error común | 5 a 10 s | Lo que más falla y cómo evitarlo |
-| Comprobación | 5 a 15 s | Una pregunta o «pausa y hazlo tú» |
-| Cierre | 4 a 8 s | Resume, invita a practicar y da el siguiente paso |
+| Final elegido | 5 a 15 s | Lo que eligió la persona: pregunta, «pausa y hazlo tú», caso, resumen, invitación o siguiente lección |
+| Cierre | 4 a 8 s | Frase inspiradora, acción dicha y escrita, logo y clímax |
 
 ## 3. Enseñar con imagen y voz
 
@@ -30,7 +31,7 @@ Se apoya en los principios de aprendizaje multimedia de Richard Mayer y en el es
 - **Nada que distraiga.** Quita lo que no enseñe: adornos, música bajo la explicación, anécdotas.
 - **No leas la pantalla.** En pantalla van palabras clave, no el párrafo que dice la voz.
 - **Háblale a una persona.** «Pulsa Guardar», no «el usuario debe pulsar Guardar».
-- **Alterna.** Un presentador breve, gráficos y pantalla sostienen la atención mejor que solo diapositivas.
+- **Alterna.** Un presentador o personaje breve, gráficos y pantalla sostienen la atención mejor que solo diapositivas.
 
 ## 4. Ritmo
 
@@ -42,7 +43,7 @@ Se apoya en los principios de aprendizaje multimedia de Richard Mayer y en el es
 
 El video formativo también debe verse espectacular, pero la espectacularidad no compite con el aprendizaje:
 
-- **Apertura, cambios de capítulo y cierre:** clips de Flow con luz, escala y música. Aquí sí es épico.
+- **Apertura, cambios de capítulo y cierre:** clips de Flow en el estilo elegido, o una pizarra o infografía que se construye, con luz, escala y música. Aquí sí es épico.
 - **Durante un paso:** limpio y exacto. La riqueza visual sale de la cámara que entra a la interfaz, del foco y de los gráficos que explican.
 - La música suena en la apertura y el cierre. Bajo la explicación solo queda la voz.
 
@@ -56,18 +57,30 @@ El video formativo también debe verse espectacular, pero la espectacularidad no
 
 WCAG 2.2 exige subtítulos para video pregrabado desde el nivel A y audiodescripción en el nivel AA. Si la organización debe cumplir AA, una transcripción no basta: avísalo y confirma cómo lo resolverá.
 
-## 7. Comprobar que se aprendió
+## 7. Cómo termina
 
-Cada lección tiene al menos una práctica o pregunta. La pregunta prueba el objetivo, no un detalle. Las opciones incorrectas son errores reales, no bromas.
+Lo decide la persona en la entrevista. Va antes del cierre:
+
+| Final | Escena | Cuándo conviene |
+|---|---|---|
+| Pregunta de comprobación | `pregunta` | Hay evaluación o el error sale caro |
+| «Pausa y hazlo tú» | `practica` | Puede practicar mientras ve el video |
+| Caso para decidir | `pregunta` con otra etiqueta | Enseña a tomar decisiones |
+| Resumen de los pasos | `resumen` | Lo va a consultar más de una vez |
+| Invitación a usar la aplicación | Solo `cierre` | El objetivo es que empiece a usarla |
+| Siguiente lección | Solo `cierre` | Hace parte de una serie |
+
+Si hay pregunta, prueba el objetivo, no un detalle, y las opciones incorrectas son errores reales, no bromas.
 
 ## 8. Cierre
 
-Mantiene la fórmula `Beneficio inspirador + verbo + acción concreta`, pero la acción es **aprender o practicar**, no comprar.
+Siempre es la última escena y siempre termina en alto, sea cual sea el final elegido. Mantiene la fórmula `Beneficio inspirador + verbo + acción concreta`, pero la acción es **practicar, usar la aplicación o seguir aprendiendo**, no comprar.
 
 | Débil | Fuerte |
 |---|---|
 | «Gracias por ver este video» | «Ya sabes hacerlo. Crea ahora tu primer reporte.» |
 | «Eso es todo» | «Listo para tu turno. Abre el sistema y prueba este paso.» |
+| «Ya puedes entrar» | «Tu primer reporte está a un clic. Entra hoy a la aplicación.» |
 
 ## 9. Control
 

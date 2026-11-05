@@ -2,7 +2,7 @@
 
 Uso:
     python control_final.py VIDEO.mp4 [--tipo promocional|formativo] [--cierre 4]
-                            [--pausa N] [--guion guion.txt] [--sin-voz]
+                            [--pausa N] [--congelado N] [--guion guion.txt] [--sin-voz]
 
 Comprueba:
   - Fotogramas negros y tramos congelados, con ffmpeg.
@@ -11,6 +11,7 @@ Comprueba:
   - Con --guion, que la voz diga lo que dice el guion aprobado.
 
 El tipo formativo admite pausas para mirar la pantalla y más tiempo sobre un mismo cuadro.
+Una pieza en pizarra o infografía usa --congelado para sus pausas entre dibujos.
 Para instalar el transcriptor, sigue lo que indica verificar_entorno.py.
 Imprime un JSON y sale con código 1 si algo falla.
 """
@@ -29,6 +30,10 @@ INICIO_VOZ_MAX = 1.5
 COINCIDENCIA_MIN = 0.85
 VOCABULARIO_MAX = 60
 LECCION_MAX_S = 360
+CORTE_LADO = (240, 135)
+CORTE_SALTO_MIN = 8.0  # En clips reales, los cortes dan de 14 a 52 y el movimiento hasta 2,5
+CORTE_VECINOS = 6
+CORTE_UNIR_S = 0.25
 PERFILES = {
     "promocional": {"pausa": 1.5, "congelado": 2.5, "silencio": 0.7},
     "formativo": {"pausa": 3.5, "congelado": 8.0, "silencio": 2.5},
@@ -63,8 +68,9 @@ def normalizar(palabra):
 
 
 def coincidencia(guion, lista):
-    a = [n for n in map(normalizar, guion.split()) if n]
-    b = [n for n in (normalizar(p[0]) for p in lista) if n]
+    """Por letras: «Prompto Typing» y «Promptotyping» son lo mismo, y una palabra cambiada sí cuenta."""
+    a = "".join(n for n in map(normalizar, guion.split()) if n)
+    b = "".join(n for n in (normalizar(p[0]) for p in lista) if n)
     return SequenceMatcher(None, a, b, autojunk=False).ratio()
 
 
@@ -74,8 +80,70 @@ def vocabulario(guion):
     return " ".join(list(dict.fromkeys(p for p in limpias if len(p) >= 5))[:VOCABULARIO_MAX])
 
 
-def palabras(ruta, pistas=None):
-    """Lista de (palabra, inicio, fin), o None si falta el transcriptor o su modelo."""
+def fotogramas_por_segundo(ruta):
+    r = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=avg_frame_rate",
+                        "-of", "csv=p=0", str(ruta)], capture_output=True, text=True)
+    a, _, b = r.stdout.strip().partition("/")
+    return float(a) / float(b or 1)
+
+
+def cortes(ruta):
+    """Segundos donde cambia el plano. Un salto debe destacar sobre sus vecinos: así no cuenta un movimiento rápido."""
+    import numpy as np
+    ancho, alto = CORTE_LADO
+    proceso = subprocess.Popen(["ffmpeg", "-v", "error", "-i", str(ruta), "-vf", f"scale={ancho}:{alto}:flags=area,format=gray",
+                                "-f", "rawvideo", "-"], stdout=subprocess.PIPE)
+    saltos, previo = [], None
+    while True:
+        crudo = proceso.stdout.read(ancho * alto)
+        if len(crudo) < ancho * alto:
+            break
+        cuadro = np.frombuffer(crudo, dtype=np.uint8).astype(np.int16)
+        if previo is not None:
+            saltos.append(float(np.abs(cuadro - previo).mean()))
+        previo = cuadro
+    proceso.wait()
+    fps = fotogramas_por_segundo(ruta)
+    hallados = []
+    for i, salto in enumerate(saltos):
+        if salto < CORTE_SALTO_MIN:
+            continue
+        vecinos = saltos[max(0, i - CORTE_VECINOS):i] + saltos[i + 1:i + 1 + CORTE_VECINOS]
+        if vecinos and salto > 3 * float(np.median(vecinos)) + 2:
+            t = (i + 1) / fps
+            if not hallados or t - hallados[-1] > CORTE_UNIR_S:
+                hallados.append(round(t, 2))
+    return hallados
+
+
+def hoja(ruta, salida, tiempos, ancho=240, columnas=6):
+    """Hoja de fotogramas con el segundo de cada uno, para mirar un video sin gastar en capturas."""
+    import io
+    from PIL import Image, ImageDraw
+    cuadros = []
+    for t in tiempos:
+        crudo = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{t:.3f}", "-i", str(ruta), "-frames:v", "1",
+                                "-vf", f"scale={ancho}:-2", "-f", "image2pipe", "-vcodec", "mjpeg", "-"],
+                               capture_output=True).stdout
+        if crudo:
+            cuadros.append((t, Image.open(io.BytesIO(crudo)).convert("RGB")))
+    if not cuadros:
+        return None
+    alto = cuadros[0][1].height
+    columnas = min(columnas, len(cuadros))
+    filas = -(-len(cuadros) // columnas)
+    lienzo = Image.new("RGB", (columnas * ancho, filas * alto), "#101010")
+    for n, (t, cuadro) in enumerate(cuadros):
+        x, y = (n % columnas) * ancho, (n // columnas) * alto
+        lienzo.paste(cuadro, (x, y))
+        ImageDraw.Draw(lienzo).text((x + 5, y + 4), f"{t:.1f} s", fill="#ffffff", stroke_width=2, stroke_fill="#000000")
+    Path(salida).parent.mkdir(parents=True, exist_ok=True)
+    lienzo.save(salida, quality=82)
+    return str(salida)
+
+
+def palabras(ruta, pistas=None, idioma="es"):
+    """Lista de (palabra, inicio, fin), o None si falta el transcriptor o su modelo. idioma=None lo detecta."""
     try:
         import numpy as np
         from faster_whisper import WhisperModel
@@ -89,7 +157,7 @@ def palabras(ruta, pistas=None):
     except Exception:  # El modelo viene de Hugging Face, y la terminal de la sesión no llega allí
         return None, ""
     # Sin filtro de voz, las pistas hacen que repita frases en los silencios y esconda un final mudo
-    segmentos, _ = modelo.transcribe(audio, language="es", word_timestamps=True, vad_filter=True,
+    segmentos, _ = modelo.transcribe(audio, language=idioma, word_timestamps=True, vad_filter=True,
                                      vad_parameters={"min_silence_duration_ms": 300, "speech_pad_ms": 120}, hotwords=pistas)
     lista, texto = [], []
     for s in segmentos:
@@ -104,6 +172,7 @@ def main():
     p.add_argument("--tipo", choices=PERFILES, default="promocional", help="promocional o formativo")
     p.add_argument("--cierre", type=float, default=4.0, help="segundos finales donde debe haber voz")
     p.add_argument("--pausa", type=float, help="mayor pausa de voz permitida; por defecto la del tipo")
+    p.add_argument("--congelado", type=float, help="mayor tiempo sobre un mismo cuadro; por defecto el del tipo")
     p.add_argument("--guion", type=Path, help="texto aprobado que la voz debe decir")
     p.add_argument("--sin-voz", action="store_true", help="la persona pidió expresamente una pieza sin voz")
     a = p.parse_args()
@@ -111,6 +180,7 @@ def main():
         sys.exit(f"No existe {a.video}")
     perfil = PERFILES[a.tipo]
     pausa = a.pausa if a.pausa is not None else perfil["pausa"]
+    quieto = a.congelado if a.congelado is not None else perfil["congelado"]
 
     total = duracion(a.video)
     fallos, avisos = [], []
@@ -121,10 +191,10 @@ def main():
     if negro:
         fallos.append(f"Fotogramas negros en {negro}")
 
-    congelado = tramos(ffmpeg_filtro(a.video, video=f"freezedetect=n=-55dB:d={perfil['congelado']}"), "lavfi.freezedetect.freeze_start", "lavfi.freezedetect.freeze_end")
+    congelado = tramos(ffmpeg_filtro(a.video, video=f"freezedetect=n=-55dB:d={quieto}"), "lavfi.freezedetect.freeze_start", "lavfi.freezedetect.freeze_end")
     medio = [t for t in congelado if t[1] < total - 2.2]
     if medio:
-        fallos.append(f"Imagen congelada más de {perfil['congelado']} s en {medio}")
+        fallos.append(f"Imagen congelada más de {quieto} s en {medio}")
 
     mudo = tramos(ffmpeg_filtro(a.video, audio=f"silencedetect=n=-45dB:d={perfil['silencio']}"), "silence_start", "silence_end")
     if mudo:
@@ -147,7 +217,8 @@ def main():
         avisos.append("Revisión de voz omitida: pieza sin voz por pedido expreso")
     else:
         guion = a.guion.read_text(encoding="utf-8") if a.guion else ""
-        lista, texto = palabras(a.video, vocabulario(guion) or None)
+        # Sin pistas: con el guion como pista, un reel aprobado perdió sus primeros 16 s y repitió el final.
+        lista, texto = palabras(a.video)
         if lista is None:
             fallos.append("Voz sin comprobar: falta faster-whisper o su modelo. No lo busques en otras fuentes: sigue «Si falta el transcriptor» en la skill acabado-hyperframes")
         elif not lista:

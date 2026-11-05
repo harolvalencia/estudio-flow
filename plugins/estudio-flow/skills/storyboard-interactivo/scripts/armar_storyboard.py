@@ -20,6 +20,8 @@ PALABRAS_POR_SEGUNDO = 2.9
 PALABRAS_POR_SEGUNDO_FORMATIVO = 2.5
 LECCION_MAX_S = 360
 ORIGENES = ("pantalla", "flow", "grafico")
+CIERRES_FORMATIVOS = ("pregunta", "practica", "caso", "resumen", "invitacion", "siguiente")
+CIERRES_CON_COMPROBACION = ("pregunta", "practica", "caso")
 ANCHO = 540
 CALIDAD = 76
 LIMITE_MB = 15
@@ -38,16 +40,22 @@ def a_data_uri(ruta):
 
 
 def revisar(plan):
-    """Una propuesta sin voz en alguna escena o sin cierre no se muestra."""
+    """Una propuesta sin voz en alguna escena o sin cierre no se muestra. Un plan sin los campos nuevos valida como antes."""
     fallos = []
     formativo = plan.get("tipo") == "formativo"
+    cierre = plan.get("cierre_formativo")
+    if cierre and cierre not in CIERRES_FORMATIVOS:
+        fallos.append(f'"cierre_formativo" debe ser uno de: {", ".join(CIERRES_FORMATIVOS)}')
     if formativo:
         for campo in ("objetivos", "fuente", "valida"):
             if not plan.get(campo):
                 fallos.append(f'Falta "{campo}": un video formativo necesita objetivos, fuente y quién valida')
         for prop in plan["propuestas"]:
-            if not any(e.get("practica") for e in prop["escenas"]):
+            if (not cierre or cierre in CIERRES_CON_COMPROBACION) and not any(e.get("practica") for e in prop["escenas"]):
                 fallos.append(f'{prop["id"]}: falta una comprobación, una escena con "practica": true')
+            pasos = [e["paso"] for e in prop["escenas"] if e.get("paso") is not None]
+            if pasos != sorted(pasos):
+                fallos.append(f'{prop["id"]}: los pasos van en desorden ({pasos}). Todas las propuestas siguen la secuencia aprobada')
             if prop["escenas"][-1]["fin"] > LECCION_MAX_S and not plan.get("largo_aprobado"):
                 fallos.append(f'{prop["id"]}: pasa de {LECCION_MAX_S // 60} minutos, divídela en una serie')
             for n, e in enumerate(prop["escenas"], 1):
@@ -55,14 +63,14 @@ def revisar(plan):
                     fallos.append(f'{prop["id"]}, escena {n}: "origen" debe ser pantalla, flow o grafico')
     if plan.get("sin_voz"):
         return fallos
-    ritmo = PALABRAS_POR_SEGUNDO_FORMATIVO if formativo else PALABRAS_POR_SEGUNDO
+    ritmo = plan.get("ritmo") or (PALABRAS_POR_SEGUNDO_FORMATIVO if formativo else PALABRAS_POR_SEGUNDO)
     for prop in plan["propuestas"]:
         for n, e in enumerate(prop["escenas"], 1):
             voz = (e.get("locucion") or "").strip()
             if not voz:
                 fallos.append(f'{prop["id"]}, escena {n}: falta la locución')
             elif len(voz.split()) / ritmo > e["fin"] - e["inicio"]:
-                fallos.append(f'{prop["id"]}, escena {n}: la locución no cabe en {e["fin"] - e["inicio"]} s')
+                fallos.append(f'{prop["id"]}, escena {n}: la locución no cabe en {e["fin"] - e["inicio"]} s a {ritmo} palabras por segundo')
         if not prop["escenas"][-1].get("cta"):
             fallos.append(f'{prop["id"]}: la última escena debe marcarse como cierre con "cta": true')
     return fallos

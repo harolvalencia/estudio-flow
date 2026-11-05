@@ -9,6 +9,17 @@ Una productora de video con IA dentro de Claude para escritorio, para redes soci
 | `estudio-flow` | 7 skills: dirección, control de Flow, storyboard, acabado, video formativo, informe y manual de marca |
 | `hyperframes-skills` | Skills oficiales de [HyperFrames](https://github.com/heygen-com/hyperframes), de HeyGen, bajo Apache-2.0 |
 
+## Novedades de la versión 1.6.0
+
+- **Tutoriales en orden lógico:** recorre el sistema antes de escribir el guion, con un mismo caso de principio a fin, y valida que ningún paso use algo que aún no existe.
+- **Video de referencia:** le das una dirección o un archivo, lo analiza y aplica lo que funcionó, sin copiar la pieza.
+- **Estilos:** real, animación 3D, caricatura, plastilina, pizarra e infografía que se construyen al ritmo de la voz.
+- **Cierre a tu medida:** pregunta, «pausa y hazlo tú», caso para decidir, resumen, invitación a usar la aplicación o siguiente lección.
+- **Menos puntos de Flow:** prompts calculados con el ritmo real de la voz, clip piloto y revisión automática de cada toma antes de gastar otra.
+- **Tu marca y tus imágenes:** usa los archivos que ya tengas en el Proyecto y las imágenes que le entregues.
+
+Si vienes de una versión anterior, vuelve a pegar las instrucciones del Proyecto.
+
 ## Instalación en Claude
 
 Necesitas Claude para escritorio con un plan de pago.

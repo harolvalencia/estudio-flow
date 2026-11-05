@@ -24,7 +24,8 @@ Los puntos mensuales tampoco se acumulan al siguiente ciclo. Sin suscripción, e
 | Veo 3.1 Fast | 20; 10 con Ultra |
 | Veo 3.1 Quality | 100 |
 | Editar un video | 40 |
-| Escalar a 1080p | Gratis en Plus, Pro y Ultra |
+| Escalar de 360p a 720p | Gratis en Pro y Ultra; en otro plan, mira lo que muestra Flow |
+| Escalar de 720p a 1080p | Gratis en Plus, Pro y Ultra |
 | Escalar a 4K | 50, solo Ultra |
 | Imágenes | 0, con límite diario por modelo |
 | Vista previa de voz y guardar voz | 0 |
@@ -33,11 +34,35 @@ El costo se multiplica por `x2`, `x3` o `x4`.
 
 ## Cómo presupuestar
 
+`clips_flow.py preparar` lo calcula para las dos rutas:
+
 ```
 puntos = (suma del costo de cada clip) × 1,3
 ```
 
-El 30 % adicional cubre repeticiones. Para un reel de 15 s con 3 clips de Omni de 6 s a 720p: 30 × 1,3 = 39 puntos.
+El 30 % adicional cubre repeticiones. Mantenlo aunque un video real haya usado menos: es un solo caso. Para un reel de 25 s con clips de 8, 8, 6 y 6 s:
+
+| Ruta | Base | Con margen | Qué permite |
+|---|---|---|---|
+| 360p escalado a 720p | 22 | 29 | Clips a 720p. Flow no ofrece 1080p desde 360p |
+| 720p directo | 44 | 58 | Clips a 720p, con opción de bajarlos a 1080p |
+
+La ruta de 360p se usó en un video real de 37 clips en 3D y se probó el 5 de noviembre de 2026 en caricatura, plastilina y persona realista, con el escalado gratis a 720p. En la persona realista la cara queda nítida, con un halo leve en el pelo. La persona elige en la etapa 3.
+
+## Cómo gastar menos sin perder calidad
+
+Lo que más ahorra es no fallar. En orden:
+
+1. **Aprueba la imagen antes del clip.** Nano Banana cuesta 0 puntos. Si la persona ya tiene imágenes, mejor.
+2. **Prueba la voz en la vista previa.** Cuesta 0 puntos y detecta las palabras mal dichas.
+3. **Revisa los prompts.** `clips_flow.py preparar` rechaza gratis los errores que ya costaron puntos.
+4. **Genera un piloto.** El clip más difícil, a 360p, antes de todos los demás.
+5. **Lanza los clips de uno en uno.** Así un error no se repite en toda la pieza.
+6. **Repara antes de regenerar.** Sigue [la tabla de arreglos](prompts-omni.md#qué-hacer-con-cada-fallo).
+
+Dos detalles de costo: un clip de 8 s cuesta menos que dos de 4 s (a 360p, 6 contra 8 puntos), y `x2` a `x4` multiplican el costo sin descuento.
+
+Ahorrar nunca es quitar clips visibles, luz, profundidad ni escala: el video debe seguir siendo épico.
 
 ## Costo por minuto de narración
 
@@ -50,4 +75,4 @@ Un video largo se narra con un clip de 10 s por tramo:
 
 El tutorial de ejemplo, de 1:43 con 14 tramos, costó 117 puntos: apertura y cierre a 720p, el resto a 360p, una comparación de calidad y dos frases que hubo que rehacer. Escribe el guion completo antes de generar: cambiar una frase después cuesta otro clip.
 
-Antes de producir, compara contra el saldo real. Ensaya el clip más difícil a 360p si tiene acción compleja: cuesta la mitad y la escala a 720p es gratis en Pro y Ultra.
+Antes de producir, compara contra el saldo real.

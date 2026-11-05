@@ -60,7 +60,7 @@ npx hyperframes init 04-montaje --example blank --resolution portrait --non-inte
 
 - **Gancho:** frase fuerte visible desde el fotograma 0.
 - **Subtítulos:** en la parte baja de la banda segura, con palabras clave en color de marca, sincronizados con la transcripción. Todo lo hablado va subtitulado.
-- **Riqueza visual:** destellos, luz, partículas y transiciones con energía sobre clips con movimiento. Una escena con imagen fija y texto no se entrega.
+- **Riqueza visual:** destellos, luz, partículas y transiciones con energía sobre clips con movimiento. Una escena con imagen fija y texto no se entrega. En pizarra e infografía no montes a mano: usa la escena `construccion` de `armar_tutorial.py`, descrita en [estilos-visuales.md](../estudio-flow/references/estilos-visuales.md#pizarra-e-infografía).
 - **Marca:** logo pequeño durante el video y protagonista en el cierre. Nunca abre el video.
 - **Cierre:** 4 a 6 s con frase inspiradora, acción dicha y escrita, botón llamativo, logo con energía y clímax de música. Sostén 1,5 s el último cuadro.
 - **Sonido:** voz delante, música de principio a fin entre 12 y 15 dB por debajo, sonidos en los cambios y un solo riser con golpe en el cierre.
@@ -115,7 +115,7 @@ Pasa el archivo por el control antes de exportar. Necesita `faster-whisper`, que
 python _estudio/control_final.py ../05-final/maestro.mp4 --cierre 4 --guion ../03-flow/guion.txt
 ```
 
-Con `--guion` comprueba que la voz diga el texto aprobado. En tutoriales y capacitaciones agrega `--tipo formativo`.
+Con `--guion` comprueba que la voz diga el texto aprobado. En tutoriales y capacitaciones agrega `--tipo formativo`. En piezas promocionales en pizarra o infografía agrega `--congelado 8 --pausa 3.5`.
 
 Si responde `"aprobado": false`, corrige lo que indica. Un tramo sin voz se arregla generando en Flow la locución de esa escena, no con más texto.
 
@@ -133,7 +133,7 @@ Si el brief pide otro formato, no recortes: duplica la composición raíz con la
 
 ## 7. Escalar a 1080p, si la persona lo pide
 
-La primera versión lleva clips de 720p en un lienzo de 1080×1920: el render tarda casi igual y los textos y logos quedan nítidos. Si la persona quiere más calidad:
+Solo aplica a la ruta **720p directo**: desde un clip de 360p Flow no ofrece 1080p. La primera versión lleva clips de 720p en un lienzo de 1080×1920: el render tarda casi igual y los textos y logos quedan nítidos. Si la persona quiere más calidad:
 
 1. Mueve los clips de `03-flow/` a `03-flow/720p/` y la primera versión de `05-final/` a `05-final/720p/`.
 2. Baja en 1080p cada clip que se ve en el video, de uno en uno, y cópialo a `03-flow/NN.mp4` (skill `flow-control`).

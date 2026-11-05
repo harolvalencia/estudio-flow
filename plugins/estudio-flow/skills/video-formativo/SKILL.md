@@ -1,6 +1,6 @@
 ---
 name: video-formativo
-description: "Produce tutoriales y videos de capacitación que enseñan de verdad: objetivos de aprendizaje, fuente validada, pantalla real, narración con voces de Flow, señalización, comprobación, subtítulos y capítulos. Úsala cuando alguien pida un tutorial, capacitación, inducción, curso, microlección, manual en video, explicación de un procedimiento o enseñar a usar un sistema."
+description: "Produce tutoriales y videos de capacitación que enseñan de verdad: objetivos de aprendizaje, fuente validada, pasos en orden lógico, pantalla real, narración con voces de Flow, señalización, un final a elección, subtítulos y capítulos. Úsala cuando alguien pida un tutorial, capacitación, inducción, curso, microlección, manual en video, explicación de un procedimiento o enseñar a usar un sistema."
 ---
 
 # Video formativo
@@ -13,7 +13,7 @@ Lee antes [el estándar formativo](references/diseno-instruccional.md). Esta ski
 
 Después de la marca, sigue [la entrevista formativa](references/entrevista-formativa.md). No propongas nada sin estas cuatro cosas:
 
-1. **Objetivo observable:** qué podrá hacer la persona al terminar. Se escribe con un verbo que se pueda comprobar: crear, configurar, reportar. Nunca «entender» ni «conocer».
+1. **Objetivo observable:** qué podrá hacer la persona al terminar. Se escribe con un verbo que se pueda comprobar: crear, configurar, reportar. Nunca «entender» ni «conocer». Si la lección explica cómo funciona un sistema, escribe lo que podrá recorrer: «completar una venta de principio a fin».
 2. **Público y punto de partida:** qué sabe ya y qué herramienta usa.
 3. **Fuente:** el manual, procedimiento, norma, grabación o experto de donde sale el contenido.
 4. **Quién valida:** la persona que aprueba que los pasos son correctos.
@@ -26,19 +26,23 @@ Si el contenido no cabe en una lección de hasta 6 minutos, propón una serie: c
 
 ## Etapa 2. Propuestas didácticas
 
-Presenta las propuestas que pidió la persona. Si son varias, deben cambiar el **formato didáctico**, no solo la estética. Elige de [formatos didácticos](references/formatos-didacticos.md) los que sirvan para el objetivo.
+**Antes de escribir el guion, recorre el sistema y fija el orden.** Sigue [secuencia lógica](references/secuencia-logica.md): deja `00-brief/secuencia.json`, valídalo y haz aprobar la lista. Sin eso no hay guion.
 
-1. Escribe el guion por tramos: cada tramo es una idea, hasta 10 s, 22 palabras como máximo.
-2. Estructura: resultado primero, objetivos, pasos, error común, comprobación, cierre con práctica.
+Presenta las propuestas que pidió la persona. Si son varias, deben cambiar el **formato didáctico**, no solo la estética, y todas enseñan los mismos pasos en el mismo orden. Elige de [formatos didácticos](references/formatos-didacticos.md) los que sirvan para el objetivo.
+
+1. Escribe el guion por tramos: cada tramo es una idea, hasta 10 s. Antes de medir la voz, máximo 17 palabras.
+2. Estructura: resultado primero, objetivos, pasos en el orden aprobado, error común, el final que eligió la persona y un cierre épico.
 3. Marca en cada escena su `origen`: `pantalla`, `flow` o `grafico`.
-4. Haz los fotogramas: capturas reales para `pantalla`, Nano Banana 2.1 para `flow`.
-5. Arma el storyboard con `"tipo": "formativo"`, `objetivos`, `fuente` y `valida`. El formato por defecto es 16:9.
+4. Haz los fotogramas: capturas reales para `pantalla`, Nano Banana 2.1 en el estilo elegido para `flow`.
+5. Arma el storyboard con `"tipo": "formativo"`, `objetivos`, `fuente`, `valida`, `secuencia` y `cierre_formativo`. El formato por defecto es 16:9.
 
 ## Etapa 3. Validación y presupuesto
 
 Además de elegir la propuesta, quien valida aprueba el guion **palabra por palabra**. Guarda esa aprobación en `proceso.json`, en `brief.validacion`. Después de grabar la voz, cambiar una frase cuesta puntos.
 
-El presupuesto usa [la tabla de narración](../flow-control/references/voces-flow.md#narración-larga-por-tramos). Dile a la persona cuántos puntos cuesta cada minuto antes de que apruebe.
+Comprueba que el guion siga el orden aprobado: `python _estudio/validar_secuencia.py 00-brief/secuencia.json --tutorial 04-montaje/tutorial.json`.
+
+El presupuesto usa [la tabla de narración](../flow-control/references/voces-flow.md#narración-larga-por-tramos) y `clips_flow.py preparar`, con cada tramo como `"clase": "narracion"`. Dile a la persona cuántos puntos cuesta cada minuto antes de que apruebe, y muestra las dos rutas de resolución para las escenas que se ven.
 
 ## Etapa 4. Material y voz
 
@@ -46,9 +50,9 @@ En Mac y Linux, cambia `python` por el valor de `comando_python` que da `verific
 
 **Pantalla real.** Sigue [pantalla real](references/pantalla-real.md). Una interfaz nunca se genera con IA: Flow la deforma y el alumno aprendería botones que no existen.
 
-**Clips de Flow.** Úsalos para la apertura, las escenas de contexto, el presentador y el cierre. Nunca para mostrar cómo se hace un procedimiento técnico: un casco mal puesto en un clip enseña a ponérselo mal. Si un clip muestra un procedimiento, quien valida debe aprobarlo.
+**Clips de Flow.** Úsalos, en el estilo elegido, para la apertura, las escenas de contexto, el presentador o personaje y el cierre. Nunca para mostrar cómo se hace un procedimiento técnico: un casco mal puesto en un clip enseña a ponérselo mal. Si un clip muestra un procedimiento, quien valida debe aprobarlo.
 
-**Voz.** Genera un clip por tramo en `03-flow/voz/` y compara cada transcripción contra el guion. Luego únelos:
+**Voz.** Empieza por un tramo piloto y mide el ritmo con `clips_flow.py revisar`. Después genera un clip por tramo en `03-flow/voz/`, revisa cada uno con el mismo comando y repara antes de regenerar. Luego únelos:
 
 ```
 python _estudio/narracion_desde_clips.py 03-flow/voz --salida 04-montaje/assets/audio/voz.wav --tiempos 04-montaje/tiempos.json --guion 04-montaje/tutorial.json
@@ -72,6 +76,8 @@ Si `check` avisa que un texto dura poco, agrega `pausa_despues` a esa escena y v
 
 Compara el índice del tutorial con el material que acompaña la clase: si la presentación o la guía tienen un paso que el video no cubre, el alumno se pierde.
 
+Mira que cada pantalla muestre lo que dejó el paso anterior: un dato que aparece de la nada rompe el hilo aunque el orden sea correcto.
+
 ## Etapa 6. Control y material de apoyo
 
 ```
@@ -90,13 +96,13 @@ Además del video, entrega en `05-final/`:
 - Subtítulos `.srt` y `.vtt`.
 - Capítulos para la descripción de YouTube.
 - Transcripción, que también sirve como alternativa accesible.
-- `guia-rapida.md`: los pasos en una página y las preguntas de comprobación con su respuesta.
+- `guia-rapida.md`: los pasos en una página y, si la lección las lleva, las preguntas de comprobación con su respuesta.
 
 Di con claridad lo que no incluye. El paquete SCORM no se genera: la mayoría de plataformas aceptan MP4 con subtítulos VTT, y si la tuya exige SCORM debe empaquetarse con su herramienta.
 
 ## Reglas que no se negocian
 
-- Sin fuente no hay guion. Sin validación no hay producción.
+- Sin fuente no hay guion. Sin validación no hay producción. Sin orden aprobado no hay guion.
 - Interfaces siempre reales, nunca generadas.
 - Datos de prueba en pantalla. Nunca clientes, contraseñas, llaves ni correos reales. Las credenciales las escribe la persona fuera de cámara.
 - Decir lo que se ve: «pulsa Guardar, arriba a la derecha», no «pulsa aquí». Así el video también sirve a quien no ve bien.

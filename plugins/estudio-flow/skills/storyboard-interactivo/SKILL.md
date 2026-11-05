@@ -30,6 +30,7 @@ python _estudio/armar_storyboard.py 02-storyboard/plan.json
   "formato": "9:16",
   "duracion_s": 15,
   "objetivo": "Agendar diagnósticos",
+  "ritmo": 2.2,
   "marca": {"nombre": "Innovaitors", "primario": "#1893F8", "acento": "#00C2D1", "logo": "logo-blanco.png"},
   "propuestas": [
     {
@@ -38,6 +39,8 @@ python _estudio/armar_storyboard.py 02-storyboard/plan.json
       "resumen": "Una idea cobra vida en 15 segundos",
       "concepto": "Qué pasa en el video, en dos frases.",
       "porque": "Por qué sirve para este objetivo y este público.",
+      "estilo": "Animación 3D de película",
+      "referente": "Del video de referencia toma el gancho con una pregunta en el primer segundo.",
       "tono": "Épico",
       "voz": "Sulafat, cálida y segura",
       "tecnica": "Clips Omni + títulos",
@@ -60,7 +63,9 @@ python _estudio/armar_storyboard.py 02-storyboard/plan.json
 
 Cada escena lleva `locucion`, y la última también `"cta": true`. El script rechaza el plan si falta alguna, si una frase no cabe en su tiempo o si no hay cierre. Solo usa `"sin_voz": true` en el plan si la persona lo pidió.
 
-Para un tutorial o capacitación agrega `"tipo": "formativo"`, `"objetivos"` con la lista de lo que podrá hacer la persona, `"fuente"` y `"valida"`. Cada escena lleva `"origen"` (`pantalla`, `flow` o `grafico`) y al menos una lleva `"practica": true`. El script rechaza el plan si falta algo o si la lección pasa de 6 minutos, salvo que lleve `"largo_aprobado": true`.
+`ritmo` son las palabras por segundo para comprobar que la locución quepa. Usa 2,2 mientras no hayas medido la voz. `estilo` y `referente` son opcionales: el segundo solo si hay un video de referencia.
+
+Para un tutorial o capacitación agrega `"tipo": "formativo"`, `"objetivos"` con la lista de lo que podrá hacer la persona, `"fuente"`, `"valida"`, `"secuencia"` con los títulos de los pasos aprobados y `"cierre_formativo"`: `pregunta`, `practica`, `caso`, `resumen`, `invitacion` o `siguiente`. Cada escena lleva `"origen"` (`pantalla`, `flow` o `grafico`) y puede llevar `"paso"`. Si el final es `pregunta`, `practica` o `caso`, al menos una escena lleva `"practica": true`. El script rechaza el plan si falta algo, si los pasos van en desorden o si la lección pasa de 6 minutos, salvo que lleve `"largo_aprobado": true`.
 
 `formato` acepta `9:16`, `16:9`, `1:1` y `4:5`. Las escenas no deben dejar huecos: cada `inicio` es el `fin` de la anterior. El logo es opcional y debe servir sobre fondo oscuro.
 

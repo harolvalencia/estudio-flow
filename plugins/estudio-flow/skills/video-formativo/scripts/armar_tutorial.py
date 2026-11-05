@@ -5,7 +5,7 @@ Uso:
 
 Deja en la carpeta de tutorial.json:
     index.html              composición completa, lista para `hyperframes check` y `render`
-    assets/audio/banda.wav  música suave en apertura y cierre, barridos, clics y golpe final
+    assets/audio/banda.wav  música en apertura y cierre (o continua), barridos, clics y golpe final
     linea-de-tiempo.json    escenas y capítulos, para kit_formativo.py
     guion.txt               texto aprobado, para control_final.py --guion
 
@@ -17,6 +17,8 @@ El formato de tutorial.json está en references/plantilla-tutorial.md. Necesita 
 import argparse
 import html
 import json
+import math
+import random
 import re
 import subprocess
 import sys
@@ -37,6 +39,10 @@ PARECIDO_PALABRA = 0.75
 LUFS_VOZ = -18.0
 MUSICA_BAJO_VOZ_DB = 14
 CURSOR = '<path d="M4 3 L4 33 L12 25.5 L17.5 38 L24 35 L18.4 22.8 L29 22.8 Z" fill="#fff" stroke="#0b1422" stroke-width="2.4" stroke-linejoin="round"/>'
+PUNTA = '<path d="M2 42 L10 30 L34 6 L42 14 L18 38 Z" fill="#fff" stroke="#0b1422" stroke-width="2.4" stroke-linejoin="round"/>'
+CHEQUEO = '<svg viewBox="0 0 30 30"><path d="M6 16 L13 23 L25 8" fill="none" stroke="#02131f" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+ZIGZAGS = 6
+POLVO = 30
 avisos = []
 
 
@@ -96,6 +102,21 @@ def momento(marca, escena, previo):
     return marca.get("en", previo + 1.6)
 
 
+def revisar_pasos(escenas):
+    """El número de paso del video debe avanzar de uno en uno. Cuenta tanto `paso` como una etiqueta «Paso 4 de 8»."""
+    previo = 0
+    for e in escenas:
+        numero = e.get("paso")
+        if numero is None:
+            m = re.match(r"\s*paso\s+(\d+)", e.get("etiqueta") or "", re.I)
+            numero = int(m.group(1)) if m else None
+        if numero is None:
+            continue
+        if numero < previo or numero > previo + 1:
+            avisos.append(f"Escena {e['n']}: va al paso {numero} después del paso {previo}. Revisa el orden con validar_secuencia.py")
+        previo = max(previo, numero)
+
+
 def preparar_escenas(guion, tiempos, base):
     tramos = {t["n"]: t for t in tiempos["tramos"]}
     escenas = []
@@ -109,6 +130,7 @@ def preparar_escenas(guion, tiempos, base):
         escenas.append({**e, "n": n, "inicio": inicio, "dur": sum(tramos[i]["duracion"] for i in ids), "palabras": palabras,
                         "voz_desde": tramos[ids[0]]["desde"]})
     escenas[-1]["dur"] += SOSTENER_S
+    revisar_pasos(escenas)
     return escenas
 
 
@@ -151,7 +173,10 @@ def escena_apertura(escena, tl, base, ctx):
         t = ini + escena["dur"] * (0.35 + 0.5 * i / max(1, len(escena["objetivos"])))
         tl.append(f'tl.fromTo("#{e}o{i}", {{opacity:0, x:-30}}, {{opacity:1, x:0, duration:.4, ease:"power3.out"}}, {t:.3f});')
     lineas = "".join(f'<span class="linea"><span>{marcar(x)}</span></span>' for x in escena["titulo"].split("|"))
-    return f'''<div class="fondo" id="{e}f">{medio_html(e, escena, base)}</div><div class="velo"></div>
+    fondo = f'<div class="degradado" id="{e}f"></div>'
+    if escena.get("video") or escena.get("imagen"):
+        fondo = f'<div class="fondo" id="{e}f">{medio_html(e, escena, base)}</div><div class="velo"></div>'
+    return f'''{fondo}
         <div class="portada"><div class="etiqueta">{marcar(escena.get("etiqueta", ""))}</div><h1 id="{e}t">{lineas}</h1><ul class="objetivos">{items}</ul></div>'''
 
 
@@ -298,19 +323,206 @@ def escena_cierre(escena, tl, base, ctx):
     tl.append(f'tl.fromTo("#{e}t .linea > span", {{yPercent:104}}, {{yPercent:0, duration:.55, stagger:.12, ease:"power4.out"}}, {ini + .15:.3f});')
     tl.append(f'tl.fromTo("#{e}h", {{opacity:0, scale:1.5}}, {{opacity:1, scale:1, duration:.2, ease:"power3.in"}}, {ini + t - .2:.3f});')
     tl.append(f'tl.to("#{e}h", {{opacity:0, duration:.7, ease:"power2.out"}}, {ini + t:.3f});')
-    tl.append(f'tl.fromTo("#{e}b", {{opacity:0, y:46, scale:.9}}, {{opacity:1, y:0, scale:1, duration:.5, ease:"back.out(1.8)"}}, {ini + t:.3f});')
+    if escena.get("boton"):
+        tl.append(f'tl.fromTo("#{e}b", {{opacity:0, y:46, scale:.9}}, {{opacity:1, y:0, scale:1, duration:.5, ease:"back.out(1.8)"}}, {ini + t:.3f});')
     tl.append(f'tl.fromTo("#{e}l", {{opacity:0, scale:1.2}}, {{opacity:1, scale:1, duration:.55, ease:"power4.out"}}, {ini + t + .2:.3f});')
     tl.append(f'tl.fromTo("#{e}x", {{opacity:0, y:16}}, {{opacity:1, y:0, duration:.4, ease:"power2.out"}}, {ini + t + .45:.3f});')
     ctx["chispas"] = (ini + t, ini + dur)
     lineas = "".join(f'<span class="linea"><span>{marcar(x)}</span></span>' for x in escena["frase"].split("|"))
-    return f'''<div class="fondo" id="{e}f">{medio_html(e, escena, base)}</div><div class="velo-final"></div><div id="chispas"></div>
+    fondo = f'<div class="degradado" id="{e}f"></div>'
+    if escena.get("video") or escena.get("imagen"):
+        fondo = f'<div class="fondo" id="{e}f">{medio_html(e, escena, base)}</div>'
+    boton = f'<div class="boton" id="{e}b">{marcar(escena["boton"])}</div>' if escena.get("boton") else ""
+    qr = ""
+    if escena.get("qr"):
+        if not (base / escena["qr"]).exists():
+            sys.exit(f"Escena {escena['n']}: falta el archivo {escena['qr']}")
+        qr = f'<img class="qr" id="{e}q" src="{escena["qr"]}" alt="Código QR" />'
+        tl.append(f'tl.fromTo("#{e}q", {{opacity:0, scale:.8}}, {{opacity:1, scale:1, duration:.45, ease:"back.out(1.8)"}}, {ini + t + .3:.3f});')
+    # Sobre una captura clara el velo normal deja gris el cierre: la imagen queda de fondo y manda la marca
+    velo = "velo-final fuerte" if escena.get("imagen") and not escena.get("video") else "velo-final"
+    return f'''{fondo}<div class="{velo}"></div><div id="chispas"></div>
         <div class="final"><img class="logo-final" id="{e}l" src="{ctx["logo"]}" alt="{html.escape(ctx["marca"])}" />
-        <h1 id="{e}t">{lineas}</h1><div class="boton" id="{e}b">{marcar(escena.get("boton", ""))}</div><div class="pie" id="{e}x">{marcar(escena.get("texto", ""))}</div></div>
+        <h1 id="{e}t">{lineas}</h1>{boton}{qr}<div class="pie" id="{e}x">{marcar(escena.get("texto", ""))}</div></div>
         <div class="luz-final" id="{e}h"></div>'''
 
 
+def escena_lista(escena, tl, base, ctx):
+    """Pausa y hazlo tú, o resumen de pasos. Cada punto entra cuando la voz lo nombra."""
+    e, ini, dur = f'e{escena["n"]}', escena["inicio"], escena["dur"]
+    practica = escena["tipo"] == "practica"
+    puntos, palabras = escena["puntos"], escena.get("al_decir", [])
+    fondo = ""
+    if escena.get("video") or escena.get("imagen"):
+        fondo = f'<div class="fondo" id="{e}z">{medio_html(e, escena, base)}</div><div class="velo"></div>'
+        tl.append(f'tl.fromTo("#{e}z", {{scale:1.02}}, {{scale:1.09, duration:{dur:.2f}, ease:"none"}}, {ini:.3f});')
+    tl.append(f'tl.fromTo("#{e}g", {{xPercent:-4, scale:1.08}}, {{xPercent:4, scale:1.16, duration:{dur:.2f}, ease:"none"}}, {ini:.3f});')
+    tl.append(f'tl.fromTo("#{e}t", {{opacity:0, y:24}}, {{opacity:1, y:0, duration:.45, ease:"power3.out"}}, {ini + .1:.3f});')
+    voz = dur - escena.get("pausa_despues", 0)
+    previo, filas = 0.4, ""
+    for i, punto in enumerate(puntos):
+        reparto = 0.5 + max(0.5, voz - 1.5) * i / max(1, len(puntos))
+        marca = {"palabra": palabras[i], "en": reparto} if i < len(palabras) else {"en": reparto}
+        momento_i = momento(marca, escena, previo)
+        ficha = str(i + 1) if practica else CHEQUEO
+        filas += f'<div class="punto" id="{e}o{i}"><b>{ficha}</b><span>{marcar(punto)}</span></div>'
+        tl.append(f'tl.fromTo("#{e}o{i}", {{opacity:0, x:-40}}, {{opacity:1, x:0, duration:.42, ease:"power3.out"}}, {ini + momento_i:.3f});')
+        ctx["clics"].append(ini + momento_i)
+        previo = momento_i + 0.2
+    aviso = ""
+    if practica:
+        aviso = f'<div class="aviso-pausa" id="{e}a">{marcar(escena.get("aviso", "Pausa el video y hazlo tú"))}</div>'
+        tl.append(f'tl.fromTo("#{e}a", {{opacity:0, scale:.8}}, {{opacity:1, scale:1, duration:.4, ease:"back.out(2)"}}, {ini + min(dur - .6, previo + .3):.3f});')
+    etiqueta = escena.get("etiqueta") or ("Tu turno" if practica else "Lo que ya sabes")
+    return f'''<div class="degradado" id="{e}g"></div>{fondo}<div class="tarjeta"><div class="etiqueta">{marcar(etiqueta)}</div>
+        <h2 class="pregunta" id="{e}t">{marcar(escena.get("titulo", ""))}</h2><div class="puntos">{filas}</div>{aviso}</div>'''
+
+
+def elemento_construccion(el, i, e, t, ini, tl, base, escena, ctx, Lw, Lh, mezcla):
+    """Html de un elemento del lienzo y el punto al que debe ir la cámara. Cada uno se revela en su momento."""
+    x, y = el.get("x", 0.5) * Lw, el.get("y", 0.5) * Lh
+    clase = el.get("tipo", "texto")
+    if clase == "dibujo":
+        ruta = el["imagen"]
+        if not (base / ruta).exists():
+            sys.exit(f"Escena {escena['n']}: falta el archivo {ruta}")
+        ancho_m, alto_m = tamano_medio(base / ruta)
+        w = el.get("ancho", 0.3) * Lw
+        h = w * alto_m / ancho_m
+        izq, arriba, d = x - w / 2, y - h / 2, el.get("tiempo", 1.0)
+        tl.append(f'tl.fromTo("#{e}x{i}", {{clipPath:"inset(0 100% 0 0)"}}, {{clipPath:"inset(0 0% 0 0)", duration:{d:.2f}, ease:"none"}}, {ini + t:.3f});')
+        tl.append(f'tl.set("#{e}k", {{opacity:1, x:{izq - 2:.1f}, y:{arriba - 42:.1f}}}, {ini + t:.3f});')
+        for k in range(1, ZIGZAGS + 1):
+            py = arriba + h * (1 if k % 2 else 0) - 42
+            tl.append(f'tl.to("#{e}k", {{x:{izq - 2 + w * k / ZIGZAGS:.1f}, y:{py:.1f}, duration:{d / ZIGZAGS:.3f}, ease:"none"}}, {ini + t + d * (k - 1) / ZIGZAGS:.3f});')
+        tl.append(f'tl.set("#{e}k", {{opacity:0}}, {ini + t + d:.3f});')
+        tl.append(f'tl.fromTo("#{e}h{i}", {{opacity:0, scale:.7}}, {{opacity:.85, scale:1.05, duration:{d * .8:.2f}, ease:"power2.out"}}, {ini + t:.3f});')
+        tl.append(f'tl.to("#{e}h{i}", {{opacity:.28, duration:.9, ease:"power2.inOut"}}, {ini + t + d * .8:.3f});')
+        html_el = (f'<div class="halo" id="{e}h{i}" style="left:{x - w * .75:.1f}px;top:{y - h * .75:.1f}px;width:{w * 1.5:.1f}px;height:{h * 1.5:.1f}px"></div>'
+                   f'<img class="dibujo" id="{e}x{i}" src="{ruta}" alt="" style="left:{izq:.1f}px;top:{arriba:.1f}px;width:{w:.1f}px;height:{h:.1f}px;mix-blend-mode:{mezcla}" />')
+        return html_el, "", x, y
+    if clase == "flecha":
+        (ax, ay), (bx, by) = el["de"], el["a"]
+        x1, y1, x2, y2 = ax * Lw, ay * Lh, bx * Lw, by * Lh
+        curva = el.get("curva", 0.12)
+        cx, cy = (x1 + x2) / 2 - (y2 - y1) * curva, (y1 + y2) / 2 + (x2 - x1) * curva
+        angulo = math.degrees(math.atan2(y2 - cy, x2 - cx))
+        camino = f'M{x1:.1f} {y1:.1f} Q{cx:.1f} {cy:.1f} {x2:.1f} {y2:.1f}'
+        d = el.get("tiempo", 0.7)
+        tl.append(f'tl.fromTo(["#{e}x{i}", "#{e}y{i}"], {{strokeDashoffset:110}}, {{strokeDashoffset:0, duration:{d:.2f}, ease:"power2.inOut"}}, {ini + t:.3f});')
+        tl.append(f'tl.fromTo("#{e}z{i}", {{opacity:0}}, {{opacity:1, duration:.12}}, {ini + t + d - .1:.3f});')
+        trazo = (f'<path id="{e}y{i}" class="brillo" d="{camino}" pathLength="100" stroke-dasharray="100 120" stroke-dashoffset="110" />'
+                 f'<path id="{e}x{i}" class="linea-trazo" d="{camino}" pathLength="100" stroke-dasharray="100 120" stroke-dashoffset="110" />'
+                 f'<polygon id="{e}z{i}" class="cabeza" points="-30,-17 0,0 -30,17" transform="translate({x2:.1f} {y2:.1f}) rotate({angulo:.1f})" opacity="0" />')
+        return "", trazo, (x1 + x2) / 2, (y1 + y2) / 2
+    if clase == "dato":
+        w = el.get("ancho", 0.26) * Lw
+        tl.append(f'tl.fromTo("#{e}x{i}", {{opacity:0, scale:.72}}, {{opacity:1, scale:1, duration:.5, ease:"back.out(1.8)"}}, {ini + t:.3f});')
+        detalle = f'<p>{marcar(el["detalle"])}</p>' if el.get("detalle") else ""
+        html_el = (f'<div class="dato-c" id="{e}x{i}" style="left:{x - w / 2:.1f}px;top:{y:.1f}px;width:{w:.1f}px"><b>{marcar(el.get("valor", ""))}</b>'
+                   f'<span>{marcar(el.get("etiqueta", ""))}</span>{detalle}</div>')
+        return html_el, "", x, y
+    if clase == "barra":
+        w = el.get("ancho", 0.32) * Lw
+        tl.append(f'tl.fromTo("#{e}x{i}", {{opacity:0, y:18}}, {{opacity:1, y:0, duration:.35, ease:"power3.out"}}, {ini + t:.3f});')
+        tl.append(f'tl.fromTo("#{e}f{i}", {{scaleX:0}}, {{scaleX:{el.get("valor", 1):.3f}, duration:.8, ease:"power3.out"}}, {ini + t + .1:.3f});')
+        html_el = (f'<div class="barra-c" id="{e}x{i}" style="left:{x - w / 2:.1f}px;top:{y:.1f}px;width:{w:.1f}px"><span>{marcar(el.get("etiqueta", ""))}<em>{html.escape(str(el.get("texto", "")))}</em></span>'
+                   f'<div class="riel"><i id="{e}f{i}"></i></div></div>')
+        return html_el, "", x, y
+    # Texto escrito de izquierda a derecha
+    texto = el.get("texto", "")
+    d = el.get("tiempo", min(1.4, 0.035 * len(texto)))
+    tamano = el.get("tam", ctx["t_trazo"])
+    alineado = el.get("alineado", "centro")
+    tl.append(f'tl.set("#{e}x{i}", {{xPercent:{-50 if alineado == "centro" else 0}, yPercent:-50}}, {ini:.3f});')
+    tl.append(f'tl.fromTo("#{e}x{i}", {{clipPath:"inset(-20% 100% -20% 0)"}}, {{clipPath:"inset(-20% -2% -20% 0)", duration:{d:.2f}, ease:"none"}}, {ini + t:.3f});')
+    contenido = marcar(texto).replace("|", "<br>")
+    html_el = f'<div class="trazo" id="{e}x{i}" style="left:{x:.1f}px;top:{y:.1f}px;font-size:{tamano}px;text-align:{"center" if alineado == "centro" else "left"}">{contenido}</div>'
+    return html_el, "", x, y
+
+
+def escena_construccion(escena, tl, base, ctx):
+    """Pizarra o infografía: un lienzo grande se construye al ritmo de la voz y al final se muestra completo."""
+    e, ini, dur = f'e{escena["n"]}', escena["inicio"], escena["dur"]
+    W, H, foco_y = ctx["W"], ctx["H"], ctx["foco_y"]
+    lienzo = escena.get("lienzo", {})
+    Lw, Lh = W * lienzo.get("ancho", 1.6), H * lienzo.get("alto", 1.6)
+    ventana = (0, 0, Lw, Lh)
+    tema = escena.get("tema", "oscuro")
+    estilo = escena.get("estilo", "pizarra")
+    mezcla = escena.get("mezcla", "multiply" if tema == "claro" else "screen")
+    capas, trazos, previo = [], [], 0.25
+    elementos = escena.get("elementos", [])
+    if not elementos:
+        sys.exit(f"Escena {escena['n']}: una construcción necesita «elementos»")
+    tl.append(f'tl.fromTo("#{e}d", {{scale:1}}, {{scale:1.018, duration:{dur:.2f}, ease:"none"}}, {ini:.3f});')
+    for i, el in enumerate(elementos):
+        momento_i = momento(el, escena, previo) if i else max(momento(el, escena, previo), 0.25)
+        if i:
+            momento_i = max(momento_i, previo + MOVIMIENTO_MIN_S)
+        marcado, trazo, x, y = elemento_construccion(el, i, e, momento_i, ini, tl, base, escena, ctx, Lw, Lh, mezcla)
+        if el.get("foco"):
+            # La cámara apunta aquí y no al centro del elemento: así se encuadra un grupo completo
+            x, y = el["foco"][0] * Lw, el["foco"][1] * Lh
+        capas.append(marcado)
+        trazos.append(trazo)
+        ctx["clics"].append(ini + momento_i)
+        zoom = el.get("zoom", 1.0)
+        tx, ty = camara(x, y, zoom, W, foco_y, H, ventana)
+        if i == 0:
+            tl.append(f'tl.set("#{e}c", {{x:{tx:.1f}, y:{ty:.1f}, scale:{zoom}}}, {ini:.3f});')
+        elif el.get("mover", True):
+            inicio_mov = max(previo + 0.05, momento_i - 0.75)
+            tl.append(f'tl.to("#{e}c", {{x:{tx:.1f}, y:{ty:.1f}, scale:{zoom}, duration:{momento_i - inicio_mov:.2f}, ease:"power2.inOut"}}, {ini + inicio_mov:.3f});')
+        previo = momento_i
+    # La revelación: la cámara se aleja, se ve todo lo construido y la luz sube
+    zoom_fin = min(W / Lw, H / Lh)
+    if abs(W / Lw - H / Lh) > 0.01:
+        avisos.append(f"Escena {escena['n']}: el lienzo no tiene la proporción del video; se verán bordes al alejar la cámara")
+    desde_fin = max(previo + 0.9, dur - 3.4)
+    dur_fin = min(1.4, dur - desde_fin - 0.1)
+    if dur_fin >= 0.5:
+        tx, ty = camara(Lw / 2, Lh / 2, zoom_fin, W, H / 2, H, ventana)
+        tl.append(f'tl.to("#{e}c", {{x:{tx:.1f}, y:{ty:.1f}, scale:{zoom_fin:.3f}, duration:{dur_fin:.2f}, ease:"power3.inOut"}}, {ini + desde_fin:.3f});')
+        tl.append(f'tl.fromTo("#{e}l", {{opacity:0}}, {{opacity:.34, duration:{dur_fin * .6:.2f}, ease:"power2.in"}}, {ini + desde_fin + dur_fin * .35:.3f});')
+        tl.append(f'tl.to("#{e}l", {{opacity:0, duration:.7, ease:"power2.out"}}, {ini + desde_fin + dur_fin * .95:.3f});')
+    else:
+        avisos.append(f"Escena {escena['n']}: no alcanzó el tiempo para mostrar el lienzo completo; agrega «pausa_despues»")
+    polvo = ""
+    haz = ""
+    if tema != "claro":
+        haz = f'<div class="haz" id="{e}g" data-layout-allow-occlusion="true"></div>'
+        tl.append(f'tl.fromTo("#{e}g", {{xPercent:-6, yPercent:-3, scale:1.04}}, {{xPercent:6, yPercent:3, scale:1.14, duration:{dur:.2f}, ease:"none"}}, {ini:.3f});')
+        azar = random.Random(escena["n"] * 97)
+        for k in range(POLVO):
+            lado, sube = 4 + azar.random() * 10, 80 + azar.random() * 220
+            polvo += f'<i id="{e}q{k}" style="left:{azar.random() * W:.0f}px;top:{azar.random() * H:.0f}px;width:{lado:.1f}px;height:{lado:.1f}px"></i>'
+            tl.append(f'tl.fromTo("#{e}q{k}", {{opacity:0, y:0}}, {{opacity:{.25 + azar.random() * .55:.2f}, y:{-sube:.0f}, duration:{dur:.2f}, ease:"none"}}, {ini:.3f});')
+    if tema == "claro":
+        # El logo pequeño es claro y se perdería sobre el tablero: se oculta y vuelve en la escena siguiente
+        tl.append(f'tl.to("#marca", {{opacity:0, duration:.2}}, {ini:.3f});')
+        tl.append(f'tl.to("#marca", {{opacity:.95, duration:.2}}, {ini + dur:.3f});')
+    chip = ""
+    if escena.get("paso"):
+        chip = f'<div class="paso" id="{e}s"><b>{escena["paso"]}</b><span><small>Paso {escena["paso"]} de {ctx["pasos"]}</small>{marcar(escena.get("titulo", ""))}</span></div>'
+        tl.append(f'tl.fromTo("#{e}s", {{opacity:0, x:-34}}, {{opacity:1, x:0, duration:.42, ease:"power3.out"}}, {ini + .1:.3f});')
+    textura = escena.get("textura")
+    if textura and not (base / textura).exists():
+        sys.exit(f"Escena {escena['n']}: falta el archivo {textura}")
+    capa_textura = f'<img class="textura" src="{textura}" alt="" />' if textura else ""
+    return f'''<div class="deriva" id="{e}d"><div class="camara" id="{e}c">
+          <div class="tablero {estilo} {tema}{" con-textura" if textura else ""}" style="width:{Lw:.0f}px;height:{Lh:.0f}px">
+            {capa_textura}
+            <svg class="trazos" viewBox="0 0 {Lw:.0f} {Lh:.0f}" style="width:{Lw:.0f}px;height:{Lh:.0f}px">{"".join(trazos)}</svg>
+            {"".join(capas)}
+            <svg class="punta" id="{e}k" viewBox="0 0 44 44">{PUNTA}</svg>
+          </div>
+        </div></div>{haz}<div class="polvo">{polvo}</div><div class="luz-final" id="{e}l"></div>{chip}'''
+
+
 TIPOS = {"apertura": escena_apertura, "pantalla": escena_pantalla, "idea": escena_idea, "comandos": escena_comandos,
-         "pregunta": escena_pregunta, "cierre": escena_cierre}
+         "pregunta": escena_pregunta, "practica": escena_lista, "resumen": escena_lista, "construccion": escena_construccion,
+         "cierre": escena_cierre}
 
 
 def subtitulos_quemados(escenas, tl):
@@ -336,7 +548,7 @@ def subtitulos_quemados(escenas, tl):
 CSS = """
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { margin: 0; width: __W__px; height: __H__px; overflow: hidden; background: var(--fondo); }
-      :root { --fondo: __FONDO__; --primario: __PRIMARIO__; --acento: __ACENTO__; --titulo: "__FTITULO__", sans-serif; --texto: "__FTEXTO__", sans-serif; }
+      :root { --fondo: __FONDO__; --primario: __PRIMARIO__; --acento: __ACENTO__; --titulo: "__FTITULO__", sans-serif; --texto: "__FTEXTO__", sans-serif; --mano: "__FMANO__", sans-serif; }
       #root { position: relative; width: __W__px; height: __H__px; overflow: hidden; background: var(--fondo); color: #fff; font-family: var(--texto); }
       em { font-style: normal; color: var(--acento); }
       #luz { position: absolute; inset: 0; background: radial-gradient(62% 72% at 80% 10%, color-mix(in srgb, var(--primario) 30%, transparent), transparent 72%), radial-gradient(52% 62% at 8% 94%, color-mix(in srgb, var(--acento) 18%, transparent), transparent 72%); }
@@ -391,7 +603,51 @@ CSS = """
       .cap i { display: block; height: 100%; background: linear-gradient(90deg, var(--acento), var(--primario)); transform: scaleX(0); transform-origin: left; }
       #marca { position: absolute; right: 64px; bottom: 26px; height: 66px; opacity: .95; }
       #barrido { position: absolute; top: -10%; bottom: -10%; left: -20%; width: 140%; transform: translateX(-120%) skewX(-12deg); background: linear-gradient(90deg, rgba(2,4,10,0) 0%, var(--primario) 26%, var(--acento) 46%, #ffffff 50%, var(--acento) 54%, var(--primario) 74%, rgba(2,4,10,0) 100%); }
+      .puntos { display: grid; gap: 16px; margin-top: 8px; max-width: 1300px; }
+      .punto { display: flex; align-items: center; gap: 22px; padding: 16px 28px; border-radius: 18px; background: rgba(255,255,255,.08); box-shadow: 0 0 0 1px rgba(255,255,255,.16); font-size: __TCUERPO__px; font-weight: 700; line-height: 1.2; opacity: 0; }
+      .punto b { display: grid; place-items: center; width: 58px; height: 58px; flex: none; border-radius: 50%; background: linear-gradient(135deg, var(--acento), var(--primario)); color: #02131f; font-family: var(--titulo); font-size: 30px; }
+      .punto svg { width: 30px; height: 30px; }
+      .aviso-pausa { justify-self: start; padding: 16px 30px; border-radius: 40px; background: linear-gradient(95deg, var(--acento), var(--primario)); color: #02131f; font-weight: 800; font-size: __TPASO__px; box-shadow: 0 0 60px color-mix(in srgb, var(--acento) 55%, transparent); opacity: 0; }
+      .qr { width: 190px; height: 190px; border-radius: 14px; background: #fff; padding: 10px; opacity: 0; }
+      .tablero { position: absolute; left: 0; top: 0; overflow: hidden; }
+      .tablero.oscuro { background: radial-gradient(70% 70% at 50% 42%, color-mix(in srgb, var(--primario) 26%, #030810), #030810 100%); }
+      .tablero.oscuro::before, .tablero.claro::before { content: ""; position: absolute; inset: 0; background-size: 120px 120px; background-image: linear-gradient(color-mix(in srgb, var(--acento) 14%, transparent) 2px, transparent 2px), linear-gradient(90deg, color-mix(in srgb, var(--acento) 14%, transparent) 2px, transparent 2px); }
+      .tablero.claro { background: radial-gradient(70% 70% at 50% 42%, #ffffff, #e8eef2 100%); color: #0b1422; }
+      .tablero.con-textura::before { display: none; }
+      .tablero .textura { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .tablero.claro::before { background-image: linear-gradient(rgba(10,30,60,.07) 2px, transparent 2px), linear-gradient(90deg, rgba(10,30,60,.07) 2px, transparent 2px); }
+      .tablero.infografia.oscuro::before { background-size: 60px 60px; background-image: radial-gradient(color-mix(in srgb, var(--acento) 30%, transparent) 2px, transparent 2.5px); }
+      .tablero.claro em { color: var(--primario); }
+      .trazos { position: absolute; left: 0; top: 0; overflow: visible; fill: none; }
+      .linea-trazo { stroke: var(--acento); stroke-width: 8; stroke-linecap: round; }
+      .brillo { stroke: var(--acento); stroke-width: 26; stroke-linecap: round; opacity: .22; }
+      .cabeza { fill: var(--acento); }
+      .halo { position: absolute; opacity: 0; mix-blend-mode: screen; background: radial-gradient(closest-side, color-mix(in srgb, var(--acento) 58%, transparent), transparent); }
+      .claro .halo { mix-blend-mode: multiply; background: radial-gradient(closest-side, color-mix(in srgb, var(--acento) 22%, transparent), transparent); }
+      .dibujo { position: absolute; }
+      .trazo { position: absolute; font-family: var(--mano); font-weight: 700; line-height: 1.12; white-space: nowrap; word-spacing: .14em; }
+      .velo-final.fuerte { background: linear-gradient(0deg, color-mix(in srgb, var(--primario) 26%, rgba(2,4,10,.9)), rgba(2,4,10,.9)); }
+      .haz { position: absolute; inset: -12%; mix-blend-mode: screen; pointer-events: none; background: radial-gradient(38% 46% at 70% 30%, color-mix(in srgb, var(--primario) 55%, transparent), transparent 72%), radial-gradient(30% 40% at 22% 76%, color-mix(in srgb, var(--acento) 30%, transparent), transparent 72%); }
+      .dato-c { position: absolute; display: grid; gap: 10px; transform: translateY(-50%); padding: 30px 34px; border-radius: 24px; background: rgba(6,14,28,.72); box-shadow: 0 0 0 2px color-mix(in srgb, var(--acento) 55%, transparent), 0 24px 70px rgba(0,0,0,.5), 0 0 70px color-mix(in srgb, var(--acento) 26%, transparent); opacity: 0; }
+      .dato-c b { font-family: var(--titulo); font-size: calc(__TTITULO__px * 1.05); line-height: 1; color: var(--acento); word-spacing: .14em; }
+      .dato-c span { font-weight: 800; font-size: calc(__TCUERPO__px * 1.2); line-height: 1.12; }
+      .dato-c p { font-weight: 500; font-size: __TCUERPO__px; line-height: 1.28; color: #dbe9f4; }
+      .barra-c { position: absolute; display: grid; gap: 12px; opacity: 0; font-weight: 700; font-size: __TCUERPO__px; }
+      .barra-c span { display: flex; justify-content: space-between; gap: 24px; }
+      .riel { height: 26px; border-radius: 13px; overflow: hidden; background: rgba(255,255,255,.14); }
+      .riel i { display: block; height: 100%; transform-origin: left; background: linear-gradient(90deg, var(--acento), var(--primario)); }
+      .punta { position: absolute; left: 0; top: 0; width: 44px; height: 44px; opacity: 0; filter: drop-shadow(0 4px 8px rgba(0,0,0,.5)); }
+      .polvo { position: absolute; inset: 0; mix-blend-mode: screen; pointer-events: none; }
+      .polvo i { position: absolute; display: block; border-radius: 50%; opacity: 0; background: radial-gradient(circle, #ffffff 0%, var(--acento) 38%, transparent 72%); }
       .quemado { position: absolute; left: 76px; right: 170px; top: 1120px; font-family: var(--titulo); font-size: 70px; line-height: 1.08; font-weight: 700; opacity: 0; text-shadow: 0 4px 30px rgba(0,0,0,.9); }
+"""
+
+
+# En vertical, los subtítulos quemados viven en la parte baja: tarjetas y cierre suben para no chocar con ellos
+CSS_VERTICAL = """      .tarjeta { top: 34%; left: 64px; right: 64px; }
+      .portada { top: 36%; left: 64px; right: 64px; }
+      .final { padding-bottom: 420px; }
+      .quemado { top: 1170px; word-spacing: .14em; }
 """
 
 
@@ -410,7 +666,7 @@ def main():
     escenas = preparar_escenas(guion, tiempos, base)
     total = escenas[-1]["inicio"] + escenas[-1]["dur"]
     ctx = {"W": W, "H": H, "foco_y": H * 0.46, "escenario": ESCENARIOS[formato], "clics": [], "golpe": None, "chispas": None,
-           "pasos": max((e.get("paso") or 0) for e in escenas), "acento": marca["acento"], "t_nota": t_nota, "primario": marca["primario"],
+           "pasos": max((e.get("paso") or 0) for e in escenas), "acento": marca["acento"], "t_nota": t_nota, "primario": marca["primario"], "t_trazo": round(t_titulo * .62),
            "logo": marca["logo"], "marca": marca["nombre"]}
     tl, cuerpo = [], ""
     for escena in escenas:
@@ -452,9 +708,12 @@ def main():
     banda = base / "assets/audio/banda.wav"
     volumen = guion.get("volumen_banda", 0.36)
 
+    config_banda = guion.get("banda", {})
+    tramos_musica = [] if config_banda.get("continua") else ["--activa", ",".join(activa)]
+
     def componer_banda(musica):
         subprocess.run([sys.executable, str(Path(__file__).resolve().parent / "banda_sonora.py"), "--duracion", f"{total:.2f}",
-                        "--perfil", "sereno", "--activa", ",".join(activa), "--cambios", ",".join(f"{c:.3f}" for c in cortes),
+                        "--perfil", config_banda.get("perfil", "sereno"), *tramos_musica, "--cambios", ",".join(f"{c:.3f}" for c in cortes),
                         "--clics", ",".join(f"{c:.3f}" for c in ctx["clics"]), *(["--golpe", f'{ctx["golpe"]:.3f}'] if ctx["golpe"] else []),
                         "--musica", f"{musica:.4f}", "--salida", str(banda)], check=True, stdout=subprocess.DEVNULL)
 
@@ -467,10 +726,11 @@ def main():
 
     fuentes = "".join(f'@font-face {{ font-family: "{f["familia"]}"; src: url("{f["src"]}"); font-weight: {f.get("peso", 700)}; }}\n      '
                       for f in marca.get("fuentes", []))
-    css = CSS
+    css = CSS + (CSS_VERTICAL if formato == "9:16" else "")
     for clave, valor in {"__W__": W, "__H__": H, "__FONDO__": marca.get("fondo", "#02040A"), "__PRIMARIO__": marca["primario"],
                          "__ACENTO__": marca["acento"], "__FTITULO__": marca.get("fuente_titulo", "Montserrat"),
-                         "__FTEXTO__": marca.get("fuente_texto", "Inter"), "__TTITULO__": t_titulo, "__TCUERPO__": t_cuerpo,
+                         "__FTEXTO__": marca.get("fuente_texto", "Inter"), "__FMANO__": marca.get("fuente_mano") or marca.get("fuente_titulo", "Montserrat"),
+                         "__TTITULO__": t_titulo, "__TCUERPO__": t_cuerpo,
                          "__TNOTA__": t_nota, "__TPASO__": t_paso}.items():
         css = css.replace(clave, str(valor))
     lineas_tl = "\n      ".join(tl)

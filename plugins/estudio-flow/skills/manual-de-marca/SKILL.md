@@ -7,9 +7,13 @@ description: "Consigue la marca de una compañía antes de crear cualquier pieza
 
 Ninguna producción avanza sin marca. Esto ocurre en la etapa 1, antes de la entrevista creativa.
 
-## Paso 1. Pide siempre el manual
+## Paso 1. Busca lo que ya existe y pide el resto
 
-Pregunta: **«¿Tienes el manual de diseño de marca de la compañía?»**
+Antes de preguntar, revisa los **archivos de conocimiento del Proyecto**, la carpeta `_marca` si está conectada (por ejemplo `Documentos\Estudio-Flow\_marca`) y `01-referencias/`. Si encuentras la marca, dile a la persona qué vas a usar, y pide solo lo que falte.
+
+El montaje necesita archivos reales en el computador: copia el logo y las fuentes a `00-brief/marca/`. Si el logo o las fuentes solo están en los archivos de conocimiento y no los puedes copiar, pídelos en `_marca` o en `01-referencias/`.
+
+Si no encuentras nada, pregunta: **«¿Tienes el manual de diseño de marca de la compañía?»**
 
 - **Sí lo tiene:** pide que lo deje en `01-referencias/`. Léelo completo y pasa sus reglas a `00-brief/marca.json` con `"origen": "manual"`. Manda sobre cualquier otra fuente. No generes manual al final.
 - **No lo tiene:** pide el **nombre de la compañía** y su **página web**. Investiga con el paso 2 y usa `"origen": "web"`.

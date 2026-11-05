@@ -16,17 +16,32 @@ Reemplaza a la entrevista general cuando la pieza enseña algo. Primero va la ma
 
 ## Tercera tanda: si enseña un sistema
 
-7. ¿Qué sistema y qué versión?
+7. ¿Qué sistema y qué versión? ¿Qué proceso cubre, qué módulos toca y qué roles intervienen?
 8. ¿Hay un ambiente de pruebas con datos ficticios? Si no existe, pide uno antes de capturar.
-9. ¿Quién graba: la persona o Claude? Sigue [pantalla real](pantalla-real.md).
+9. ¿Quién graba: la persona o Claude? Sigue [pantalla real](pantalla-real.md), y [secuencia lógica](secuencia-logica.md) para el orden.
 
-## Cuarta tanda: forma y alcance
+## Cuarta tanda: referencia y estilo
 
-10. ¿Es una lección o una serie? Propón la división.
-11. ¿Quién enseña? Una persona de Flow, solo voz o personaje de marca. Sugiere dos voces.
-12. ¿Cómo se comprueba que aprendió? Pregunta, práctica o evaluación aparte.
-13. ¿La organización debe cumplir alguna norma de accesibilidad?
-14. ¿Cuántos puntos de Flow estás dispuesto a gastar? Muestra el saldo y el costo por minuto.
+10. ¿Conoces un video que haya funcionado y te gustaría tomar como referencia? Puede ser una URL o un archivo en la carpeta del proyecto o en Descargas. Si dice que sí, sigue [el análisis de referencia](../../estudio-flow/references/analisis-de-referencia.md).
+11. ¿Qué estilo imaginas para lo que no es pantalla real? Real, animación 3D, caricatura, plastilina, pizarra o infografía. Sigue [estilos visuales](../../estudio-flow/references/estilos-visuales.md).
+12. ¿Quién enseña? Una persona o un personaje de Flow, o solo voz. Sugiere dos voces.
+
+## Quinta tanda: cómo termina
+
+13. ¿Cómo quieres que termine el video? Lo decide la persona. Ofrece estas opciones y recomienda según el objetivo:
+    - **Pregunta de comprobación**, si después hay evaluación.
+    - **«Pausa y hazlo tú»**, si puede practicar en ese momento.
+    - **Caso para decidir**, si enseña a tomar decisiones.
+    - **Resumen de los pasos**, si lo va a usar como consulta.
+    - **Invitación a usar la aplicación**, si el objetivo es que empiece a usarla. Pide el botón y la dirección.
+    - **Siguiente lección**, si hace parte de una serie.
+14. ¿Es una lección o una serie? Propón la división.
+15. ¿La organización debe cumplir alguna norma de accesibilidad?
+
+## Sexta tanda: alcance
+
+16. ¿Tienes imágenes que quieras usar para generar las escenas? Se usan en lugar de generarlas. Sin texto ni logos, menos de 10 MB y con autorización si muestran a una persona real.
+17. ¿Cuántos puntos de Flow estás dispuesto a gastar? Muestra el saldo y el costo por minuto.
 
 ## Salida: brief.md
 
@@ -39,9 +54,11 @@ Dónde se verá y formato:
 Fuente:
 Quién valida:
 Riesgo (seguridad, salud, dinero, legal):
-Sistema, versión y ambiente de pruebas:
+Sistema, versión, módulos, roles y ambiente de pruebas:
 Formato didáctico:
-Comprobación:
+Referente y qué se toma de él:
+Estilo visual:
+Cómo termina:
 Voz de Flow:
 Accesibilidad:
 Marca (colores, tipografías, logo):

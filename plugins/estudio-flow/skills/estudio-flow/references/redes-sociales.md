@@ -30,6 +30,6 @@ Revisado el 2 de noviembre de 2026. Las plataformas cambian estos límites y las
 - Audio a −16 LUFS con pico de −1 dBTP.
 - `+faststart` para que empiece a reproducirse rápido.
 - Versión liviana para WhatsApp: recodifica el video y **copia** el audio. Recodificar el audio sube el pico.
-- Flow entrega 720p: produce y monta así, y al final pregunta si la persona quiere escalar los clips a 1080p.
+- Los clips van a 720p, generados a 360p y escalados o directos, según la ruta que eligió la persona. El render final sale en 1080p. Solo la ruta de 720p directo permite subir los clips a 1080p al final.
 
 Un horizontal no se aplasta ni se recorta a vertical: se recompone con otro encuadre.
