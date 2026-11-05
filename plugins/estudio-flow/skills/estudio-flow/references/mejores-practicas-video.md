@@ -92,4 +92,6 @@ Antes de entregar:
 python _estudio/control_final.py 05-final/<video>.mp4 --cierre 4
 ```
 
+En Mac y Linux, cambia `python` por el valor de `comando_python` que da `verificar_entorno.py`.
+
 El video no se entrega hasta que apruebe. Además, míralo completo con sonido o revisa la hoja de fotogramas y la transcripción.

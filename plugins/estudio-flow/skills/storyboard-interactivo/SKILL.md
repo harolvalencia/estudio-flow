@@ -17,6 +17,8 @@ Cada propuesta se ve como un animatic real: fotogramas generados en Flow, ritmo,
 python _estudio/armar_storyboard.py 02-storyboard/plan.json
 ```
 
+   En Mac y Linux, cambia `python` por el valor de `comando_python` que da `verificar_entorno.py`.
+
 4. Publica `02-storyboard/storyboard.html` como artefacto. Si la sesión no permite artefactos, ábrelo en Chrome.
 5. Dile a la persona que elija abajo, copie su decisión y la pegue en el chat. La página no puede escribir en la conversación.
 

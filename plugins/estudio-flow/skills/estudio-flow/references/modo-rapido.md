@@ -28,6 +28,8 @@ Las reglas de siempre siguen: no escribir contraseñas, no resolver CAPTCHAs, no
 python _estudio/pieza_rapida.py 03-flow/01.mp4 --frase "<frase>" --accion "<acción>" --color "<color>" --logo 01-referencias/logo.png --salida 05-final/prueba-rapida.mp4
 ```
 
+En Mac, cambia `python` por `~/.estudio-flow/bin/python3`; si esa carpeta no existe, usa `python3`. En Linux, usa `python3`.
+
 `--logo` es opcional: úsalo solo si hay un logo en la carpeta. El proceso tarda unos 2 s y solo necesita ffmpeg y Pillow.
 
 8. **Entrega.** Mira un fotograma del medio y otro del final. Muestra el video y di los puntos gastados.

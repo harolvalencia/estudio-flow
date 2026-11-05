@@ -75,6 +75,8 @@ Mantiene la fórmula `Beneficio inspirador + verbo + acción concreta`, pero la 
 python _estudio/control_final.py 05-final/<video>.mp4 --tipo formativo --cierre 4 --guion 04-montaje/guion.txt
 ```
 
+En Mac y Linux, cambia `python` por el valor de `comando_python` que da `verificar_entorno.py`.
+
 Permite pausas de hasta 3,5 s para mirar la pantalla y hasta 8 s sobre un cuadro, y exige que la voz siga el guion.
 
 ## Fuentes

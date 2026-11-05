@@ -155,7 +155,7 @@ def main():
     guion = a.guion.read_text(encoding="utf-8")
     oidas, _ = palabras(a.video, vocabulario(guion))
     if not oidas:
-        sys.exit("No se pudo transcribir la voz: revisa que el video tenga narración y corre esto en Windows con Desktop Commander, con faster-whisper instalado. No busques el modelo en otras fuentes.")
+        sys.exit("No se pudo transcribir la voz: revisa que el video tenga narración y corre esto en tu computador con Desktop Commander, con faster-whisper instalado. No busques el modelo en otras fuentes.")
     escritas = guion.split()
     tiempos, aciertos = alinear(escritas, oidas)
     grupos = agrupar(escritas, tiempos)

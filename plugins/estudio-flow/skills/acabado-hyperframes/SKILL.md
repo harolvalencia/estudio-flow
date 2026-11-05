@@ -14,9 +14,10 @@ En modo rápido no uses HyperFrames: `pieza_rapida.py` agrega logo, frase y bot�
 Usa la ruta guardada en `proceso.json` en `entorno.ruta`:
 
 - **windows:** Desktop Commander, con PowerShell, sobre la ruta real de la carpeta.
+- **mac:** Desktop Commander, con Terminal, sobre la ruta real de la carpeta.
 - **cowork:** la terminal de la sesión. Su red es limitada y cada comando puede pedirle aprobación a la persona.
 
-Ejecuta primero `python _estudio/verificar_entorno.py <carpeta>`. Si responde `"listo": false`, sigue lo indicado en `siguiente`.
+Ejecuta primero `python _estudio/verificar_entorno.py <carpeta>`, o `python3` en Mac y Linux. Si responde `"listo": false`, sigue lo indicado en `siguiente`. En todos los comandos de esta skill, cambia `python` por el valor de `comando_python`.
 
 Agrupa los comandos de cada paso en una sola llamada, para que la persona apruebe lo menos posible.
 
@@ -108,7 +109,7 @@ En la prueba, 15 s de video en 1080×1920 tardaron menos de 2 minutos en Windows
 
 ## 5. Control final
 
-Pasa el archivo por el control antes de exportar. Necesita `pip install faster-whisper`.
+Pasa el archivo por el control antes de exportar. Necesita `faster-whisper`, que `verificar_entorno.py` comprueba.
 
 ```
 python _estudio/control_final.py ../05-final/maestro.mp4 --cierre 4 --guion ../03-flow/guion.txt
@@ -118,7 +119,7 @@ Con `--guion` comprueba que la voz diga el texto aprobado. En tutoriales y capac
 
 Si responde `"aprobado": false`, corrige lo que indica. Un tramo sin voz se arregla generando en Flow la locución de esa escena, no con más texto.
 
-**Si falta el transcriptor.** El modelo de Whisper se baja de Hugging Face, y la terminal de la sesión no llega a ese sitio. No lo busques en npm, en GitHub ni en otra fuente: corre el control en Windows con Desktop Commander. Si no está disponible, corrige los demás fallos, entrega y dile a la persona que la voz quedó sin comprobar.
+**Si falta el transcriptor.** El modelo de Whisper se baja de Hugging Face, y la terminal de la sesión no llega a ese sitio. No lo busques en npm, en GitHub ni en otra fuente: corre el control en el computador de la persona con Desktop Commander. Si no está disponible, corrige los demás fallos, entrega y dile a la persona que la voz quedó sin comprobar.
 
 ## 6. Exportar para cada red
 

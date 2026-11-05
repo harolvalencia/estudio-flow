@@ -49,7 +49,27 @@ Para una clase o una demostración, escribe `Modo rápido` en el Proyecto y da l
 
 ## Para producir el video final
 
-Necesitas Node 22 o superior, ffmpeg y Python con `numpy`, `pillow` y `faster-whisper`. Para que Claude trabaje en Windows, instala también el plugin **Desktop Commander**.
+Necesitas Node 22 o superior, ffmpeg y Python 3.13 con `numpy`, `pillow` y `faster-whisper`. Para que Claude trabaje en tu computador, instala también el plugin **Desktop Commander**.
+
+En Windows, usa PowerShell:
+
+```text
+winget install OpenJS.NodeJS
+winget install Gyan.FFmpeg
+winget install Python.Python.3.13
+python -m pip install numpy pillow faster-whisper
+```
+
+En Mac, usa la Terminal y [Homebrew](https://brew.sh):
+
+```text
+brew install node ffmpeg python@3.13
+python3.13 -m venv ~/.estudio-flow
+source ~/.estudio-flow/bin/activate
+pip install numpy pillow faster-whisper
+```
+
+En Mac no existe el comando `python`, y Homebrew no deja instalar librerías en su Python. Por eso se crea `~/.estudio-flow`, y Claude lo usa solo.
 
 ## Licencia
 

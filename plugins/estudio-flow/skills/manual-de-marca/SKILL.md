@@ -92,6 +92,8 @@ Si dice que sí, en la etapa 7:
 python _estudio/generar_manual_marca.py <carpeta>
 ```
 
+En Mac y Linux, cambia `python` por el valor de `comando_python` que da `verificar_entorno.py`.
+
 Deja `06-informe/Manual-de-Marca-<empresa>.pdf`.
 
 4. Revisa cada página: logo legible, contraste, textos sin cortes y ortografía. Corrige `marca.json` y vuelve a generar.

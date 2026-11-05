@@ -29,6 +29,7 @@ def buscar_chrome():
     candidatos += [
         r"C:\Program Files\Google\Chrome\Application\chrome.exe",
         r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe",
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
         shutil.which("google-chrome") or "",
         shutil.which("chromium") or "",
         shutil.which("chromium-browser") or "",

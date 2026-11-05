@@ -81,7 +81,7 @@ Una voz solo funciona con `Omni 1.1 Flash` en `Ingredientes` y siempre junto a u
 
 ### Subir archivos de la carpeta
 
-`Subir` abre un selector nativo de Windows que Claude no puede manejar. Evítalo así, con archivos de máximo 10 MB en total:
+`Subir` abre un selector nativo del sistema que Claude no puede manejar. Evítalo así, con archivos de máximo 10 MB en total:
 
 1. Instala este puente con JavaScript en la pestaña:
 

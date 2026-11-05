@@ -27,6 +27,8 @@ No incluyas correos, contraseñas ni saldos de la cuenta que no sean necesarios.
 python _estudio/generar_informe.py <carpeta>
 ```
 
+En Mac y Linux, cambia `python` por el valor de `comando_python` que da `verificar_entorno.py`.
+
 Deja el PDF en `06-informe/`.
 
 ## Revisar

@@ -11,7 +11,7 @@ Comprueba:
   - Con --guion, que la voz diga lo que dice el guion aprobado.
 
 El tipo formativo admite pausas para mirar la pantalla y más tiempo sobre un mismo cuadro.
-Instala el transcriptor con: pip install faster-whisper
+Para instalar el transcriptor, sigue lo que indica verificar_entorno.py.
 Imprime un JSON y sale con código 1 si algo falla.
 """
 import argparse

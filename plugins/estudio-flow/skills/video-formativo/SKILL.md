@@ -42,6 +42,8 @@ El presupuesto usa [la tabla de narración](../flow-control/references/voces-flo
 
 ## Etapa 4. Material y voz
 
+En Mac y Linux, cambia `python` por el valor de `comando_python` que da `verificar_entorno.py`.
+
 **Pantalla real.** Sigue [pantalla real](references/pantalla-real.md). Una interfaz nunca se genera con IA: Flow la deforma y el alumno aprendería botones que no existen.
 
 **Clips de Flow.** Úsalos para la apertura, las escenas de contexto, el presentador y el cierre. Nunca para mostrar cómo se hace un procedimiento técnico: un casco mal puesto en un clip enseña a ponérselo mal. Si un clip muestra un procedimiento, quien valida debe aprobarlo.
