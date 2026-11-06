@@ -60,7 +60,7 @@ Para una clase o una demostración, escribe `Modo rápido` en el Proyecto y da l
 
 ## Para producir el video final
 
-Necesitas Node 22 o superior, ffmpeg y Python 3.13 con `numpy`, `pillow` y `faster-whisper`. Para que Claude trabaje en tu computador, instala también el plugin **Desktop Commander**.
+Necesitas Node 22 o superior, ffmpeg y Python 3.13 con `numpy`, `pillow` y `faster-whisper`. Para que Claude trabaje en tu computador, instala también el plugin **Desktop Commander**: busca ese nombre y elige la fila que dice **Plugin** y `wonderwhy-er/desktopcommandermcp`. Claude avisará que podrá ejecutar código en tu computador sin preguntar: acepta solo en tu propio equipo.
 
 En Windows, usa PowerShell:
 
